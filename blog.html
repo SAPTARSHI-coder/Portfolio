@@ -1,0 +1,499 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Blog — Saptarshi Sadhu</title>
+    <meta name="description" content="Thoughts on Systems, AI, and Engineering by Saptarshi Sadhu." />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Config — matches index.html -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#06b6d4",
+              accent: "#0891b2",
+              "background-dark": "#02040a",
+              "glass-bg": "rgba(15, 23, 42, 0.15)",
+              "glass-border": "rgba(255, 255, 255, 0.08)",
+            },
+            fontFamily: {
+              sans: ['"Times New Roman"', "Times", "serif"],
+              display: ['"Times New Roman"', "Times", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Shared stylesheet -->
+    <link rel="stylesheet" href="index.css" />
+
+    <style>
+      /* ── Blog-specific card hover ── */
+      .blog-grid:has(.blog-card:hover) .blog-card:not(:hover) {
+        opacity: 0.45;
+        filter: blur(1.5px) saturate(0.5);
+        transform: scale(0.97);
+      }
+
+      .blog-card {
+        position: relative;
+        transition:
+          transform     0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow    0.35s ease,
+          opacity       0.3s ease,
+          filter        0.3s ease;
+        will-change: transform, box-shadow;
+        cursor: pointer;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-28px) scale(1.02);
+        z-index: 30;
+        box-shadow:
+          0 2px 4px   rgba(0, 0, 0, 0.4),
+          0 12px 24px rgba(0, 0, 0, 0.5),
+          0 28px 52px rgba(0, 0, 0, 0.4),
+          0 48px 72px rgba(0, 0, 0, 0.25),
+          0 0 50px    rgba(6, 182, 212, 0.14);
+      }
+
+      /* Spinning RGB border — same as skill cards */
+      .blog-card::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1.5px;
+        background: conic-gradient(
+          from var(--bg-angle, 0deg),
+          rgba(6, 182, 212, 0.1),
+          rgba(6, 182, 212, 0.7),
+          rgba(10, 20, 60, 0.4),
+          rgba(6, 182, 212, 0.7),
+          rgba(6, 182, 212, 0.1)
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.45;
+        animation: spin-rgb-border 4s linear infinite;
+      }
+
+      .blog-card:hover::after {
+        opacity: 1;
+        animation: spin-rgb-border 2s linear infinite;
+      }
+
+      /* Tag pill */
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: 1px solid;
+        font-family: 'Courier New', monospace;
+      }
+
+      /* Read More arrow bounce */
+      .read-more-btn .arrow {
+        display: inline-block;
+        transition: transform 0.25s ease;
+      }
+      .read-more-btn:hover .arrow {
+        transform: translateX(5px);
+      }
+
+      /* Featured card (first card, full-width on lg) */
+      .blog-card-featured {
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+
+  <body
+    class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none"
+  >
+    <!-- Background Video -->
+    <video
+      class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]"
+      autoplay loop muted playsinline
+    >
+      <source src="Background.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Nebula layer -->
+    <div class="nebula-container opacity-50 mix-blend-screen">
+      <div class="stars"></div>
+      <div class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"></div>
+    </div>
+
+    <!-- Rotating digital globe -->
+    <div class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-30">
+      <img
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+        alt="Digital Globe"
+        class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
+        style="
+          mask-image: radial-gradient(circle, black 50%, transparent 100%);
+          -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
+        "
+      />
+    </div>
+
+    <!-- ── NAVIGATION ── -->
+    <header class="fixed top-0 z-50 w-full backdrop-blur-md bg-[#02040a]/70 border-b border-white/5">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img
+            src="my_image.png"
+            alt="Saptarshi"
+            class="w-8 h-8 rounded-full object-cover object-top border border-orange-500/60 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
+          />
+          <span class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase">Saptarshi • Portfolio</span>
+        </div>
+        <nav class="flex items-center gap-4 lg:gap-6">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="index.html#about">About</a>
+          <a class="nav-link" href="index.html#skills">Skills</a>
+          <a class="nav-link" href="index.html#projects">Projects</a>
+          <a class="nav-link" href="index.html#experience">Experience</a>
+          <a class="nav-link" href="index.html#education">Education</a>
+          <a class="nav-link" href="index.html#achievements">Achievements</a>
+          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="blog.html">Blog</a>
+          <a class="nav-link" href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ── MAIN ── -->
+    <main class="pt-32 pb-40 max-w-6xl mx-auto px-6">
+
+      <!-- Section Header -->
+      <div class="mb-16 fade-up">
+        <h3 class="text-primary text-xs font-bold tracking-[0.25em] uppercase mb-3 flex items-center gap-3">
+          <span class="w-8 h-px bg-primary/60"></span>
+          Knowledge Hub
+          <span class="w-8 h-px bg-primary/60"></span>
+        </h3>
+        <h1 class="text-5xl md:text-6xl font-serif text-white font-bold tracking-tight mb-4 title-glow">
+          Blog
+        </h1>
+        <p class="text-slate-400 text-lg max-w-xl leading-relaxed">
+          Thoughts on Systems, AI, and Engineering —<br class="hidden md:block" />
+          written from the intersection of code and curiosity.
+        </p>
+
+        <!-- Decorative line -->
+        <div class="mt-8 h-px w-full bg-gradient-to-r from-cyan-500/30 via-purple-500/20 to-transparent"></div>
+      </div>
+
+      <!-- ── BLOG GRID ── -->
+      <div class="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+
+        <!-- ── CARD 1 — Featured / ML Research ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.05s"
+          onclick="window.location='blog_posts/ml.html'"
+        >
+          <!-- Accent glow -->
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/8 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Header row -->
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-emerald-400 text-[20px]">science</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Mar 2026</time>
+          </div>
+
+          <!-- Content -->
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug group-hover:text-primary">
+              Urban Air Quality Prediction Using Temporal ML Models
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              How I built a machine learning pipeline to predict VOCs, O₃, and NOx concentrations in urban environments — from raw sensor data to real-time forecasts.
+            </p>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-emerald-400 border-emerald-500/30 bg-emerald-500/5">Machine Learning</span>
+            <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Research</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">PyTorch</span>
+          </div>
+
+          <!-- Read more -->
+          <div class="read-more-btn flex items-center gap-2 text-emerald-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- ── CARD 2 — Full Stack Architecture ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.1s"
+          onclick="window.location='blog_posts/fullstack.html'"
+        >
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/6 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-cyan-400 text-[20px]">layers</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Feb 2026</time>
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug">
+              Architecting Scalable Full Stack Systems From Scratch
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              A deep dive into the design decisions behind building scalable full-stack applications — from database schema design to REST API contracts and frontend state management.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">Full Stack</span>
+            <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Systems</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Next.js</span>
+          </div>
+
+          <div class="read-more-btn flex items-center gap-2 text-cyan-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- ── CARD 3 — DevOps & Deployment ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.15s"
+          onclick="window.location='blog_posts/devops.html'"
+        >
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-violet-500/6 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-violet-400 text-[20px]">rocket_launch</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Feb 2026</time>
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug">
+              CI/CD, Docker, and Zero-Downtime Deployments
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              Practical lessons from setting up automated deployment pipelines — containerizing apps with Docker, writing CI/CD workflows, and shipping without breaking production.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-violet-400 border-violet-500/30 bg-violet-500/5">DevOps</span>
+            <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Docker</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Cloud</span>
+          </div>
+
+          <div class="read-more-btn flex items-center gap-2 text-violet-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- ── CARD 4 — Data Structures & Algorithms ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.2s"
+          onclick="window.location='blog_posts/dsa.html'"
+        >
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/6 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-orange-400 text-[20px]">account_tree</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Jan 2026</time>
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug">
+              DSA Patterns That Actually Matter in Interviews
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              A pragmatic guide to the 12 DSA patterns — sliding window, two pointers, monotonic stacks, and more — with real implementations and when to apply each one.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-orange-400 border-orange-500/30 bg-orange-500/5">DSA</span>
+            <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">Algorithms</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Python</span>
+          </div>
+
+          <div class="read-more-btn flex items-center gap-2 text-orange-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- ── CARD 5 — AI System Design ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.25s"
+          onclick="window.location='blog_posts/ai-system.html'"
+        >
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/6 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-purple-400 text-[20px]">hub</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Jan 2026</time>
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug">
+              Designing AI Systems That Scale Beyond the Prototype
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              The gap between a working ML model and a production AI system is enormous. Here's how to think about inference pipelines, latency, model versioning, and serving at scale.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-purple-400 border-purple-500/30 bg-purple-500/5">AI Systems</span>
+            <span class="tag-pill text-emerald-400 border-emerald-500/30 bg-emerald-500/5">ML Ops</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Backend</span>
+          </div>
+
+          <div class="read-more-btn flex items-center gap-2 text-purple-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- ── CARD 6 — Flutter & Mobile ── -->
+        <article
+          class="blog-card bg-[#0b1121] rounded-2xl p-7 fade-up flex flex-col gap-5 overflow-hidden"
+          style="animation-delay: 0.3s"
+          onclick="window.location='blog_posts/flutter.html'"
+        >
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/6 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-blue-400 text-[20px]">phone_android</span>
+            </div>
+            <time class="text-slate-600 text-[10px] font-mono tracking-wider mt-1">Dec 2025</time>
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-white text-lg font-bold mb-2 leading-snug">
+              Flutter Architecture Patterns for Production Apps
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+              What I learned shipping Flutter apps to production — clean architecture, state management with Riverpod, and how to structure code that survives a growing team.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Flutter</span>
+            <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">Mobile</span>
+            <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Dart</span>
+          </div>
+
+          <div class="read-more-btn flex items-center gap-2 text-blue-400 text-xs font-bold tracking-widest uppercase mt-auto">
+            Read More <span class="arrow">→</span>
+          </div>
+        </article>
+
+      </div>
+      <!-- end .blog-grid -->
+
+      <!-- ── NEWSLETTER / COMING SOON STRIP ── -->
+      <div class="mt-20 fade-up">
+        <div class="relative rounded-2xl border border-white/5 bg-[#0b1121] p-10 overflow-hidden text-center">
+          <!-- decorative blobs -->
+          <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-32 bg-cyan-500/8 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-12 left-1/4 w-48 h-24 bg-purple-500/8 rounded-full blur-3xl pointer-events-none"></div>
+
+          <span class="material-symbols-outlined text-primary text-4xl mb-4 block">rss_feed</span>
+          <h2 class="text-white text-2xl font-bold mb-2">More posts in the pipeline</h2>
+          <p class="text-slate-400 text-sm max-w-md mx-auto mb-6">
+            Writing about systems programming, AI deployment strategies, and engineering craft. New posts ship regularly.
+          </p>
+          <a
+            href="index.html#contact"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary/10 border border-primary/30 text-primary text-sm font-bold tracking-widest uppercase hover:bg-primary/20 transition-all duration-200"
+          >
+            Get in touch <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Subtle Support Block -->
+      <div class="bmc-blog-block fade-up">
+        <p class="bmc-blog-text">Enjoying the articles?</p>
+        <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn-subtle">
+          <span class="bmc-icon">☕</span> Support my work
+        </a>
+      </div>
+
+    </main>
+
+    <!-- ── FOOTER ── -->
+    <footer class="border-t border-white/5 py-10 mt-8 flex flex-col items-center gap-3 opacity-75 hover:opacity-100 transition-opacity duration-500 ease-in-out text-center text-xs tracking-widest font-mono">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+      <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link mt-2">
+        <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+      </a>
+    </footer>
+
+    <!-- Reuse scroll animations from shared script -->
+    <script src="script.js"></script>
+
+    <!-- Trigger fade-up animations on blog cards -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+        );
+        document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

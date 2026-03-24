@@ -1,0 +1,240 @@
+/*
+================================================================================
+ARTICLE POLISH  — shared across all blog_posts/ articles
+================================================================================
+*/
+
+/* ── 3. Heading hierarchy ─────────────────────────────────────────────── */
+.prose-article h2 {
+  font-size: 1.6rem !important;
+  letter-spacing: -0.01em;
+  margin-top: 3.5rem !important;
+  margin-bottom: 1.1rem !important;
+}
+.prose-article h3 {
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.8rem !important;
+  margin-top: 1.75rem !important;
+}
+
+/* ── 4. Inline highlight class ───────────────────────────────────────── */
+.highlight {
+  color: #67e8f9;
+  font-weight: 600;
+  background: rgba(6, 182, 212, 0.07);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* ── 5. Callout hover glow ───────────────────────────────────────────── */
+.callout {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.callout:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.callout-info:hover    { box-shadow: 0 8px 30px rgba(6, 182, 212, 0.12); }
+.callout-warning:hover { box-shadow: 0 8px 30px rgba(251, 146, 60, 0.12); }
+.callout-success:hover { box-shadow: 0 8px 30px rgba(52, 211, 153, 0.12); }
+.callout-purple:hover  { box-shadow: 0 8px 30px rgba(168, 85, 247, 0.12); }
+.callout-red:hover     { box-shadow: 0 8px 30px rgba(248, 113, 113, 0.12); }
+.callout-when:hover    { box-shadow: 0 8px 30px rgba(249, 115, 22, 0.12); }
+
+/* ── 6. Code block polish ────────────────────────────────────────────── */
+.code-block {
+  border-radius: 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  transition: box-shadow 0.3s ease;
+}
+.code-block:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+.code-block pre {
+  padding: 1.75rem !important;
+}
+.code-block-header {
+  border-radius: 0 !important;
+  padding: 12px 20px !important;
+}
+
+/* ── 7. Scroll-to-top enhancement ────────────────────────────────────── */
+#scroll-top {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+#scroll-top:hover {
+  transform: translateY(-5px) scale(1.12) !important;
+}
+
+/* ── 9. Intro line ───────────────────────────────────────────────────── */
+.article-intro-line {
+  display: block;
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #475569;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  padding-left: 2px;
+}
+
+/* ── 10. Key Takeaways box ───────────────────────────────────────────── */
+.takeaways-box {
+  border-radius: 16px;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  background: rgba(6, 182, 212, 0.04);
+  padding: 1.75rem 2rem;
+  margin: 3rem 0;
+}
+.takeaways-box h4 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #06b6d4;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.takeaways-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.takeaways-box ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+.takeaways-box ul li:last-child { border-bottom: none; }
+.takeaways-box ul li::before {
+  content: "→";
+  color: #06b6d4;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.takeaways-box ul li strong { color: #e2e8f0; }
+
+/* ── 2. Author box ───────────────────────────────────────────────────── */
+.author-box {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(15, 23, 42, 0.5);
+  padding: 1.25rem 1.5rem;
+  margin: 2.5rem 0;
+  backdrop-filter: blur(8px);
+}
+.author-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid rgba(249, 115, 22, 0.5);
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.25);
+  flex-shrink: 0;
+}
+.author-info-name {
+  font-weight: 700;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+.author-info-bio {
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+.author-info-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.author-link {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #06b6d4;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.2s;
+}
+.author-link:hover { color: #67e8f9; }
+
+/* ── 1. Article bottom nav ───────────────────────────────────────────── */
+.article-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.article-bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  max-width: 200px;
+}
+.article-bottom-nav a:hover { opacity: 0.75; }
+.nav-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #475569;
+  font-family: 'JetBrains Mono', monospace;
+}
+.nav-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+.nav-center {
+  text-align: center;
+}
+.nav-prev { text-align: left; }
+.nav-next { text-align: right; align-items: flex-end; }
+.nav-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 8px 18px;
+  border-radius: 30px;
+  background: rgba(6, 182, 212, 0.06);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  color: #06b6d4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-all-btn:hover {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.4);
+}

@@ -1,0 +1,528 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CI/CD, Docker, and Zero-Downtime Deployments — Saptarshi Sadhu</title>
+    <meta name="description" content="Understanding deployment as a system — Docker, CI/CD pipelines, zero-downtime strategies, and rollbacks." />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: { primary: "#06b6d4", accent: "#0891b2" }, fontFamily: { sans: ['"Inter"', "sans-serif"], mono: ['"JetBrains Mono"', "monospace"] } } },
+      };
+    </script>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="article.css" />
+
+    <style>
+      #progress-bar { position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#06b6d4,#a855f7);z-index:9999;transition:width .1s linear;box-shadow:0 0 12px rgba(6,182,212,.6); }
+      .prose-article { color:#cbd5e1;font-family:'Inter',sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:.01em; }
+      .prose-article h2 { font-size:1.5rem;font-weight:700;color:#f1f5f9;margin-top:3rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(6,182,212,.15);display:flex;align-items:center;gap:.5rem; }
+      .prose-article h3 { font-size:1.125rem;font-weight:700;color:#e2e8f0;margin-top:2rem;margin-bottom:.6rem; }
+      .prose-article p  { margin-bottom:1.4rem; }
+      .prose-article ul,.prose-article ol { padding-left:1.4rem;margin-bottom:1.4rem; }
+      .prose-article li { margin-bottom:.5rem; }
+      .prose-article ul li::marker { color:#06b6d4; }
+      .prose-article ol li::marker { color:#a855f7;font-weight:600; }
+      .prose-article blockquote { margin:2rem 0;padding:1.25rem 1.5rem;border-left:3px solid #06b6d4;background:rgba(6,182,212,.04);border-radius:0 12px 12px 0;color:#94a3b8;font-style:italic; }
+      .prose-article blockquote strong { color:#06b6d4;font-style:normal; }
+      .prose-article code:not(pre code) { background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.18);color:#67e8f9;padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.85em; }
+      .code-block { position:relative;margin:2rem 0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.4); }
+      .code-block-header { display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;letter-spacing:.05em; }
+      .code-block-header .lang-tag { color:#06b6d4;font-weight:600; }
+      .code-block pre { margin:0;padding:1.5rem;background:rgba(8,15,35,.95);overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.7;color:#e2e8f0; }
+      .code-block pre .kw  { color:#67e8f9; }
+      .code-block pre .fn  { color:#a5b4fc; }
+      .code-block pre .str { color:#86efac; }
+      .code-block pre .cm  { color:#475569; }
+      .code-block pre .nu  { color:#fb923c; }
+      .copy-btn { cursor:pointer;padding:2px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#64748b;font-size:10px;transition:all .2s; }
+      .copy-btn:hover { border-color:rgba(6,182,212,.4);color:#06b6d4; }
+      .stat-card { background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.15);border-radius:14px;padding:1.25rem 1.5rem; }
+      .callout { border-radius:12px;padding:1.1rem 1.4rem;margin:1.6rem 0;display:flex;gap:.75rem;align-items:flex-start;font-size:.9rem; }
+      .callout-info    { background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2); }
+      .callout-warning { background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.2); }
+      .callout-success { background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2); }
+      .article-section { opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease; }
+      .article-section.visible { opacity:1;transform:translateY(0); }
+      .back-btn { position:fixed;top:1.25rem;left:1.25rem;z-index:100;display:flex;align-items:center;gap:.4rem;padding:7px 16px;border-radius:30px;background:rgba(11,17,33,.85);border:1px solid rgba(6,182,212,.2);color:#06b6d4;font-size:12px;font-weight:600;letter-spacing:.05em;text-decoration:none;backdrop-filter:blur(10px);transition:all .2s ease;box-shadow:0 4px 16px rgba(0,0,0,.3); }
+      .back-btn:hover { background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.5);transform:translateX(-3px); }
+      #scroll-top { position:fixed;bottom:2rem;right:2rem;z-index:100;width:40px;height:40px;border-radius:50%;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:#06b6d4;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s ease; }
+      #scroll-top.show { opacity:1;pointer-events:all; }
+      #scroll-top:hover { background:rgba(6,182,212,.2);transform:translateY(-3px); }
+      .tag-pill { display:inline-flex;align-items:center;padding:2px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid;font-family:'JetBrains Mono',monospace; }
+
+      /* Pipeline flow diagram */
+      .pipeline-step {
+        display:flex;flex-direction:column;align-items:center;gap:.5rem;flex:1;
+      }
+      .pipeline-icon {
+        width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid;
+      }
+      .pipeline-label { font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;font-family:'JetBrains Mono',monospace; }
+      .pipeline-sub { font-size:10px;color:#475569;text-align:center;font-family:'JetBrains Mono',monospace; }
+      .pipeline-arrow { color:#334155;font-size:1.5rem;padding-top:14px;flex-shrink:0; }
+    </style>
+  </head>
+
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
+    <div id="progress-bar"></div>
+    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.2]" autoplay loop muted playsinline>
+      <source src="../Background.mp4" type="video/mp4" />
+    </video>
+    <div class="nebula-container opacity-40 mix-blend-screen fixed inset-0 pointer-events-none -z-10"><div class="stars"></div></div>
+
+    <a href="../blog.html" class="back-btn">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back to Blog
+    </a>
+    <a href="/" class="back-btn" style="left: max(140px, 11rem);">
+      <span class="material-symbols-outlined text-[16px]">home</span>Home
+    </a>
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+    </button>
+
+    <main class="max-w-[800px] mx-auto px-6 pt-24 pb-40">
+
+      <!-- HERO -->
+      <header class="article-section mb-14">
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill text-violet-400 border-violet-500/30 bg-violet-500/5">DevOps</span>
+          <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Docker</span>
+          <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">CI/CD</span>
+          <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Cloud</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 title-glow" style="font-family:'Inter',sans-serif">
+          CI/CD, Docker, and<br class="hidden md:block"> Zero-Downtime Deployments
+        </h1>
+        <span class="article-intro-line">Making deployment the least stressful part of shipping software.</span>
+        <p class="text-slate-400 text-lg leading-relaxed mb-6">
+          Deployment isn't a step at the end of development — it's a system you design. Here's how to think about shipping software reliably, from your local machine to production.
+        </p>
+        <div class="flex flex-wrap items-center gap-5 text-sm text-slate-500 font-mono">
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">calendar_today</span>February 2026</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">schedule</span>13 min read</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">person</span>Saptarshi Sadhu</span>
+        </div>
+        <div class="mt-8 h-px bg-gradient-to-r from-violet-500/30 via-cyan-500/20 to-transparent"></div>
+      </header>
+
+      <div class="prose-article">
+
+        <!-- Intro -->
+        <section class="article-section">
+          <p>
+            Most developers experience deployment as anxiety. You push code, something clicks in production, users complain, you frantically rollback. That chaos isn't inevitable — it's what happens when deployment is treated as a manual, last-minute act rather than an engineered system.
+          </p>
+          <p>
+            The three ideas in this article — containerisation, continuous delivery, and zero-downtime strategies — aren't about specific tools. They're about bringing the same rigour to shipping software that you bring to writing it.
+          </p>
+          <blockquote>
+            <strong>"If it hurts, do it more often — and the pain will go away."</strong><br>
+            The counterintuitive DevOps principle: deploying 10 times a day is safer than deploying once a week, because each change is smaller and the consequences of failure are contained.
+          </blockquote>
+        </section>
+
+        <!-- Part 1: Docker -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-blue-400 text-[22px]">inventory_2</span>Part I — Docker: Packaging the Environment, Not Just the Code</h2>
+          <p>
+            The classic failure mode: code works on a developer's machine, breaks on the server. The culprit is almost always environmental difference — different Node version, missing system library, different path to a config file. Docker doesn't solve your code bugs; it eliminates the environmental variable entirely.
+          </p>
+
+          <h3>What a Container Actually Is</h3>
+          <p>
+            A container is a process running in an isolated namespace with its own filesystem, network, and process tree — but sharing the host OS kernel. It's not a virtual machine (no emulated hardware, no guest OS), so it starts in milliseconds and has negligible overhead.
+          </p>
+          <p>
+            The key insight: a <strong class="text-white">Docker image is an immutable snapshot of everything your application needs to run</strong> — OS libraries, runtime, dependencies, app code, config. When you run that image anywhere — your laptop, a CI server, a cloud VM — you get an identical environment.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+            <div class="stat-card">
+              <div class="text-blue-400 font-bold mb-2 text-sm flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">layers</span>Image (Blueprint)
+              </div>
+              <p class="text-slate-400 text-sm">Read-only. Built once, stored in a registry. Tagged by version. Shared across environments.</p>
+            </div>
+            <div class="stat-card border-violet-500/15">
+              <div class="text-violet-400 font-bold mb-2 text-sm flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">deployed_code</span>Container (Instance)
+              </div>
+              <p class="text-slate-400 text-sm">Running instance of an image. Ephemeral — stateful data must be written to external volumes or cloud storage.</p>
+            </div>
+          </div>
+
+          <h3>Writing a Production-Grade Dockerfile</h3>
+          <p>
+            Most tutorial Dockerfiles are fine for demos but wrong for production. A real production image is built in stages (to keep the final image small), runs as a non-root user, and separates dependency installation from code copying — so the expensive <code>npm install</code> layer is cached when only app code changes.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">Dockerfile · Node.js Multi-stage Build</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="cm"># ── Stage 1: Install deps (cached layer)</span>
+<span class="kw">FROM</span> node:<span class="nu">20</span>-alpine <span class="kw">AS</span> deps
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> package*.json ./
+<span class="kw">RUN</span> npm ci --only=production
+
+<span class="cm"># ── Stage 2: Build (only if there's a build step)</span>
+<span class="kw">FROM</span> node:<span class="nu">20</span>-alpine <span class="kw">AS</span> builder
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> --from=deps /app/node_modules ./node_modules
+<span class="kw">COPY</span> . .
+<span class="kw">RUN</span> npm run build
+
+<span class="cm"># ── Stage 3: Minimal production image</span>
+<span class="kw">FROM</span> node:<span class="nu">20</span>-alpine <span class="kw">AS</span> runner
+<span class="kw">WORKDIR</span> /app
+<span class="kw">RUN</span> addgroup -S app && adduser -S app -G app  <span class="cm"># non-root user</span>
+<span class="kw">COPY</span> --from=builder /app/dist ./dist
+<span class="kw">COPY</span> --from=deps  /app/node_modules ./node_modules
+<span class="kw">USER</span> app
+<span class="kw">EXPOSE</span> <span class="nu">3000</span>
+<span class="kw">CMD</span> [<span class="str">"node"</span>, <span class="str">"dist/index.js"</span>]</pre>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="material-symbols-outlined text-cyan-400 text-[20px] mt-0.5 shrink-0">info</span>
+            <div><strong class="text-cyan-300 block mb-1">Layer caching is the key to fast builds</strong>
+            Docker rebuilds from the first changed layer downward. Put <code>COPY package.json</code> and <code>npm install</code> before <code>COPY . .</code> so that dependencies are only reinstalled when <code>package.json</code> actually changes — not on every code edit.</div>
+          </div>
+        </section>
+
+        <!-- Part 2: CI/CD -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-cyan-400 text-[22px]">sync</span>Part II — CI/CD: The Automated Path from Code to Production</h2>
+          <p>
+            Continuous Integration (CI) means every commit is automatically validated — built, linted, and tested — before it's allowed to merge. Continuous Delivery (CD) means the validated artifact is automatically deployed to an environment. Together they form a pipeline: a deterministic, repeatable path from <em>git push</em> to running in production.
+          </p>
+
+          <h3>The Pipeline as a System</h3>
+          <p>
+            Think of the pipeline as a set of gates. Code must pass each gate before proceeding. A failing test doesn't just notify you — it stops the process. Nothing broken ships to production automatically.
+          </p>
+
+          <!-- Pipeline diagram -->
+          <div class="flex items-start gap-2 my-8 overflow-x-auto pb-2">
+            <div class="pipeline-step">
+              <div class="pipeline-icon bg-cyan-500/10 border-cyan-500/30">
+                <span class="material-symbols-outlined text-cyan-400 text-[22px]">code</span>
+              </div>
+              <div class="pipeline-label text-cyan-400">Push</div>
+              <div class="pipeline-sub">git push<br>to main</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon bg-blue-500/10 border-blue-500/30">
+                <span class="material-symbols-outlined text-blue-400 text-[22px]">build</span>
+              </div>
+              <div class="pipeline-label text-blue-400">Build</div>
+              <div class="pipeline-sub">compile<br>lint check</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon bg-violet-500/10 border-violet-500/30">
+                <span class="material-symbols-outlined text-violet-400 text-[22px]">labs</span>
+              </div>
+              <div class="pipeline-label text-violet-400">Test</div>
+              <div class="pipeline-sub">unit tests<br>integration</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon bg-emerald-500/10 border-emerald-500/30">
+                <span class="material-symbols-outlined text-emerald-400 text-[22px]">inventory_2</span>
+              </div>
+              <div class="pipeline-label text-emerald-400">Package</div>
+              <div class="pipeline-sub">docker build<br>push to registry</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon bg-orange-500/10 border-orange-500/30">
+                <span class="material-symbols-outlined text-orange-400 text-[22px]">rocket_launch</span>
+              </div>
+              <div class="pipeline-label text-orange-400">Deploy</div>
+              <div class="pipeline-sub">rolling update<br>health check</div>
+            </div>
+          </div>
+
+          <h3>GitHub Actions in Practice</h3>
+          <p>
+            GitHub Actions expresses this pipeline as a YAML file that lives in your repository. The pipeline is code — version controlled, reviewed, and auditable. Here's what a real workflow looks like:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">GitHub Actions · .github/workflows/deploy.yml</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="kw">name</span>: Build, Test & Deploy
+
+<span class="kw">on</span>:
+  push:
+    branches: [main]
+
+<span class="kw">jobs</span>:
+  <span class="fn">ci</span>:
+    runs-on: ubuntu-latest
+    <span class="kw">steps</span>:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: { node-version: <span class="str">'20'</span> }
+
+      - <span class="kw">run</span>: npm ci
+      - <span class="kw">run</span>: npm run lint
+      - <span class="kw">run</span>: npm test -- --coverage
+
+  <span class="fn">deploy</span>:
+    needs: ci      <span class="cm"># only runs if ci job passes</span>
+    runs-on: ubuntu-latest
+    <span class="kw">steps</span>:
+      - uses: actions/checkout@v4
+
+      - name: Build & push Docker image
+        <span class="kw">run</span>: |
+          echo ${{ secrets.REGISTRY_TOKEN }} | docker login -u ${{ secrets.REGISTRY_USER }} --password-stdin ghcr.io
+          docker build -t ghcr.io/you/app:${{ github.sha }} .
+          docker push ghcr.io/you/app:${{ github.sha }}
+
+      - name: Deploy (rolling update)
+        <span class="kw">run</span>: |
+          ssh deploy@${{ secrets.SERVER_IP }} \
+            "docker pull ghcr.io/you/app:${{ github.sha }} && \
+             docker service update --image ghcr.io/you/app:${{ github.sha }} app_web"</pre>
+          </div>
+
+          <div class="callout callout-success">
+            <span class="material-symbols-outlined text-emerald-400 text-[20px] mt-0.5 shrink-0">check_circle</span>
+            <div><strong class="text-emerald-300 block mb-1">Tag images with the git commit SHA</strong>
+            Using <code>:latest</code> as your image tag is an operational anti-pattern — it's impossible to know what version is running. Tag every image with the git commit SHA. Every deployed image is then pinned, auditable, and precisely rollback-able.</div>
+          </div>
+        </section>
+
+        <!-- Part 3: Environment parity -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-emerald-400 text-[22px]">compare</span>Environment Consistency: Dev ≈ Staging ≈ Production</h2>
+          <p>
+            The goal of containerisation is to make your laptop and the production server run the same image. But even with Docker, there's a critical gap: <strong class="text-white">environment-specific configuration</strong>.
+          </p>
+          <p>
+            The rule: code is environment-agnostic; configuration is injected at runtime via environment variables. Never bake secrets or environment-specific URLs into a Docker image.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">docker-compose.yml · Local dev mirrors production shape</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="kw">services</span>:
+  <span class="fn">app</span>:
+    image: ghcr.io/you/app:<span class="str">${IMAGE_TAG:-latest}</span>
+    env_file: .env.local          <span class="cm"># injected — not baked in</span>
+    ports: [<span class="str">"3000:3000"</span>]
+    depends_on: [db, redis]
+    healthcheck:
+      test: [<span class="str">"CMD"</span>, <span class="str">"wget"</span>, <span class="str">"-qO-"</span>, <span class="str">"http://localhost:3000/health"</span>]
+      interval: 10s
+      retries: <span class="nu">3</span>
+
+  <span class="fn">db</span>:
+    image: postgres:<span class="nu">16</span>-alpine
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    environment: { POSTGRES_PASSWORD: <span class="str">"${DB_PASS}"</span> }
+
+  <span class="fn">redis</span>:
+    image: redis:<span class="nu">7</span>-alpine</pre>
+          </div>
+
+          <p>
+            Running <code>docker compose up</code> locally spins up the same stack shape as production: your app, your DB, your cache — all wired together identically. The only differences are environment variables.
+          </p>
+        </section>
+
+        <!-- Part 4: Zero-downtime -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-violet-400 text-[22px]">electric_bolt</span>Zero-Downtime Deployment: The Mechanics</h2>
+          <p>
+            "Zero-downtime" means users experience no interruption during a deploy. Achieved by ensuring there is always at least one healthy instance serving traffic while new ones spin up.
+          </p>
+
+          <h3>Rolling Deployment</h3>
+          <p>
+            The standard approach for containerised workloads. If you have 4 instances running <code>v1</code>, a rolling deploy replaces them one at a time: bring up <code>v2</code>, wait for its health check to pass, route traffic to it, then terminate a <code>v1</code> instance. Repeat.
+          </p>
+          <p>
+            At no point is all capacity on the old or new version simultaneously. The capacity stays constant; the version gradually transitions. This is what Docker Swarm's <code>--update-parallelism</code> and Kubernetes' <code>maxUnavailable</code> control.
+          </p>
+
+          <h3>Blue-Green Deployment</h3>
+          <p>
+            Run two identical environments — Blue (live) and Green (idle). Deploy the new version to Green, run your smoke tests, then switch the load balancer to point to Green. Blue becomes the idle standby.
+          </p>
+          <p>
+            The advantage over rolling: the switch is <strong class="text-white">instant</strong> and <strong class="text-white">atomic</strong>. The disadvantage: you need double the infrastructure during the transition. But for critical services, the operational confidence is worth it.
+          </p>
+
+          <!-- Comparison -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+            <div class="stat-card">
+              <div class="text-cyan-400 font-bold mb-2 text-sm">Rolling Update</div>
+              <ul class="text-slate-400 text-sm space-y-1.5">
+                <li>✓ No extra infrastructure</li>
+                <li>✓ Gradual — easy to spot issues</li>
+                <li>✗ Mixed versions live simultaneously</li>
+                <li>✗ DB migrations must be backward-compatible</li>
+              </ul>
+            </div>
+            <div class="stat-card border-violet-500/15">
+              <div class="text-violet-400 font-bold mb-2 text-sm">Blue-Green</div>
+              <ul class="text-slate-400 text-sm space-y-1.5">
+                <li>✓ Instant, clean cutover</li>
+                <li>✓ Instant rollback (flip back)</li>
+                <li>✗ Requires 2× capacity briefly</li>
+                <li>✗ More complex infrastructure</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout callout-warning">
+            <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">warning</span>
+            <div><strong class="text-orange-300 block mb-1">The database migration problem</strong>
+            Zero-downtime deployments fail when the new application version requires a DB schema that the old version can't read. The rule: <strong class="text-white">always deploy migrations before the application code that depends on them, in a backward-compatible way</strong>. Add a nullable column first, deploy the app that writes to it, then add the NOT NULL constraint later.</div>
+          </div>
+        </section>
+
+        <!-- Part 5: Rollback -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-orange-400 text-[22px]">history</span>Rollback Strategies: Designing for Recovery</h2>
+          <p>
+            A deployment system without a tested rollback path is incomplete. Rollback isn't an emergency procedure — it's a normal, expected operation that should take under 2 minutes and require no manual steps.
+          </p>
+
+          <h3>Immutable Images Make Rollback Trivial</h3>
+          <p>
+            Because each deploy is tagged with a git SHA and stored immutably in a registry, rolling back is just deploying the previous image tag. No rebuilding, no guessing what was deployed before.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">Rollback · One command</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="cm"># Docker Swarm</span>
+docker service rollback app_web
+
+<span class="cm"># Kubernetes</span>
+kubectl rollout undo deployment/app-web
+
+<span class="cm"># Or pin to a specific previous version</span>
+kubectl set image deployment/app-web \
+  app=ghcr.io/you/app:a3f9c12  <span class="cm"># the last known-good SHA</span></pre>
+          </div>
+
+          <h3>Health Checks Are the Gatekeeper</h3>
+          <p>
+            An automated rollback is only possible if the orchestrator knows a deploy is unhealthy. That means every service must expose a <code>/health</code> endpoint — not just returning <code>200</code>, but actually checking that its dependencies (DB connection, Redis ping) are healthy. The orchestrator runs this check on every new container before routing traffic to it.
+          </p>
+
+          <div class="callout callout-info">
+            <span class="material-symbols-outlined text-cyan-400 text-[20px] mt-0.5 shrink-0">info</span>
+            <div><strong class="text-cyan-300 block mb-1">Automate the canary check</strong>
+            After deploying, run a quick smoke test against the live endpoint — just enough to verify the critical user paths work. If any check fails, the pipeline triggers an automatic rollback before a human even notices. This is the loop that makes frequent deploys safe.</div>
+          </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-slate-400 text-[22px]">flag</span>Deployment as a First-Class System</h2>
+          <p>
+            The shift in mindset is: deployment is not the end of development — it's a system you operate continuously. Docker gives you environment parity. CI/CD gives you a deterministic, automated path. Zero-downtime strategies and rollback make that path safe to run dozens of times a day.
+          </p>
+          <p>
+            Teams that deploy rarely do so because deployment is risky. Deployment is risky because they do it rarely. The feedback loop runs the wrong way. When you containerise your app, automate your pipeline, and instrument rollbacks from day one — shipping software becomes the least stressful part of the job.
+          </p>
+        </section>
+
+      </div>
+
+
+        <!-- ── SUBTLE SUPPORT BLOCK ── -->
+        <div class="bmc-article-block article-section">
+          <div class="bmc-article-text">
+            Enjoyed this article? ☕<br>
+            If this helped you or saved you some time, consider supporting my work.
+          </div>
+          <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn-subtle">
+            Support my work
+          </a>
+        </div>
+
+        <!-- ── KEY TAKEAWAYS ── -->
+        <div class="takeaways-box article-section">
+          <h4>
+            <span class="material-symbols-outlined text-[14px]">emoji_objects</span>
+            Key Takeaways
+          </h4>
+          <ul>
+              <li><strong>Docker packages the environment, not just the code</strong> — it eliminates the 'works on my machine' class of problems entirely.</li>
+              <li><strong>Tag images with the git SHA</strong>, never with :latest — every deployed version becomes auditable and precisely rollback-able.</li>
+              <li>Put <code>COPY package.json</code> before <code>COPY . .</code> in your Dockerfile — dependency layers are cached, code changes rebuild fast.</li>
+              <li><strong>Health checks are the gatekeeper</strong> between a broken deploy and production traffic — they enable automated rollback.</li>
+              <li>Deploying 10× a day is safer than deploying once a week — smaller changes mean smaller blast radius when something breaks.</li>
+          </ul>
+        </div>
+
+
+        <!-- ── AUTHOR BOX ── -->
+        <div class="author-box article-section">
+          <img src="../my_image.png" alt="Saptarshi Sadhu" class="author-avatar" />
+          <div>
+            <div class="author-info-name">Saptarshi Sadhu</div>
+            <div class="author-info-bio">System-focused developer at the intersection of AI, backend engineering, and scalable infrastructure. Builds things that have to work in the real world.</div>
+            <div class="author-info-links">
+              <a href="../index.html#about" class="author-link">Portfolio</a>
+              <a href="../blog.html" class="author-link">All Articles</a>
+              <a href="../index.html#contact" class="author-link">Contact</a>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- ── ARTICLE BOTTOM NAV ── -->
+      <div class="article-bottom-nav">
+        <a href="fullstack.html" class="nav-prev">
+            <span class="nav-label">← Previous</span>
+            <span class="nav-title">Architecting Scalable Full Stack Systems</span>
+          </a>
+        <div class="nav-center">
+          <a href="../blog.html" class="nav-all-btn">
+            <span class="material-symbols-outlined text-[14px]">grid_view</span>
+            All Articles
+          </a>
+        </div>
+        <a href="dsa.html" class="nav-next">
+            <span class="nav-label">Next →</span>
+            <span class="nav-title">DSA Patterns That Actually Matter</span>
+          </a>
+      </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 py-10 mt-8 flex flex-col items-center gap-3 opacity-75 hover:opacity-100 transition-opacity duration-500 ease-in-out text-center text-xs tracking-widest font-mono">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+      <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link mt-2">
+        <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+      </a>
+    </footer>
+
+    <script>
+      const bar = document.getElementById("progress-bar");
+      window.addEventListener("scroll", () => { bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + "%"; });
+      const st = document.getElementById("scroll-top");
+      window.addEventListener("scroll", () => st.classList.toggle("show", window.scrollY > 400));
+      const obs = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } }),
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".article-section").forEach(el => obs.observe(el));
+    </script>
+  </body>
+</html>

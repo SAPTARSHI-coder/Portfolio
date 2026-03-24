@@ -1,0 +1,482 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Flutter Architecture Patterns for Production Apps — Saptarshi Sadhu</title>
+    <meta name="description" content="How to structure Flutter apps that survive a growing team, a growing codebase, and the real world." />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: { primary: "#06b6d4", accent: "#0891b2" }, fontFamily: { sans: ['"Inter"', "sans-serif"], mono: ['"JetBrains Mono"', "monospace"] } } },
+      };
+    </script>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="article.css" />
+
+    <style>
+      #progress-bar { position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:9999;transition:width .1s linear;box-shadow:0 0 12px rgba(56,189,248,.6); }
+      .prose-article { color:#cbd5e1;font-family:'Inter',sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:.01em; }
+      .prose-article h2 { font-size:1.5rem;font-weight:700;color:#f1f5f9;margin-top:3rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(56,189,248,.15);display:flex;align-items:center;gap:.5rem; }
+      .prose-article h3 { font-size:1.125rem;font-weight:700;color:#e2e8f0;margin-top:2rem;margin-bottom:.6rem; }
+      .prose-article p  { margin-bottom:1.4rem; }
+      .prose-article ul,.prose-article ol { padding-left:1.4rem;margin-bottom:1.4rem; }
+      .prose-article li { margin-bottom:.5rem; }
+      .prose-article ul li::marker { color:#38bdf8; }
+      .prose-article ol li::marker { color:#818cf8;font-weight:600; }
+      .prose-article blockquote { margin:2rem 0;padding:1.25rem 1.5rem;border-left:3px solid #38bdf8;background:rgba(56,189,248,.04);border-radius:0 12px 12px 0;color:#94a3b8;font-style:italic; }
+      .prose-article blockquote strong { color:#38bdf8;font-style:normal; }
+      .prose-article code:not(pre code) { background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:#7dd3fc;padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.85em; }
+
+      .code-block { position:relative;margin:2rem 0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.07);box-shadow:0 4px 24px rgba(0,0,0,.4); }
+      .code-block-header { display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;letter-spacing:.05em; }
+      .code-block-header .lang-tag { color:#38bdf8;font-weight:600; }
+      .code-block pre { margin:0;padding:1.5rem;background:rgba(8,15,35,.95);overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.7;color:#e2e8f0; }
+      .code-block pre .kw  { color:#7dd3fc; }
+      .code-block pre .fn  { color:#a5b4fc; }
+      .code-block pre .str { color:#86efac; }
+      .code-block pre .cm  { color:#475569; }
+      .code-block pre .nu  { color:#fb923c; }
+      .copy-btn { cursor:pointer;padding:2px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#64748b;font-size:10px;transition:all .2s; }
+      .copy-btn:hover { border-color:rgba(56,189,248,.4);color:#38bdf8; }
+
+      .stat-card { background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.15);border-radius:14px;padding:1.25rem 1.5rem; }
+      .callout { border-radius:12px;padding:1.1rem 1.4rem;margin:1.6rem 0;display:flex;gap:.75rem;align-items:flex-start;font-size:.9rem; }
+      .callout-info    { background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2); }
+      .callout-warning { background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.2); }
+      .callout-success { background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2); }
+      .callout-red     { background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2); }
+
+      .article-section { opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease; }
+      .article-section.visible { opacity:1;transform:translateY(0); }
+
+      .back-btn { position:fixed;top:1.25rem;left:1.25rem;z-index:100;display:flex;align-items:center;gap:.4rem;padding:7px 16px;border-radius:30px;background:rgba(11,17,33,.85);border:1px solid rgba(56,189,248,.2);color:#38bdf8;font-size:12px;font-weight:600;letter-spacing:.05em;text-decoration:none;backdrop-filter:blur(10px);transition:all .2s ease;box-shadow:0 4px 16px rgba(0,0,0,.3); }
+      .back-btn:hover { background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.5);transform:translateX(-3px); }
+      #scroll-top { position:fixed;bottom:2rem;right:2rem;z-index:100;width:40px;height:40px;border-radius:50%;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s ease; }
+      #scroll-top.show { opacity:1;pointer-events:all; }
+      #scroll-top:hover { background:rgba(56,189,248,.2);transform:translateY(-3px); }
+
+      .tag-pill { display:inline-flex;align-items:center;padding:2px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid;font-family:'JetBrains Mono',monospace; }
+
+      /* Layer diagram */
+      .arch-layer { border-radius:12px;padding:.9rem 1.25rem;border:1px solid;margin-bottom:.5rem;display:flex;align-items:center;gap:.9rem; }
+
+      /* Mistake card */
+      .mistake-card { border-radius:12px;padding:1.1rem 1.4rem;border:1px solid rgba(248,113,113,.2);background:rgba(248,113,113,.04);margin-bottom:1rem; }
+      .fix-card     { border-radius:12px;padding:1.1rem 1.4rem;border:1px solid rgba(52,211,153,.2);background:rgba(52,211,153,.04);margin-bottom:1.5rem; }
+    </style>
+  </head>
+
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
+    <div id="progress-bar"></div>
+    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.2]" autoplay loop muted playsinline>
+      <source src="../Background.mp4" type="video/mp4" />
+    </video>
+    <div class="nebula-container opacity-40 mix-blend-screen fixed inset-0 pointer-events-none -z-10"><div class="stars"></div></div>
+
+    <a href="../blog.html" class="back-btn">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back to Blog
+    </a>
+    <a href="/" class="back-btn" style="left: max(140px, 11rem);">
+      <span class="material-symbols-outlined text-[16px]">home</span>Home
+    </a>
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+    </button>
+
+    <main class="max-w-[800px] mx-auto px-6 pt-24 pb-40">
+
+      <!-- HERO -->
+      <header class="article-section mb-14">
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Flutter</span>
+          <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">Mobile</span>
+          <span class="tag-pill text-indigo-400 border-indigo-500/30 bg-indigo-500/5">Dart</span>
+          <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Architecture</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 title-glow" style="font-family:'Inter',sans-serif">
+          Flutter Architecture Patterns<br class="hidden md:block"> for Production Apps
+        </h1>
+        <span class="article-intro-line">Building Flutter apps that survive a growing team and a growing codebase.</span>
+        <p class="text-slate-400 text-lg leading-relaxed mb-6">
+          Building a Flutter screen is easy. Building a Flutter app that a team can maintain, a codebase that can scale, and a user experience that stays reliable — that requires deliberate architecture.
+        </p>
+        <div class="flex flex-wrap items-center gap-5 text-sm text-slate-500 font-mono">
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">calendar_today</span>December 2025</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">schedule</span>14 min read</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">person</span>Saptarshi Sadhu</span>
+        </div>
+        <div class="mt-8 h-px bg-gradient-to-r from-blue-500/30 via-indigo-500/20 to-transparent"></div>
+      </header>
+
+      <div class="prose-article">
+
+        <!-- Introduction -->
+        <section class="article-section">
+          <p>
+            Flutter's reactive widget system makes it easy to build beautiful UIs fast. That speed is a double-edged sword: beginners ship features quickly by putting everything in a single widget — API calls, business logic, ephemeral UI state, and layout — in one 400-line file. It works, right until the app needs a second screen that shares data with the first, or right until someone else has to read your code.
+          </p>
+          <p>
+            Production-grade Flutter is about <strong class="text-white">separating the right concerns at the right boundaries</strong>. This article is about finding those boundaries, understanding why they matter, and building patterns that hold up under real pressure.
+          </p>
+          <blockquote>
+            <strong>"The best Flutter codebase is one where you can read a screen file and understand what it displays, without needing to know how it gets its data."</strong>
+          </blockquote>
+        </section>
+
+        <!-- 1: The core problem -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-blue-400 text-[22px]">crisis_alert</span>The Beginner Architecture (And Why It Breaks)</h2>
+          <p>
+            The most common beginner Flutter architecture is what I call <strong class="text-white">StatefulWidget Soup</strong>: every screen is a <code>StatefulWidget</code>, API calls live in <code>initState()</code>, <code>setState()</code> is called everywhere, and business logic is woven directly into <code>build()</code> methods.
+          </p>
+          <p>
+            This pattern has one virtue: it requires no upfront design decisions. It has three terminal vices:
+          </p>
+          <ul>
+            <li><strong class="text-white">State doesn't survive navigation.</strong> When you push a new route, the old widget's state is destroyed. When you pop, it rebuilds from scratch. Any data the two screens share must be passed through constructor arguments — which cascades down your widget tree.</li>
+            <li><strong class="text-white">Logic can't be tested.</strong> Business logic inside widget methods can only be tested through widget tests — which are slow, fragile, and tied to the UI. Pure Dart logic tests run in milliseconds.</li>
+            <li><strong class="text-white">Rebuilds are uncontrolled.</strong> A single <code>setState()</code> rebuilds the entire widget subtree. As the widget grows, every minor state change triggers expensive re-renders of the whole screen.</li>
+          </ul>
+        </section>
+
+        <!-- 2: Clean Architecture -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-cyan-400 text-[22px]">layers</span>The Clean Architecture Mindset for Flutter</h2>
+          <p>
+            Clean Architecture maps naturally onto Flutter. The principle: <strong class="text-white">dependencies always point inward</strong>. The inner layers (domain, data models) know nothing about the outer layers (UI, frameworks). The outer layers depend on the inner ones, never the reverse.
+          </p>
+
+          <!-- Layer diagram -->
+          <div class="my-8 space-y-1">
+            <div class="arch-layer bg-sky-500/5 border-sky-500/25">
+              <span class="material-symbols-outlined text-sky-400 text-[20px]">phone_android</span>
+              <div>
+                <div class="text-sky-300 font-bold text-sm">Presentation Layer</div>
+                <div class="text-slate-500 text-xs">Widgets · Screens · Providers (Riverpod) · ViewModels — only knows about domain models</div>
+              </div>
+            </div>
+            <div class="text-center text-slate-700 text-sm py-0.5">depends on ↓ &nbsp;(not the reverse)</div>
+            <div class="arch-layer bg-indigo-500/5 border-indigo-500/25">
+              <span class="material-symbols-outlined text-indigo-400 text-[20px]">hub</span>
+              <div>
+                <div class="text-indigo-300 font-bold text-sm">Domain Layer</div>
+                <div class="text-slate-500 text-xs">Use cases · Business rules · Repository interfaces — pure Dart, zero Flutter imports</div>
+              </div>
+            </div>
+            <div class="text-center text-slate-700 text-sm py-0.5">depends on ↓</div>
+            <div class="arch-layer bg-blue-500/5 border-blue-500/25">
+              <span class="material-symbols-outlined text-blue-400 text-[20px]">storage</span>
+              <div>
+                <div class="text-blue-300 font-bold text-sm">Data Layer</div>
+                <div class="text-slate-500 text-xs">Repository implementations · API clients · Local DB (Hive/Isar) · DTOs</div>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            The domain layer is the heart of your app. It contains your business entities and rules. It imports nothing from Flutter, nothing from Dio, nothing from any external package. This makes it trivially testable — it's just Dart classes.
+          </p>
+        </section>
+
+        <!-- 3: Folder Structure -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-indigo-400 text-[22px]">folder_open</span>Folder Structure That Scales</h2>
+          <p>
+            There are two approaches to Flutter folder structure: <strong class="text-white">layer-first</strong> (group by presentation/domain/data) and <strong class="text-white">feature-first</strong> (group by feature, with layers inside). For small apps, layer-first is simpler. For multi-team apps with 20+ features, feature-first wins because each feature is self-contained and teams don't step on each other.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">Flutter · Feature-first Structure</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre>lib/
+├── core/
+│   ├── error/          <span class="cm"># Failure classes, exceptions</span>
+│   ├── network/        <span class="cm"># Dio client, interceptors, base URLs</span>
+│   ├── router/         <span class="cm"># GoRouter config + route constants</span>
+│   └── theme/          <span class="cm"># AppTheme, text styles, colors</span>
+│
+├── features/
+│   ├── auth/
+│   │   ├── data/       <span class="cm"># AuthRemoteDataSource, AuthRepository impl</span>
+│   │   ├── domain/     <span class="cm"># User entity, AuthRepository interface, LoginUseCase</span>
+│   │   └── presentation/
+│   │       ├── providers/  <span class="cm"># authProvider, sessionProvider (Riverpod)</span>
+│   │       └── screens/    <span class="cm"># LoginScreen, RegisterScreen</span>
+│   │
+│   └── posts/
+│       ├── data/
+│       ├── domain/
+│       └── presentation/
+│
+└── main.dart           <span class="cm"># ProviderScope + runApp</span></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="material-symbols-outlined text-cyan-400 text-[20px] mt-0.5 shrink-0">info</span>
+            <div><strong class="text-cyan-300 block mb-1">The self-containment rule</strong>
+            A feature folder should be deletable without breaking other features. If removing <code>features/posts/</code> causes compile errors in <code>features/profile/</code>, your feature boundaries are leaking. Shared entities go in <code>core/</code> — not in a feature folder that another feature imports.</div>
+          </div>
+        </section>
+
+        <!-- 4: State Management Riverpod -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-blue-400 text-[22px]">sync_alt</span>State Management: Why Riverpod</h2>
+          <p>
+            State management is the most debated topic in Flutter — and the debate is mostly irrelevant. Any of the major options (Riverpod, Bloc, Provider) work at scale when used consistently. What matters is your mental model of state ownership.
+          </p>
+          <p>
+            Riverpod is architecturally sound because it solves two problems that Provider doesn't: <strong class="text-white">providers are global but lazily initialized</strong> (no need to wrap the widget tree), and <strong class="text-white">provider dependencies are explicit and compile-time safe</strong>. You declare what a provider depends on, and Riverpod handles invalidation when dependencies change.
+          </p>
+
+          <h3>The Three Kinds of State</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+            <div class="stat-card text-center">
+              <div class="text-blue-400 font-bold mb-1 text-sm">Ephemeral</div>
+              <div class="text-slate-400 text-xs mt-1">Focus state, animation progress, text field values. Lives in <code>StatefulWidget</code> or <code>StateProvider</code>.</div>
+            </div>
+            <div class="stat-card text-center border-indigo-500/15">
+              <div class="text-indigo-400 font-bold mb-1 text-sm">Server State</div>
+              <div class="text-slate-400 text-xs mt-1">API responses. Use <code>FutureProvider</code> / <code>AsyncNotifier</code>. Never manually cache — Riverpod handles it.</div>
+            </div>
+            <div class="stat-card text-center border-sky-500/15">
+              <div class="text-sky-400 font-bold mb-1 text-sm">App State</div>
+              <div class="text-slate-400 text-xs mt-1">Auth session, theme, cart. <code>NotifierProvider</code> with explicit state transitions only.</div>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">Dart · Riverpod AsyncNotifier for posts list</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="cm">// domain/repositories/post_repository.dart</span>
+<span class="kw">abstract class</span> <span class="fn">PostRepository</span> {
+  Future&lt;List&lt;Post&gt;&gt; <span class="fn">fetchPosts</span>({<span class="kw">int</span> page = <span class="nu">1</span>});
+}
+
+<span class="cm">// presentation/providers/posts_provider.dart</span>
+<span class="kw">final</span> postsProvider =
+    AsyncNotifierProvider&lt;PostsNotifier, List&lt;Post&gt;&gt;(<span class="fn">PostsNotifier.new</span>);
+
+<span class="kw">class</span> <span class="fn">PostsNotifier</span> <span class="kw">extends</span> AsyncNotifier&lt;List&lt;Post&gt;&gt; {
+  <span class="kw">@override</span>
+  Future&lt;List&lt;Post&gt;&gt; <span class="fn">build</span>() <span class="kw">async</span> {
+    <span class="cm">// read the repository via ref — not a direct import</span>
+    <span class="kw">final</span> repo = ref.<span class="fn">read</span>(postRepositoryProvider);
+    <span class="kw">return</span> repo.<span class="fn">fetchPosts</span>();
+  }
+
+  Future&lt;<span class="kw">void</span>&gt; <span class="fn">refresh</span>() <span class="kw">async</span> {
+    state = <span class="kw">const</span> AsyncValue.<span class="fn">loading</span>();
+    state = <span class="kw">await</span> AsyncValue.<span class="fn">guard</span>(() =&gt;
+        ref.<span class="fn">read</span>(postRepositoryProvider).<span class="fn">fetchPosts</span>());
+  }
+}</pre>
+          </div>
+
+          <p>
+            Notice that <code>PostsNotifier</code> doesn't know about Dio, HTTP, or JSON. It interacts only with the <code>PostRepository</code> interface — which is a domain-layer abstraction. The actual HTTP implementation can be swapped for a mock in tests without changing a single line of the provider.
+          </p>
+        </section>
+
+        <!-- 5: API Handling -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-sky-400 text-[22px]">wifi</span>API Handling: The Data Layer Contract</h2>
+          <p>
+            Every API call in a Flutter app should go through a defined path: the widget calls a provider, the provider calls a use case, the use case calls a repository interface, the repository implementation calls a remote data source, the data source makes the HTTP call and returns a DTO, which the repository maps to a domain entity and returns.
+          </p>
+          <p>
+            That's a lot of layers for a GET request. But each layer earns its existence: you can test the repository with a mock data source; you can test the use case with a mock repository; you can test the provider with a mock use case. Each unit is independently testable and replaceable.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="lang-tag">Dart · Data layer with error mapping</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button></div>
+            <pre><span class="cm">// Data source: knows about Dio, DTOs, HTTP status codes</span>
+<span class="kw">class</span> <span class="fn">PostRemoteDataSource</span> {
+  <span class="kw">final</span> Dio _dio;
+  <span class="fn">PostRemoteDataSource</span>(this._dio);
+
+  Future&lt;List&lt;PostDto&gt;&gt; <span class="fn">fetchPosts</span>() <span class="kw">async</span> {
+    <span class="kw">try</span> {
+      <span class="kw">final</span> response = <span class="kw">await</span> _dio.<span class="fn">get</span>(<span class="str">'/posts'</span>);
+      <span class="kw">return</span> (response.data <span class="kw">as</span> List)
+          .<span class="fn">map</span>((json) =&gt; PostDto.<span class="fn">fromJson</span>(json))
+          .<span class="fn">toList</span>();
+    } <span class="kw">on</span> DioException <span class="kw">catch</span> (e) {
+      <span class="kw">throw</span> ServerException(<span class="fn">message</span>: e.message ?? <span class="str">'Unknown error'</span>);
+    }
+  }
+}
+
+<span class="cm">// Repository impl: maps DTOs → domain entities, maps exceptions → Failures</span>
+<span class="kw">class</span> <span class="fn">PostRepositoryImpl</span> <span class="kw">implements</span> PostRepository {
+  <span class="kw">final</span> PostRemoteDataSource _remote;
+  <span class="fn">PostRepositoryImpl</span>(this._remote);
+
+  <span class="kw">@override</span>
+  Future&lt;List&lt;Post&gt;&gt; <span class="fn">fetchPosts</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> dtos = <span class="kw">await</span> _remote.<span class="fn">fetchPosts</span>();
+    <span class="kw">return</span> dtos.<span class="fn">map</span>((dto) =&gt; dto.<span class="fn">toDomain</span>()).<span class="fn">toList</span>();
+  }
+}</pre>
+          </div>
+
+          <h3>Error Handling That Doesn't Crash</h3>
+          <p>
+            Every network call can fail. A production app handles this gracefully at every layer: the data source throws typed exceptions (<code>ServerException</code>, <code>NetworkException</code>), the repository converts them to <code>Failure</code> objects (or re-throws for async providers to catch), and the UI layer maps <code>AsyncError</code> states to user-facing error messages — never a blank white screen with a stack trace.
+          </p>
+        </section>
+
+        <!-- 6: Common Mistakes -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-red-400 text-[22px]">bug_report</span>Common Mistakes and Their Fixes</h2>
+
+          <div class="mistake-card">
+            <div class="text-red-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">close</span>Calling APIs directly in build()</div>
+            <p class="text-slate-400 text-sm m-0">Placing <code>http.get()</code> inside <code>build()</code> means a new API call fires every time the widget rebuilds — which happens constantly in Flutter.</p>
+          </div>
+          <div class="fix-card">
+            <div class="text-emerald-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">check</span>Fix: Use AsyncNotifier / FutureProvider</div>
+            <p class="text-slate-400 text-sm m-0">Riverpod's <code>FutureProvider</code> calls the async function once, caches the result, and only re-fetches when explicitly invalidated or when its dependencies change.</p>
+          </div>
+
+          <div class="mistake-card">
+            <div class="text-red-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">close</span>setState() on the root widget</div>
+            <p class="text-slate-400 text-sm m-0">Calling <code>setState()</code> high in the tree rebuilds the entire subtree — including expensive widgets that didn't change. This causes jank on mid-range devices.</p>
+          </div>
+          <div class="fix-card">
+            <div class="text-emerald-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">check</span>Fix: Push state down, use Consumer narrowly</div>
+            <p class="text-slate-400 text-sm m-0">Wrap only the widget that actually needs to rebuild in a <code>Consumer</code> (or <code>ref.watch()</code> in a <code>ConsumerWidget</code>). The rebuild scope is as small as the widget tree node you choose.</p>
+          </div>
+
+          <div class="mistake-card">
+            <div class="text-red-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">close</span>Single global app state</div>
+            <p class="text-slate-400 text-sm m-0">A single Notifier that holds all app state becomes a god object — every screen watches it, every change rebuilds everything, and mutations are impossible to trace.</p>
+          </div>
+          <div class="fix-card">
+            <div class="text-emerald-400 font-bold text-sm mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">check</span>Fix: One provider per responsibility</div>
+            <p class="text-slate-400 text-sm m-0">Split state by domain. <code>authProvider</code> owns authentication. <code>cartProvider</code> owns the shopping cart. <code>themeProvider</code> owns appearance. Each is independently watchable — screens only rebuild when their specific dependency changes.</p>
+          </div>
+
+          <div class="callout callout-warning">
+            <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">warning</span>
+            <div><strong class="text-orange-300 block mb-1">The navigation mistake</strong>
+            Using <code>Navigator.push()</code> throughout the codebase tightly couples screens to each other. A screen shouldn't know what comes after it. Use a router abstraction — GoRouter or AutoRoute — where navigation is driven by named routes and state, not by one screen holding a reference to another.</div>
+          </div>
+        </section>
+
+        <!-- 7: Testing -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-emerald-400 text-[22px]">labs</span>Testing: The Architecture Pays Off Here</h2>
+          <p>
+            The reason to invest in clean architecture is not theoretical purity. It's that clean architecture makes testing fast and reliable — and fast tests make you confident to refactor, which is what keeps a codebase from rotting.
+          </p>
+          <ul>
+            <li><strong class="text-white">Domain layer tests</strong> — pure unit tests on use cases and entities. No Flutter, no mocks of UI, just plain Dart. Run in under 100ms total.</li>
+            <li><strong class="text-white">Repository tests</strong> — mock the data source, test the mapping and error-handling logic. Verify that a <code>ServerException</code> from the data source becomes the right <code>Failure</code> type.</li>
+            <li><strong class="text-white">Provider tests</strong> — use Riverpod's <code>ProviderContainer</code> in tests, override the repository with a mock, verify that the provider transitions through the right <code>AsyncValue</code> states.</li>
+            <li><strong class="text-white">Widget tests</strong> — test screen layout and user interaction, not API responses. Mock the provider instead of the network.</li>
+          </ul>
+
+          <div class="callout callout-success">
+            <span class="material-symbols-outlined text-emerald-400 text-[20px] mt-0.5 shrink-0">check_circle</span>
+            <div><strong class="text-emerald-300 block mb-1">The test pyramid holds</strong>
+            Most tests should be unit tests (fast, cheap, many). Fewer should be widget tests (slower, UI-dependent). Fewer still should be integration tests (slow, fragile, expensive). Clean architecture enables this distribution naturally — because logic lives in pure Dart layers that don't require Flutter to test.</div>
+          </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-slate-400 text-[22px]">flag</span>Architecture Is a Team Decision</h2>
+          <p>
+            The patterns in this article — clean layers, feature-first folders, Riverpod for state, repositories for data — aren't the only way to build Flutter apps. They're a coherent system that has clear rules, which means it's teachable, reviewable, and enforceable across a team.
+          </p>
+          <p>
+            The worst Flutter codebase isn't one that uses the wrong state management library — it's one where each screen was built with a different approach, by a different person, with no shared conventions. Consistency is the real architectural goal. Pick a system. Document it. Enforce it in code review. The specific choices matter far less than the consistency with which they're applied.
+          </p>
+        </section>
+
+      </div>
+
+
+        <!-- ── SUBTLE SUPPORT BLOCK ── -->
+        <div class="bmc-article-block article-section">
+          <div class="bmc-article-text">
+            Enjoyed this article? ☕<br>
+            If this helped you or saved you some time, consider supporting my work.
+          </div>
+          <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn-subtle">
+            Support my work
+          </a>
+        </div>
+
+        <!-- ── KEY TAKEAWAYS ── -->
+        <div class="takeaways-box article-section">
+          <h4>
+            <span class="material-symbols-outlined text-[14px]">emoji_objects</span>
+            Key Takeaways
+          </h4>
+          <ul>
+              <li><strong>StatefulWidget Soup breaks</strong> because state doesn't survive navigation and business logic can't be unit tested.</li>
+              <li>The <strong>domain layer must be pure Dart</strong> — zero Flutter or Dio imports — making it trivially testable without a device.</li>
+              <li>Three kinds of state: <strong>ephemeral</strong> (local widget), <strong>server</strong> (AsyncNotifier/FutureProvider), <strong>app</strong> (NotifierProvider).</li>
+              <li><strong>One Riverpod provider per responsibility</strong> — a god object that holds all app state means everything rebuilds on every change.</li>
+              <li><strong>Consistency beats correctness</strong> in architecture — a team following an imperfect convention beats individuals with different approaches.</li>
+          </ul>
+        </div>
+
+
+        <!-- ── AUTHOR BOX ── -->
+        <div class="author-box article-section">
+          <img src="../my_image.png" alt="Saptarshi Sadhu" class="author-avatar" />
+          <div>
+            <div class="author-info-name">Saptarshi Sadhu</div>
+            <div class="author-info-bio">System-focused developer at the intersection of AI, backend engineering, and scalable infrastructure. Builds things that have to work in the real world.</div>
+            <div class="author-info-links">
+              <a href="../index.html#about" class="author-link">Portfolio</a>
+              <a href="../blog.html" class="author-link">All Articles</a>
+              <a href="../index.html#contact" class="author-link">Contact</a>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- ── ARTICLE BOTTOM NAV ── -->
+      <div class="article-bottom-nav">
+        <a href="ai-system.html" class="nav-prev">
+            <span class="nav-label">← Previous</span>
+            <span class="nav-title">Designing AI Systems That Scale</span>
+          </a>
+        <div class="nav-center">
+          <a href="../blog.html" class="nav-all-btn">
+            <span class="material-symbols-outlined text-[14px]">grid_view</span>
+            All Articles
+          </a>
+        </div>
+        <span></span>
+      </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 py-10 mt-8 flex flex-col items-center gap-3 opacity-75 hover:opacity-100 transition-opacity duration-500 ease-in-out text-center text-xs tracking-widest font-mono">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+      <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link mt-2">
+        <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+      </a>
+    </footer>
+
+    <script>
+      const bar = document.getElementById("progress-bar");
+      window.addEventListener("scroll", () => { bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + "%"; });
+      const st = document.getElementById("scroll-top");
+      window.addEventListener("scroll", () => st.classList.toggle("show", window.scrollY > 400));
+      const obs = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } }),
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".article-section").forEach(el => obs.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,464 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DSA Patterns That Actually Matter — Saptarshi Sadhu</title>
+    <meta name="description" content="The 5 DSA patterns that unlock most interview problems — how to recognize them, not memorize them." />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: { primary: "#06b6d4", accent: "#0891b2" }, fontFamily: { sans: ['"Inter"', "sans-serif"], mono: ['"JetBrains Mono"', "monospace"] } } },
+      };
+    </script>
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="article.css" />
+
+    <style>
+      #progress-bar { position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#f97316,#a855f7);z-index:9999;transition:width .1s linear;box-shadow:0 0 12px rgba(249,115,22,.6); }
+      .prose-article { color:#cbd5e1;font-family:'Inter',sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:.01em; }
+      .prose-article h2 { font-size:1.5rem;font-weight:700;color:#f1f5f9;margin-top:3rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(249,115,22,.15);display:flex;align-items:center;gap:.5rem; }
+      .prose-article h3 { font-size:1.125rem;font-weight:700;color:#e2e8f0;margin-top:2rem;margin-bottom:.6rem; }
+      .prose-article p  { margin-bottom:1.4rem; }
+      .prose-article ul,.prose-article ol { padding-left:1.4rem;margin-bottom:1.4rem; }
+      .prose-article li { margin-bottom:.5rem; }
+      .prose-article ul li::marker { color:#f97316; }
+      .prose-article ol li::marker { color:#a855f7;font-weight:600; }
+      .prose-article blockquote { margin:2rem 0;padding:1.25rem 1.5rem;border-left:3px solid #f97316;background:rgba(249,115,22,.04);border-radius:0 12px 12px 0;color:#94a3b8;font-style:italic; }
+      .prose-article blockquote strong { color:#f97316;font-style:normal; }
+      .prose-article code:not(pre code) { background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);color:#fdba74;padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.85em; }
+
+      .callout { border-radius:12px;padding:1.1rem 1.4rem;margin:1.6rem 0;display:flex;gap:.75rem;align-items:flex-start;font-size:.9rem; }
+      .callout-info    { background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2); }
+      .callout-when    { background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2); }
+      .callout-success { background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2); }
+      .callout-pattern { background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2); }
+
+      .article-section { opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease; }
+      .article-section.visible { opacity:1;transform:translateY(0); }
+
+      .back-btn { position:fixed;top:1.25rem;left:1.25rem;z-index:100;display:flex;align-items:center;gap:.4rem;padding:7px 16px;border-radius:30px;background:rgba(11,17,33,.85);border:1px solid rgba(249,115,22,.2);color:#f97316;font-size:12px;font-weight:600;letter-spacing:.05em;text-decoration:none;backdrop-filter:blur(10px);transition:all .2s ease;box-shadow:0 4px 16px rgba(0,0,0,.3); }
+      .back-btn:hover { background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.5);transform:translateX(-3px); }
+
+      #scroll-top { position:fixed;bottom:2rem;right:2rem;z-index:100;width:40px;height:40px;border-radius:50%;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);color:#f97316;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s ease; }
+      #scroll-top.show { opacity:1;pointer-events:all; }
+      #scroll-top:hover { background:rgba(249,115,22,.2);transform:translateY(-3px); }
+
+      .tag-pill { display:inline-flex;align-items:center;padding:2px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid;font-family:'JetBrains Mono',monospace; }
+
+      /* Pattern card */
+      .pattern-card {
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin: 2.5rem 0;
+        border: 1px solid;
+        position: relative;
+        overflow: hidden;
+      }
+      .pattern-number {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.5rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 3.5rem;
+        font-weight: 900;
+        opacity: 0.06;
+        line-height: 1;
+        color: white;
+      }
+
+      /* Visual: sliding window animation strip */
+      .window-demo {
+        display: flex;
+        gap: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+      }
+      .w-cell {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        color: #64748b;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .w-cell.active { background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.4); color: #67e8f9; }
+      .w-cell.ptr { background: rgba(249,115,22,0.15); border-color: rgba(249,115,22,0.4); color: #fdba74; }
+    </style>
+  </head>
+
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
+    <div id="progress-bar"></div>
+    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.2]" autoplay loop muted playsinline>
+      <source src="../Background.mp4" type="video/mp4" />
+    </video>
+    <div class="nebula-container opacity-40 mix-blend-screen fixed inset-0 pointer-events-none -z-10"><div class="stars"></div></div>
+
+    <a href="../blog.html" class="back-btn">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back to Blog
+    </a>
+    <a href="/" class="back-btn" style="left: max(140px, 11rem);">
+      <span class="material-symbols-outlined text-[16px]">home</span>Home
+    </a>
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+    </button>
+
+    <main class="max-w-[800px] mx-auto px-6 pt-24 pb-40">
+
+      <!-- HERO -->
+      <header class="article-section mb-14">
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill text-orange-400 border-orange-500/30 bg-orange-500/5">DSA</span>
+          <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">Algorithms</span>
+          <span class="tag-pill text-purple-400 border-purple-500/30 bg-purple-500/5">Interviews</span>
+          <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Python</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 title-glow" style="font-family:'Inter',sans-serif">
+          DSA Patterns That Actually<br class="hidden md:block"> Matter in Interviews
+        </h1>
+        <span class="article-intro-line">Stop memorizing problems. Start recognizing patterns.</span>
+        <p class="text-slate-400 text-lg leading-relaxed mb-6">
+          You don't need to memorize 500 LeetCode problems. You need to recognize 12 patterns. Here are the 5 that unlock the vast majority of interview questions — with the intuition behind each one.
+        </p>
+        <div class="flex flex-wrap items-center gap-5 text-sm text-slate-500 font-mono">
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">calendar_today</span>January 2026</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">schedule</span>14 min read</span>
+          <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">person</span>Saptarshi Sadhu</span>
+        </div>
+        <div class="mt-8 h-px bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-transparent"></div>
+      </header>
+
+      <div class="prose-article">
+
+        <!-- Intro -->
+        <section class="article-section">
+          <p>
+            Most people approach interview prep the wrong way: they grind problems one by one, hoping pattern recognition emerges from sheer volume. It rarely does — because they're memorizing solutions, not building a mental model for <em>why</em> a solution works.
+          </p>
+          <p>
+            A pattern is a reusable abstract strategy. When you encounter a new problem, the question isn't "have I seen this before?" — it's "what shape does this problem have?" Once you can identify the shape, the approach follows directly. This article is about training that identification reflex.
+          </p>
+          <blockquote>
+            <strong>"Don't practice until you get it right. Practice until you can't get it wrong."</strong><br>
+            The goal is not to solve problems — it's to instantly see which category a problem belongs to within 60 seconds of reading it.
+          </blockquote>
+        </section>
+
+        <!-- Pattern 1: Sliding Window -->
+        <section class="article-section">
+          <div class="pattern-card bg-cyan-500/4 border-cyan-500/20">
+            <div class="pattern-number">01</div>
+            <h2 class="border-0 pb-0 mt-0 mb-3">
+              <span class="material-symbols-outlined text-cyan-400 text-[22px]">view_column</span>
+              Sliding Window
+            </h2>
+            <p class="text-slate-500 text-sm font-mono mb-5">linear · contiguous · O(n)</p>
+
+            <h3>The Intuition</h3>
+            <p>
+              Imagine reading a book through a fixed-size rectangular cutout that you slide from left to right. At each position, you can see exactly <em>k</em> words. Instead of re-reading from scratch every time you move the cutout, you just drop the leftmost word and add the new rightmost one. That's the entire idea.
+            </p>
+            <p>
+              The insight that makes this powerful: <strong class="text-white">when you move the window by one step, 99% of the information stays the same</strong>. Only one element enters and one exits. A brute-force approach recomputes everything from scratch at each position — <code>O(n·k)</code>. The window maintains a running result — <code>O(n)</code>.
+            </p>
+
+            <!-- Visual →  -->
+            <div class="my-5 p-4 rounded-xl bg-[#0b1121] border border-white/5">
+              <p class="text-slate-600 text-[10px] font-mono uppercase tracking-widest mb-3">Array · window size = 3</p>
+              <div class="window-demo">
+                <div class="w-cell active">2</div>
+                <div class="w-cell active">3</div>
+                <div class="w-cell active">1</div>
+                <div class="w-cell">4</div>
+                <div class="w-cell">1</div>
+                <div class="w-cell">5</div>
+                <div class="w-cell">2</div>
+                <span class="text-slate-600 text-sm ml-2 font-mono">→ slide →</span>
+                <div class="w-cell">2</div>
+                <div class="w-cell active">3</div>
+                <div class="w-cell active">1</div>
+                <div class="w-cell active">4</div>
+                <div class="w-cell">1</div>
+                <div class="w-cell">5</div>
+                <div class="w-cell">2</div>
+              </div>
+              <p class="text-slate-600 text-[10px] font-mono mt-2">Drop left element, add right — result updates incrementally</p>
+            </div>
+
+            <div class="callout callout-when">
+              <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">help</span>
+              <div><strong class="text-orange-300 block mb-1">When to reach for it</strong>
+              The problem involves a <strong class="text-white">contiguous subarray or substring</strong>. Keywords: "maximum/minimum subarray of length k", "longest substring with at most X distinct characters", "smallest subarray with sum ≥ target". If the answer is a contiguous range in a linear structure — think window.</div>
+            </div>
+
+            <h3>Fixed vs Variable Window</h3>
+            <p>
+              Fixed window: the size is given (<em>k</em>). Variable window: you expand the right boundary until a condition is violated, then shrink from the left. Variable windows solve problems like "longest substring without repeating characters" — the window grows greedily and shrinks as needed.
+            </p>
+          </div>
+        </section>
+
+        <!-- Pattern 2: Two Pointers -->
+        <section class="article-section">
+          <div class="pattern-card bg-blue-500/4 border-blue-500/20">
+            <div class="pattern-number">02</div>
+            <h2 class="border-0 pb-0 mt-0 mb-3">
+              <span class="material-symbols-outlined text-blue-400 text-[22px]">compare_arrows</span>
+              Two Pointers
+            </h2>
+            <p class="text-slate-500 text-sm font-mono mb-5">sorted arrays · pairs · O(n)</p>
+
+            <h3>The Intuition</h3>
+            <p>
+              Two pointers is what you naturally do when you search for two numbers in a sorted list that add up to a target: you put one finger at the beginning, one at the end, and move them toward each other. If the sum is too big, move the right pointer left. If too small, move the left pointer right.
+            </p>
+            <p>
+              The key insight: <strong class="text-white">sorting gives structure that lets you eliminate large portions of the search space with a single comparison</strong>. Without sorting, you'd have to check every pair — <code>O(n²)</code>. With sorting and two pointers, each step eliminates either everything to the left of the left pointer or everything to the right of the right pointer — <code>O(n)</code>.
+            </p>
+
+            <div class="callout callout-when">
+              <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">help</span>
+              <div><strong class="text-orange-300 block mb-1">When to reach for it</strong>
+              The array is sorted (or you can sort without changing the answer). You're looking for <strong class="text-white">pairs or triplets</strong> that satisfy a condition. Keywords: "two sum", "three sum", "remove duplicates in-place", "container with most water". If the problem involves two indices moving through the same array — probably two pointers.</div>
+            </div>
+
+            <h3>Same-direction vs Opposite-direction</h3>
+            <p>
+              Two pointers don't always start at opposite ends. The "fast and slow" variant (two pointers moving in the same direction at different speeds) detects cycles in linked lists and finds the middle node in a single pass. The mental model shifts: instead of converging, one pointer is always ahead of the other by some constant or multiple.
+            </p>
+          </div>
+        </section>
+
+        <!-- Pattern 3: Hashing -->
+        <section class="article-section">
+          <div class="pattern-card bg-emerald-500/4 border-emerald-500/20">
+            <div class="pattern-number">03</div>
+            <h2 class="border-0 pb-0 mt-0 mb-3">
+              <span class="material-symbols-outlined text-emerald-400 text-[22px]">table_chart</span>
+              Hashing
+            </h2>
+            <p class="text-slate-500 text-sm font-mono mb-5">frequency · lookup · O(1) access</p>
+
+            <h3>The Intuition</h3>
+            <p>
+              A hash map is a memory trade-off tool: you trade space for time. Instead of scanning the array again to answer "have I seen X before?" — you record the answer the first time you see X. Lookups that would cost <code>O(n)</code> in a loop become <code>O(1)</code>.
+            </p>
+            <p>
+              The deeper insight: a hash map transforms a <em>search</em> problem into a <em>lookup</em> problem. And lookup is the fastest operation in computer science. Whenever you find yourself writing a nested loop to search for a complement, a pair, or a previous state — ask if a hash map can precompute that.
+            </p>
+
+            <div class="callout callout-when">
+              <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">help</span>
+              <div><strong class="text-orange-300 block mb-1">When to reach for it</strong>
+              You need to check for <strong class="text-white">membership, duplicates, frequency, or complement</strong> efficiently. Keywords: "two sum", "anagram", "group by", "find the duplicate", "subarray with sum k". If you're about to write <code>if x in array</code> inside a loop — use a set or map instead.</div>
+            </div>
+
+            <h3>The Prefix Sum + Hash Pattern</h3>
+            <p>
+              A powerful combination: compute a running sum as you traverse, and store each sum in a hash map. To find a subarray with sum <em>k</em>, you check if <code>current_sum - k</code> exists in the map. This converts a cubic brute force into a linear solution — and the logic is the same hashing insight applied to accumulated state rather than individual elements.
+            </p>
+          </div>
+        </section>
+
+        <!-- Pattern 4: Stack / Monotonic Stack -->
+        <section class="article-section">
+          <div class="pattern-card bg-violet-500/4 border-violet-500/20">
+            <div class="pattern-number">04</div>
+            <h2 class="border-0 pb-0 mt-0 mb-3">
+              <span class="material-symbols-outlined text-violet-400 text-[22px]">stacks</span>
+              Stack & Monotonic Stack
+            </h2>
+            <p class="text-slate-500 text-sm font-mono mb-5">order · "next greater" · O(n)</p>
+
+            <h3>The Intuition — Regular Stack</h3>
+            <p>
+              A stack models problems where <strong class="text-white">the most recently seen thing is the most relevant</strong>. Matching brackets is the canonical example: when you see a closing bracket, the bracket you need to match is the last unclosed opening bracket — not the first one you saw. Last In, First Out is the right semantics.
+            </p>
+            <p>
+              The signal: if you're about to write a problem where you need to "remember" something until a matching event occurs — think stack. Parsing expressions, matching parentheses, undo history — all stack-shaped problems.
+            </p>
+
+            <h3>The Intuition — Monotonic Stack</h3>
+            <p>
+              A monotonic stack is a stack with a discipline: you only push an element after popping all elements that violate the ordering invariant. This sounds abstract; the effect is concrete and powerful.
+            </p>
+            <p>
+              For <em>Next Greater Element</em>: traverse left to right. For each element, pop the stack while the top is smaller than the current element — those popped elements have found their "next greater". Push the current element. At the end, everything remaining in the stack has no next greater element.
+            </p>
+            <p>
+              The insight: <strong class="text-white">the stack always holds "unresolved" elements — elements waiting for their answer</strong>. Each element is pushed and popped at most once, making the total work <code>O(n)</code> despite the nested-looking structure.
+            </p>
+
+            <div class="callout callout-when">
+              <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">help</span>
+              <div><strong class="text-orange-300 block mb-1">When to reach for it</strong>
+              Keywords: "next greater/smaller element", "largest rectangle in histogram", "daily temperatures", "trapping rain water", "valid parentheses". Whenever the answer for an element depends on the <strong class="text-white">nearest element that satisfies a condition</strong> — a monotonic stack finds it in linear time.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pattern 5: Recursion / Backtracking -->
+        <section class="article-section">
+          <div class="pattern-card bg-purple-500/4 border-purple-500/20">
+            <div class="pattern-number">05</div>
+            <h2 class="border-0 pb-0 mt-0 mb-3">
+              <span class="material-symbols-outlined text-purple-400 text-[22px]">account_tree</span>
+              Recursion & Backtracking
+            </h2>
+            <p class="text-slate-500 text-sm font-mono mb-5">decision tree · explore · prune</p>
+
+            <h3>The Intuition — Recursion</h3>
+            <p>
+              Recursion is the art of trusting a smaller version of the problem. You define the answer for the base case, then assume your function already works for a smaller input and use that to build the answer for the current input. The hardest part isn't writing the recursion — it's trusting that it works without mentally simulating every frame.
+            </p>
+            <p>
+              The mental model: <strong class="text-white">think about what one step buys you, and delegate the rest</strong>. To reverse a linked list: reverse everything after the first node (delegate), then attach the first node at the end (one step). The delegation is the recursive call.
+            </p>
+
+            <h3>Backtracking: Recursion with a Constraint</h3>
+            <p>
+              Backtracking is systematic trial and error on a decision tree. At each step, you make a choice, recurse, and if the current path can't lead to a solution — you undo the choice (backtrack) and try the next option. It's a depth-first traversal of the space of possibilities with pruning.
+            </p>
+            <p>
+              The power is in the pruning: instead of generating all combinations and filtering, you abort a branch the moment you know it can't succeed. For a Sudoku solver, you don't try all <code>9^81</code> combinations — you fill cells one by one and immediately backtrack when you violate a constraint.
+            </p>
+
+            <div class="callout callout-when">
+              <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">help</span>
+              <div><strong class="text-orange-300 block mb-1">When to reach for it</strong>
+              The problem asks you to <strong class="text-white">enumerate all valid configurations</strong>: all permutations, combinations, subsets, paths, or arrangements satisfying a constraint. If the problem says "find all" or "generate all" — backtracking. If the problem has overlapping subproblems (same smaller problem solved repeatedly) — that's the signal to add memoization and graduate to dynamic programming.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How to use them -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-orange-400 text-[22px]">psychology</span>How to Use Patterns in an Interview</h2>
+          <p>
+            Pattern recognition is a skill with a specific training loop. When you solve a problem, don't just verify your answer — ask: <em>what was the key insight that made this tractable?</em> Label it. "This was a variable sliding window because the answer was a contiguous substring." "This was a monotonic stack because I needed the nearest smaller element."
+          </p>
+          <p>
+            Over time, you stop seeing problems and start seeing <em>shapes</em>. A problem involving contiguous ranges looks like a window. A problem involving ordered pairs in a sorted array looks like two pointers. A problem involving "have I seen this before?" looks like a hash map.
+          </p>
+
+          <div class="callout callout-success">
+            <span class="material-symbols-outlined text-emerald-400 text-[20px] mt-0.5 shrink-0">check_circle</span>
+            <div><strong class="text-emerald-300 block mb-1">The 60-second classification exercise</strong>
+            Read a new problem. Before writing any code, ask: Is there a contiguous range involved? (Window). Is the data sorted, am I looking for pairs? (Two pointers). Do I need fast lookup of something I've already seen? (Hash). Does the most recent element matter most? (Stack). Am I exploring a decision tree? (Backtracking). One of these usually fits. Start there.</div>
+          </div>
+
+          <h3>Beyond the Five</h3>
+          <p>
+            These five patterns cover a large fraction of medium-difficulty interview problems. The next tier — Binary Search on the answer, BFS/DFS on graphs, Dynamic Programming, Divide and Conquer — builds on the same fundamental habit: identifying structure before reaching for implementation. That habit is the real skill interviews are testing.
+          </p>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="article-section">
+          <h2><span class="material-symbols-outlined text-slate-400 text-[22px]">flag</span>Pattern Thinking, Not Problem Memorization</h2>
+          <p>
+            The developer who has solved 500 LeetCode problems by looking at solutions and repeating them will struggle when they see a slightly different problem. The developer who has internalized 12 patterns and trained the classification reflex will adapt to problems they've never seen.
+          </p>
+          <p>
+            The patterns in this article are not algorithms — they're lenses. Any single lens won't work on every problem. But five lenses, applied systematically in the first 60 seconds, will give you a starting point more often than not. And in an interview, a confident starting point is most of the battle.
+          </p>
+        </section>
+
+      </div>
+
+
+        <!-- ── SUBTLE SUPPORT BLOCK ── -->
+        <div class="bmc-article-block article-section">
+          <div class="bmc-article-text">
+            Enjoyed this article? ☕<br>
+            If this helped you or saved you some time, consider supporting my work.
+          </div>
+          <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn-subtle">
+            Support my work
+          </a>
+        </div>
+
+        <!-- ── KEY TAKEAWAYS ── -->
+        <div class="takeaways-box article-section">
+          <h4>
+            <span class="material-symbols-outlined text-[14px]">emoji_objects</span>
+            Key Takeaways
+          </h4>
+          <ul>
+              <li><strong>Pattern recognition beats problem memorization</strong> — 12 patterns unlock the majority of interview problems you'll encounter.</li>
+              <li>A <strong>sliding window</strong> transforms O(n·k) recomputation into O(n) by maintaining an incremental running state.</li>
+              <li><strong>Hash maps convert search into lookup</strong> — if you're scanning an array inside a loop, there's probably a hash-based O(1) solution.</li>
+              <li>A <strong>monotonic stack</strong> holds 'unresolved' elements waiting for their answer — each element is pushed and popped at most once.</li>
+              <li><strong>Backtracking without pruning</strong> is brute force — the discipline of aborting branches early is what makes it viable.</li>
+          </ul>
+        </div>
+
+
+        <!-- ── AUTHOR BOX ── -->
+        <div class="author-box article-section">
+          <img src="../my_image.png" alt="Saptarshi Sadhu" class="author-avatar" />
+          <div>
+            <div class="author-info-name">Saptarshi Sadhu</div>
+            <div class="author-info-bio">System-focused developer at the intersection of AI, backend engineering, and scalable infrastructure. Builds things that have to work in the real world.</div>
+            <div class="author-info-links">
+              <a href="../index.html#about" class="author-link">Portfolio</a>
+              <a href="../blog.html" class="author-link">All Articles</a>
+              <a href="../index.html#contact" class="author-link">Contact</a>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- ── ARTICLE BOTTOM NAV ── -->
+      <div class="article-bottom-nav">
+        <a href="devops.html" class="nav-prev">
+            <span class="nav-label">← Previous</span>
+            <span class="nav-title">CI/CD, Docker & Zero-Downtime Deployments</span>
+          </a>
+        <div class="nav-center">
+          <a href="../blog.html" class="nav-all-btn">
+            <span class="material-symbols-outlined text-[14px]">grid_view</span>
+            All Articles
+          </a>
+        </div>
+        <a href="ai-system.html" class="nav-next">
+            <span class="nav-label">Next →</span>
+            <span class="nav-title">Designing AI Systems That Scale</span>
+          </a>
+      </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 py-10 mt-8 flex flex-col items-center gap-3 opacity-75 hover:opacity-100 transition-opacity duration-500 ease-in-out text-center text-xs tracking-widest font-mono">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+      <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link mt-2">
+        <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+      </a>
+    </footer>
+
+    <script>
+      const bar = document.getElementById("progress-bar");
+      window.addEventListener("scroll", () => { bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + "%"; });
+      const st = document.getElementById("scroll-top");
+      window.addEventListener("scroll", () => st.classList.toggle("show", window.scrollY > 400));
+      const obs = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } }),
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".article-section").forEach(el => obs.observe(el));
+    </script>
+  </body>
+</html>

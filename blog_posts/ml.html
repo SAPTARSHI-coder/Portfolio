@@ -1,0 +1,685 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Urban Air Quality Prediction — Saptarshi Sadhu</title>
+    <meta name="description" content="How I built a machine learning pipeline to predict VOCs, O₃, and NOx concentrations in urban environments." />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#06b6d4",
+              accent:  "#0891b2",
+            },
+            fontFamily: {
+              sans:  ['"Inter"', "sans-serif"],
+              mono:  ['"JetBrains Mono"', "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Link back one level to shared CSS -->
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="article.css" />
+
+    <style>
+      /* ── Reading progress bar ── */
+      #progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(90deg, #06b6d4, #a855f7);
+        z-index: 9999;
+        transition: width 0.1s linear;
+        box-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+      }
+
+      /* ── Article typography ── */
+      .prose-article {
+        color: #cbd5e1;    /* slate-300 */
+        font-family: 'Inter', sans-serif;
+        font-size: 1.0625rem;
+        line-height: 1.85;
+        letter-spacing: 0.01em;
+      }
+
+      .prose-article h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #f1f5f9;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .prose-article h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-top: 2rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .prose-article p {
+        margin-bottom: 1.4rem;
+      }
+
+      .prose-article ul, .prose-article ol {
+        padding-left: 1.4rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .prose-article li {
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      .prose-article ul li::marker {
+        color: #06b6d4;
+      }
+
+      .prose-article ol li::marker {
+        color: #a855f7;
+        font-weight: 600;
+      }
+
+      /* ── Blockquote ── */
+      .prose-article blockquote {
+        margin: 2rem 0;
+        padding: 1.25rem 1.5rem;
+        border-left: 3px solid #06b6d4;
+        background: rgba(6, 182, 212, 0.04);
+        border-radius: 0 12px 12px 0;
+        color: #94a3b8;
+        font-style: italic;
+        font-size: 1rem;
+      }
+
+      .prose-article blockquote strong {
+        color: #06b6d4;
+        font-style: normal;
+      }
+
+      /* ── Code inline ── */
+      .prose-article code:not(pre code) {
+        background: rgba(6, 182, 212, 0.08);
+        border: 1px solid rgba(6, 182, 212, 0.18);
+        color: #67e8f9;
+        padding: 1px 7px;
+        border-radius: 5px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85em;
+      }
+
+      /* ── Code block ── */
+      .code-block {
+        position: relative;
+        margin: 2rem 0;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.07);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      }
+
+      .code-block-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 18px;
+        background: rgba(15, 23, 42, 0.9);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #64748b;
+        letter-spacing: 0.05em;
+      }
+
+      .code-block-header .lang-tag {
+        color: #06b6d4;
+        font-weight: 600;
+      }
+
+      .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        background: rgba(8, 15, 35, 0.95);
+        overflow-x: auto;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: #e2e8f0;
+      }
+
+      .code-block pre .kw  { color: #67e8f9; }   /* keyword cyan */
+      .code-block pre .fn  { color: #a5b4fc; }   /* function purple */
+      .code-block pre .str { color: #86efac; }   /* string green */
+      .code-block pre .cm  { color: #475569; }   /* comment */
+      .code-block pre .nu  { color: #fb923c; }   /* number orange */
+
+      /* copy button */
+      .copy-btn {
+        cursor: pointer;
+        padding: 2px 10px;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.04);
+        color: #64748b;
+        font-size: 10px;
+        transition: all 0.2s;
+      }
+      .copy-btn:hover {
+        border-color: rgba(6,182,212,0.4);
+        color: #06b6d4;
+      }
+
+      /* ── Data card / stat box ── */
+      .stat-card {
+        background: rgba(6, 182, 212, 0.04);
+        border: 1px solid rgba(6, 182, 212, 0.15);
+        border-radius: 14px;
+        padding: 1.25rem 1.5rem;
+      }
+
+      /* ── Callout box ── */
+      .callout {
+        border-radius: 12px;
+        padding: 1.1rem 1.4rem;
+        margin: 1.6rem 0;
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        font-size: 0.9rem;
+      }
+      .callout-info    { background: rgba(6,182,212,0.06);  border: 1px solid rgba(6,182,212,0.2); }
+      .callout-warning { background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.2); }
+      .callout-success { background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.2); }
+
+      /* ── Fade-in sections ── */
+      .article-section {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .article-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── Back button ── */
+      .back-btn {
+        position: fixed;
+        top: 1.25rem;
+        left: 1.25rem;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 7px 16px;
+        border-radius: 30px;
+        background: rgba(11, 17, 33, 0.85);
+        border: 1px solid rgba(6, 182, 212, 0.2);
+        color: #06b6d4;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        backdrop-filter: blur(10px);
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      }
+      .back-btn:hover {
+        background: rgba(6, 182, 212, 0.1);
+        border-color: rgba(6, 182, 212, 0.5);
+        transform: translateX(-3px);
+      }
+
+      /* ── Scroll to top ── */
+      #scroll-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 100;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(6, 182, 212, 0.1);
+        border: 1px solid rgba(6, 182, 212, 0.3);
+        color: #06b6d4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
+      #scroll-top.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+      #scroll-top:hover {
+        background: rgba(6, 182, 212, 0.2);
+        transform: translateY(-3px);
+      }
+
+      /* tag pill */
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 12px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border: 1px solid;
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
+
+    <!-- Reading progress bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Background Video -->
+    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.2]" autoplay loop muted playsinline>
+      <source src="../Background.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Nebula -->
+    <div class="nebula-container opacity-40 mix-blend-screen fixed inset-0 pointer-events-none -z-10">
+      <div class="stars"></div>
+    </div>
+
+    <!-- ── Back Button ── -->
+    <a href="../blog.html" class="back-btn">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+      Back to Blog
+    </a>
+    <a href="/" class="back-btn" style="left: max(140px, 11rem);">
+      <span class="material-symbols-outlined text-[16px]">home</span>
+      Home
+    </a>
+
+    <!-- ── Scroll to top ── -->
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+      <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+    </button>
+
+    <!-- ── ARTICLE CONTAINER ── -->
+    <main class="max-w-[800px] mx-auto px-6 pt-24 pb-40">
+
+      <!-- ── HERO ── -->
+      <header class="article-section mb-14">
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill text-emerald-400 border-emerald-500/30 bg-emerald-500/5">Machine Learning</span>
+          <span class="tag-pill text-blue-400 border-blue-500/30 bg-blue-500/5">Research</span>
+          <span class="tag-pill text-cyan-400 border-cyan-500/30 bg-cyan-500/5">PyTorch</span>
+          <span class="tag-pill text-slate-400 border-white/10 bg-white/5">Environmental AI</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 title-glow" style="font-family:'Inter',sans-serif">
+          Urban Air Quality Prediction<br class="hidden md:block"> Using Temporal ML Models
+        </h1>
+
+        <!-- Subtitle -->
+        <span class="article-intro-line">From raw sensor data to real-time forecasts — where atmospheric physics meets machine learning.</span>
+        <p class="text-slate-400 text-lg leading-relaxed mb-6">
+          How I built a machine learning pipeline to predict VOCs, O₃, and NOx concentrations in urban environments — from raw sensor data to real-time forecasts.
+        </p>
+
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-5 text-sm text-slate-500 font-mono">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">calendar_today</span>
+            March 2026
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">schedule</span>
+            12 min read
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">person</span>
+            Saptarshi Sadhu
+          </span>
+        </div>
+
+        <!-- divider -->
+        <div class="mt-8 h-px bg-gradient-to-r from-cyan-500/30 via-purple-500/20 to-transparent"></div>
+      </header>
+
+      <!-- ── CONTENT ── -->
+      <div class="prose-article">
+
+        <!-- Introduction -->
+        <section class="article-section">
+          <p>
+            Air quality in urban environments has become a critical public health concern. Traditional monitoring systems rely on expensive, sparsely distributed sensor networks — leaving massive blind spots across city grids. This project addresses that gap by building a <strong class="text-white">temporal machine learning pipeline</strong> that predicts concentrations of volatile organic compounds (VOCs), ozone (O₃), and nitrogen oxides (NOx) using low-cost IoT sensor arrays and historical atmospheric data.
+          </p>
+
+          <div class="callout callout-info">
+            <span class="material-symbols-outlined text-cyan-400 text-[20px] mt-0.5 shrink-0">info</span>
+            <div>
+              <strong class="text-cyan-300 block mb-1">What this article covers</strong>
+              Problem framing, dataset construction, model architecture (LSTM + Transformer hybrid), feature engineering, and deployment considerations.
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 1 -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-emerald-400 text-[22px]">explore</span>
+            The Problem
+          </h2>
+          <p>
+            Existing air quality indices (AQI) are computed from a handful of reference-grade stations per city. In a metropolis like Kolkata, a single station may represent conditions for over 500,000 people — despite air quality varying block-by-block based on traffic, industry, and micro-meteorology.
+          </p>
+          <p>
+            The research question became: <em>can we build a model that accurately forecasts pollutant levels 1–6 hours ahead, using sensor data from low-cost nodes augmented with weather and traffic features?</em>
+          </p>
+
+          <blockquote>
+            <strong>"The real challenge isn't the ML model — it's building a dataset that's actually usable."</strong><br>
+            Raw sensor readings drift over time, are sensitive to humidity, and have systematic biases that pure ML cannot handle without domain-aware preprocessing.
+          </blockquote>
+        </section>
+
+        <!-- Section 2: Dataset -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-blue-400 text-[22px]">dataset</span>
+            Dataset Construction
+          </h2>
+
+          <h3>Data Sources</h3>
+          <ul>
+            <li><strong class="text-white">Electrochemical sensor nodes</strong> — 8 low-cost nodes (MQ-series + CO/NO₂ electrochemical) deployed across 4 urban zones</li>
+            <li><strong class="text-white">State reference monitors</strong> — CPCB-certified stations for ground-truth calibration</li>
+            <li><strong class="text-white">ERA5 reanalysis data</strong> — hourly wind speed, direction, humidity, temperature, boundary layer height</li>
+            <li><strong class="text-white">OpenStreetMap traffic proxies</strong> — road density and vehicle count estimates per grid cell</li>
+          </ul>
+
+          <h3>Preprocessing Pipeline</h3>
+          <p>
+            Raw readings underwent a 4-stage cleaning process: outlier removal via IQR clamping, humidity correction using a polynomial regression calibration curve, temporal alignment to UTC+5:30, and Kalman filter smoothing to reduce measurement noise without introducing lag artifacts.
+          </p>
+
+          <!-- Stats row -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
+            <div class="stat-card text-center">
+              <div class="text-3xl font-bold text-cyan-400 mb-1">18M+</div>
+              <div class="text-xs text-slate-500 uppercase tracking-widest">Sensor readings</div>
+            </div>
+            <div class="stat-card text-center">
+              <div class="text-3xl font-bold text-purple-400 mb-1">6 mo</div>
+              <div class="text-xs text-slate-500 uppercase tracking-widest">Collection period</div>
+            </div>
+            <div class="stat-card text-center">
+              <div class="text-3xl font-bold text-emerald-400 mb-1">34</div>
+              <div class="text-xs text-slate-500 uppercase tracking-widest">Input features</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Model -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-purple-400 text-[22px]">hub</span>
+            Model Architecture
+          </h2>
+
+          <p>
+            I experimented with three architectures before settling on a <strong class="text-white">Temporal Fusion Transformer (TFT)</strong> variant — which handles multi-horizon forecasting natively and provides variable importance scores, making it interpretable enough for research publication.
+          </p>
+
+          <!-- Code block -->
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="lang-tag">Python · PyTorch</span>
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">copy</button>
+            </div>
+            <pre><span class="cm"># Simplified TFT-style encoder for pollutant forecasting</span>
+<span class="kw">class</span> <span class="fn">AQIForecaster</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, input_dim=<span class="nu">34</span>, hidden=<span class="nu">128</span>, heads=<span class="nu">4</span>, horizon=<span class="nu">6</span>):
+        <span class="fn">super</span>().__init__()
+        self.encoder = nn.LSTM(input_dim, hidden, <span class="nu">2</span>,
+                               batch_first=<span class="kw">True</span>, dropout=<span class="nu">0.2</span>)
+        self.attn    = nn.MultiheadAttention(hidden, heads, batch_first=<span class="kw">True</span>)
+        self.head    = nn.Linear(hidden, horizon * <span class="nu">3</span>)  <span class="cm"># 3 pollutants</span>
+
+    <span class="kw">def</span> <span class="fn">forward</span>(self, x):
+        enc, _   = self.encoder(x)
+        ctx, _   = self.attn(enc, enc, enc)
+        out      = self.head(ctx[:, -<span class="nu">1</span>, :])
+        <span class="kw">return</span> out.view(-<span class="nu">1</span>, <span class="nu">6</span>, <span class="nu">3</span>)  <span class="cm"># (batch, horizon, pollutant)</span></pre>
+          </div>
+
+          <h3>Loss Function</h3>
+          <p>
+            Standard MSE performed poorly due to the skewed distribution of pollution spikes. I switched to a <code>QuantileLoss</code> with <code>q={0.1, 0.5, 0.9}</code> — this gives uncertainty intervals alongside point forecasts, which is crucial for alerting systems.
+          </p>
+        </section>
+
+        <!-- Section 4: Results -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-cyan-400 text-[22px]">bar_chart</span>
+            Results
+          </h2>
+
+          <p>
+            The final model was evaluated on a held-out 6-week test set. Compared against three baselines — persistence (last observed value), ARIMA, and vanilla LSTM:
+          </p>
+
+          <!-- Results table -->
+          <div class="overflow-x-auto my-6">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-white/10 text-slate-400 text-left">
+                  <th class="py-3 pr-6 font-mono text-[11px] tracking-widest uppercase">Model</th>
+                  <th class="py-3 pr-6 font-mono text-[11px] tracking-widest uppercase text-right">MAE (NOx)</th>
+                  <th class="py-3 pr-6 font-mono text-[11px] tracking-widest uppercase text-right">RMSE (O₃)</th>
+                  <th class="py-3 font-mono text-[11px] tracking-widest uppercase text-right">R²</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
+                  <td class="py-3 pr-6 text-slate-400">Persistence</td>
+                  <td class="py-3 pr-6 text-right text-slate-500">18.4</td>
+                  <td class="py-3 pr-6 text-right text-slate-500">23.1</td>
+                  <td class="py-3 text-right text-slate-500">0.61</td>
+                </tr>
+                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
+                  <td class="py-3 pr-6 text-slate-400">ARIMA</td>
+                  <td class="py-3 pr-6 text-right text-slate-500">14.2</td>
+                  <td class="py-3 pr-6 text-right text-slate-500">19.7</td>
+                  <td class="py-3 text-right text-slate-500">0.71</td>
+                </tr>
+                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
+                  <td class="py-3 pr-6 text-slate-400">Vanilla LSTM</td>
+                  <td class="py-3 pr-6 text-right text-slate-400">9.8</td>
+                  <td class="py-3 pr-6 text-right text-slate-400">14.3</td>
+                  <td class="py-3 text-right text-slate-400">0.83</td>
+                </tr>
+                <tr class="hover:bg-white/2 transition-colors">
+                  <td class="py-3 pr-6 text-cyan-400 font-bold">TFT (ours)</td>
+                  <td class="py-3 pr-6 text-right text-cyan-400 font-bold">6.1</td>
+                  <td class="py-3 pr-6 text-right text-cyan-400 font-bold">9.4</td>
+                  <td class="py-3 text-right text-cyan-400 font-bold">0.91</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-success">
+            <span class="material-symbols-outlined text-emerald-400 text-[20px] mt-0.5 shrink-0">check_circle</span>
+            <div>
+              <strong class="text-emerald-300 block mb-1">Key Finding</strong>
+              Boundary layer height (the altitude below which pollutants are trapped) turned out to be the single most predictive feature — more than traffic density or humidity — accounting for 27% of model variance according to TFT's attention weights.
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Deployment -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-violet-400 text-[22px]">rocket_launch</span>
+            Deployment Considerations
+          </h2>
+          <p>
+            Productionizing an ML model for real-time forecasting introduces constraints that rarely appear in research: inference latency must stay under <code>200ms</code> end-to-end, the sensor stream is unreliable (missing data is the norm), and the model must be retrained periodically as sensor drift accumulates.
+          </p>
+
+          <div class="callout callout-warning">
+            <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5 shrink-0">warning</span>
+            <div>
+              <strong class="text-orange-300 block mb-1">Operational Challenge</strong>
+              Sensor nodes experience 15–30% data dropout during monsoon season due to connectivity issues. Training on imputed data can introduce systematic bias in wet-season predictions if not handled carefully.
+            </div>
+          </div>
+
+          <h3>Stack</h3>
+          <ul>
+            <li><strong class="text-white">Model serving</strong> — FastAPI + ONNX Runtime for 3× faster inference vs. raw PyTorch</li>
+            <li><strong class="text-white">Data pipeline</strong> — Apache Kafka for sensor ingestion, ClickHouse for time-series storage</li>
+            <li><strong class="text-white">Retraining</strong> — Weekly automated fine-tune triggered by RMSE drift detection</li>
+            <li><strong class="text-white">Monitoring</strong> — Grafana dashboards tracking prediction vs. actual AQI in real time</li>
+          </ul>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="article-section">
+          <h2>
+            <span class="material-symbols-outlined text-slate-400 text-[22px]">flag</span>
+            Conclusion
+          </h2>
+          <p>
+            Urban air quality prediction is a domain where strong ML is necessary but not sufficient. Domain knowledge — atmospheric physics, sensor calibration, meteorological context — is what separates a working prototype from a reliable system.
+          </p>
+          <p>
+            The TFT architecture's built-in interpretability was invaluable: it let us validate model behaviour against known atmospheric patterns rather than treating it as a black box, which was essential for building stakeholder trust in the predictions.
+          </p>
+          <p>
+            Next steps include expanding the sensor network, experimenting with graph neural networks to model spatial pollutant dispersion, and publishing the cleaned dataset for the research community.
+          </p>
+        </section>
+
+      </div>
+      <!-- end prose-article -->
+
+        <!-- ── SUBTLE SUPPORT BLOCK ── -->
+        <div class="bmc-article-block article-section">
+          <div class="bmc-article-text">
+            Enjoyed this article? ☕<br>
+            If this helped you or saved you some time, consider supporting my work.
+          </div>
+          <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn-subtle">
+            Support my work
+          </a>
+        </div>
+
+        <!-- ── KEY TAKEAWAYS ── -->
+        <div class="takeaways-box article-section">
+          <h4>
+            <span class="material-symbols-outlined text-[14px]">emoji_objects</span>
+            Key Takeaways
+          </h4>
+          <ul>
+              <li><strong>Boundary layer height</strong> proved more predictive than traffic density — domain knowledge beats feature volume.</li>
+              <li><strong>Training-serving skew</strong> is the #1 silent killer in ML pipelines; the feature computation path must be identical.</li>
+              <li><strong>Quantile loss</strong> gives uncertainty bounds alongside point forecasts — essential for alerting systems that need confidence intervals.</li>
+              <li>Low-cost sensor networks can rival expensive reference stations with proper humidity correction and Kalman smoothing.</li>
+              <li><strong>ONNX Runtime + Kafka + ClickHouse</strong> is a production-proven stack for real-time environmental ML at scale.</li>
+          </ul>
+        </div>
+
+        <!-- ── AUTHOR BOX ── -->
+        <div class="author-box article-section">
+          <img src="../my_image.png" alt="Saptarshi Sadhu" class="author-avatar" />
+          <div>
+            <div class="author-info-name">Saptarshi Sadhu</div>
+            <div class="author-info-bio">System-focused developer at the intersection of AI, backend engineering, and scalable infrastructure. Builds things that have to work in the real world.</div>
+            <div class="author-info-links">
+              <a href="../index.html#about" class="author-link">Portfolio</a>
+              <a href="../blog.html" class="author-link">All Articles</a>
+              <a href="../index.html#contact" class="author-link">Contact</a>
+            </div>
+          </div>
+        </div>
+
+      <!-- ── ARTICLE BOTTOM NAV ── -->
+      <div class="article-bottom-nav">
+        <span></span>
+        <div class="nav-center">
+          <a href="../blog.html" class="nav-all-btn">
+            <span class="material-symbols-outlined text-[14px]">grid_view</span>
+            All Articles
+          </a>
+        </div>
+        <a href="fullstack.html" class="nav-next">
+            <span class="nav-label">Next →</span>
+            <span class="nav-title">Architecting Scalable Full Stack Systems</span>
+          </a>
+      </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 py-10 mt-8 flex flex-col items-center gap-3 opacity-75 hover:opacity-100 transition-opacity duration-500 ease-in-out text-center text-xs tracking-widest font-mono">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+      <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link mt-2">
+        <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+      </a>
+    </footer>
+
+    <script>
+      // ── Reading progress bar ──
+      const bar = document.getElementById("progress-bar");
+      window.addEventListener("scroll", () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (window.scrollY / total * 100) + "%";
+      });
+
+      // ── Scroll to top button ──
+      const scrollTop = document.getElementById("scroll-top");
+      window.addEventListener("scroll", () => {
+        scrollTop.classList.toggle("show", window.scrollY > 400);
+      });
+
+      // ── Fade-in sections on scroll ──
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".article-section").forEach(el => observer.observe(el));
+    </script>
+  </body>
+</html>

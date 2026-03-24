@@ -1,0 +1,1719 @@
+/*
+================================================================================
+INDEX.CSS - PORTFOLIO STYLES
+================================================================================
+This file contains all the custom CSS for the portfolio. 
+Tailwind handles most of the layout and colors in index.html, but custom 
+animations, glowing elements, and specific glassmorphism effects are kept here.
+*/
+
+/* Google Fonts import for Roboto and Orbitron */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700;900&display=swap');
+
+/* Font utility classes */
+.font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* 
+--------------------------------------------------------------------------------
+BLUR ORB — Atmospheric background glow blobs
+Used by Education, Achievements, Contact sections for ambient depth.
+--------------------------------------------------------------------------------
+*/
+.blur-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 
+--------------------------------------------------------------------------------
+1. KEYFRAME ANIMATIONS
+--------------------------------------------------------------------------------
+These dictate how the scrolling skills banners move infinitely across the screen. 
+*/
+/* Scrolls content LEFT — JS sets --scroll-amount to exactly one set's width */
+@keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(var(--scroll-amount, -50%)); }
+}
+
+/* Scrolls content RIGHT — JS sets --scroll-amount, animation-direction: reverse does the flip */
+@keyframes marquee-reverse {
+    0%   { transform: translateX(var(--scroll-amount, -50%)); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.2), inset 0 0 20px rgba(249, 115, 22, 0.2);
+        border-color: rgba(249, 115, 22, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(249, 115, 22, 0.8), inset 0 0 60px rgba(249, 115, 22, 0.8);
+        border-color: rgba(253, 186, 116, 1);
+    }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Galaxy orbital ring keyframes - all CSS-only for performance safety */
+@keyframes galaxy-cw {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes galaxy-ccw {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+@keyframes galaxy-cw-tilt {
+    from { transform: translate(-50%, -50%) rotateX(55deg) rotateZ(0deg); }
+    to   { transform: translate(-50%, -50%) rotateX(55deg) rotateZ(360deg); }
+}
+@keyframes galaxy-ccw-tilt {
+    from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
+    to   { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(-360deg); }
+}
+@keyframes galaxy-shimmer {
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1; }
+}
+
+/* Orbital ring base class */
+.galaxy-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* 
+--------------------------------------------------------------------------------
+2. CUSTOM CLASSES
+--------------------------------------------------------------------------------
+*/
+
+/* Blinking cursor for typing animation */
+.animate-blink {
+    animation: blink 1s step-end infinite;
+    color: #f97316; /* Orange to match the avatar ring */
+    margin-left: 2px;
+}
+
+/* RGB gradient text animation */
+@keyframes textRgb {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animate-text-rgb {
+    background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff, #ff0000);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: textRgb 3s linear infinite;
+}
+
+/* Glow animation for the orange avatar ring */
+.animate-pulse-glow {
+    animation: pulse-glow 3s infinite ease-in-out;
+}
+
+/* 
+================================================================================
+CIRCULAR ORBIT SYSTEM
+================================================================================
+The container is relative, the javascript builds orbit-nodes which are animated around the center.
+*/
+
+#orbit-stage {
+    /* Perspective for slightly 3d feel */
+    perspective: 1000px;
+}
+
+/* Base class for the orbiting element */
+.orbit-node-single {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    margin-top: -40px;
+    margin-left: -40px;
+    /* Z-index below the image layer */
+    z-index: 5;
+    /* Hardware acceleration */
+    will-change: transform, opacity;
+}
+
+.orbit-icon-img-single {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0; left: 0;
+}
+
+
+/*
+ 
+--------------------------------------------------------------------------------
+6. MARQUEE / ICON SCROLL TRACK
+--------------------------------------------------------------------------------
+Row 1 scrolls LEFT. Row 2 scrolls RIGHT.
+The .marquee-inner holds ALL items (first half + duplicate second half)
+and animates the whole block as one unit — no glitches, no half-circle effect.
+NO hover-pause — animation runs continuously at all times.
+*/
+
+/* The transparent window for our icons */
+.marquee-track {
+    width: 100%;
+    padding: 2.5rem 0; /* large vertical padding ensures the giant auras don't clip against parent bounding boxes */
+    margin: -1.5rem 0; /* visually stagger the rows closer while preserving their aura bounds */
+}
+
+/* The moving inner belt containing all icon items */
+.marquee-inner {
+    display: flex;
+    gap: 0;            /* Gap is applied per-item via margin-right so the 50% midpoint is exact */
+    width: max-content;
+}
+
+/* Staggered continuous scroll speeds for a fluid cosmic drift effect */
+.scroll-left-1 {
+    animation: marquee 50s linear infinite;
+}
+
+.scroll-right-1 {
+    animation: marquee-reverse 65s linear infinite;
+}
+
+.scroll-left-2 {
+    animation: marquee 45s linear infinite;
+}
+
+.scroll-right-2 {
+    animation: marquee-reverse 75s linear infinite;
+}
+
+/* Each individual icon pill with clear background and hover glow scaling */
+.icon-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;        /* breathing room */
+    background: transparent;     /* removed white background */
+    flex-shrink: 0;
+    white-space: nowrap;
+    /* Use margin-right instead of gap so the 50% translate always meets perfectly */
+    margin-right: 8rem;          /* increased spacing for glowing icons */
+    transition: transform 0.3s ease;
+}
+
+.icon-item:hover {
+    transform: translateY(-5px) scale(1.15);
+}
+
+@keyframes subtle-float {
+    0% { transform: translateY(-4px) scale(var(--icon-scale, 1)); }
+    100% { transform: translateY(4px) scale(var(--icon-scale, 1)); }
+}
+
+/* Increased icon size */
+.icon-item img {
+    height: 4.5rem;
+    width: auto;
+    max-width: 4.5rem;   /* Ensure square-ish bounding box */
+    object-fit: contain;
+    display: block;
+    margin: 0 1rem;      /* Extra outer spacing for glow effects to not bleed */
+    opacity: var(--icon-opacity, 1);
+    transform: scale(var(--icon-scale, 1));
+}
+
+/* Forward scrolling animation for the skills row */
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+}
+
+/* Backward scrolling animation for the skills row */
+.animate-marquee-reverse {
+    display: flex;
+    width: max-content;
+    animation: marquee-reverse 40s linear infinite;
+}
+
+/* 
+--------------------------------------------------------------------------------
+7. 3D WORKSTATION ANIMATION
+--------------------------------------------------------------------------------
+*/
+@keyframes pc-float {
+    0%, 100% {
+        transform: translateY(0) rotateY(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotateY(-2deg);
+    }
+}
+
+.animate-pc-float {
+    animation: pc-float 8s ease-in-out infinite;
+    /* transition for smooth mouse parallax applied via JS */
+    transition: transform 0.2s ease-out;
+}
+
+/* General Body styling to ensure proper fonts and prevent horizontal scrolling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #02040a;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Headings use Roboto bold for a clean, professional look */
+h1, h2 {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* h3 and smaller headings */
+h3, .font-display {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* All paragraph text */
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Creates the fading edges on the left and right sides of the scrolling skills banner */
+.mask-fade {
+    /* Edit the percentages (15% and 85%) to change how wide the fade gradient is */
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+/* 
+--------------------------------------------------------------------------------
+3. BACKGROUND & GLOW EFFECTS
+--------------------------------------------------------------------------------
+*/
+
+/* The outer container holding the nebula glow and stars behind everything */
+.nebula-container {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    /* Adjust the RGBA values to change the color of the background glows */
+    background: radial-gradient(circle at 20% 30%, rgba(30, 58, 138, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 80% 70%, rgba(67, 56, 202, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 50% 50%, rgba(8, 145, 178, 0.08) 0%, transparent 65%);
+    background-color: #02040a;
+}
+
+/* The complex dot-matrix starfield background */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* Edit the colors, sizes (1px etc), and opacity to change the look of the stars */
+    background-image: 
+        radial-gradient(1px 1px at 10% 10%, white, transparent),
+        radial-gradient(1.5px 1.5px at 20% 35%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 45% 15%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 60% 80%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 75% 25%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 95% 90%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 5% 95%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 50% 5%, rgba(255,255,255,0.5), transparent);
+    
+    background-size: 1000px 1000px;
+    opacity: 0.25; 
+}
+
+/* Massive blurry blobs of color placed behind specific elements for atmosphere */
+.blur-orb {
+    position: absolute;
+    border-radius: 50%;
+    /* Edit this value to make the orb more solid (e.g. 50px) or more blurry (e.g. 150px) */
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* 
+--------------------------------------------------------------------------------
+4. GLASSMORPHISM CARDS
+--------------------------------------------------------------------------------
+These styles are applied automatically to the Project and Research cards.
+*/
+.glass-card {
+    /* 15% opacity dark blue base */
+    background: rgba(15, 23, 42, 0.15);
+    /* The core blurring effect that makes it look like frosted glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 200, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.1);
+}
+
+/* Changes that occur when you hover over a card */
+.glass-card:hover {
+    /* Becomes slightly less transparent */
+    background: rgba(15, 23, 42, 0.25);
+    /* Border changes to a subtle primary blue/cyan color */
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    /* Slides the card upwards by 4 pixels */
+    transform: translateY(-4px);
+}
+
+.about-card {
+    --theme-rgb: 0, 200, 255; /* Default cyan fallback */
+    position: relative;
+    padding: 32px;
+    border-radius: 24px;
+    background: radial-gradient(circle at 20% 20%, rgba(var(--theme-rgb), 0.08), transparent 60%), rgba(10, 20, 40, 0.45);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 200, 255, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 15px 35px rgba(0,0,0,0.6),
+        0 0 15px rgba(var(--theme-rgb), 0.05); /* Lowered base glow */
+}
+
+/* Moving light reflection feeling on the glass border */
+.about-card::before, .edu-card::before, .achieve-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 24px;
+    background: linear-gradient(120deg, transparent, rgba(var(--theme-rgb), 0.25), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Activate hover glow */
+.about-card:hover::before, .edu-card:hover::before, .achieve-card:hover::before {
+    opacity: 1;
+}
+
+/* Floating Depth on Hover */
+.about-card:hover {
+    transform: translateY(-4px); /* Much gentler hover */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 40px rgba(var(--theme-rgb), 0.1); /* Dramatically reduced hover glow */
+}
+
+/* Optional: Subtle Icon Glow */
+.about-card svg, .about-card .material-symbols-outlined {
+    filter: drop-shadow(0 0 6px rgba(var(--theme-rgb), 0.6));
+}
+
+/* 
+--------------------------------------------------------------------------------
+RGB ROTATING BORDER EFFECT (For all cards)
+--------------------------------------------------------------------------------
+*/
+@property --bg-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@keyframes spin-rgb-border {
+    0% { --bg-angle: 0deg; }
+    100% { --bg-angle: 360deg; }
+}
+
+.about-card::after, .glass-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+        from var(--bg-angle), 
+        #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.45; /* +10% border visibility */
+    animation: spin-rgb-border 4s linear infinite;
+}
+
+.about-card:hover::after, .glass-card:hover::after {
+    opacity: 0.7;
+    animation: spin-rgb-border 2.5s linear infinite;
+}
+
+/* 
+--------------------------------------------------------------------------------
+EDUCATION CARD GLOWING BORDER EFFECT (Navy Blue)
+--------------------------------------------------------------------------------
+*/
+.edu-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+        from var(--bg-angle), 
+        rgba(30, 58, 138, 0.1), /* Dim Navy */
+        rgba(30, 64, 175, 0.9), /* Solid Navy */
+        rgba(17, 24, 39, 0.6),  /* Dark */
+        rgba(30, 64, 175, 0.9), /* Solid Navy */
+        rgba(30, 58, 138, 0.1)  /* Dim Navy */
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.9; /* +10% border visibility */
+    animation: spin-rgb-border 4s linear infinite;
+}
+
+.edu-card:hover::after {
+    opacity: 1;
+    animation: spin-rgb-border 2.5s linear infinite;
+}
+
+/* 
+--------------------------------------------------------------------------------
+ACHIEVEMENT CARD GLOWING BORDER EFFECT (Dim Purple)
+--------------------------------------------------------------------------------
+*/
+.achieve-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+        from var(--bg-angle), 
+        rgba(124, 58, 237, 0.05), /* Very Dim Purple */
+        rgba(124, 58, 237, 0.5),  /* Dim Purple */
+        rgba(76, 29, 149, 0.3),   /* Deep Dark Purple */
+        rgba(124, 58, 237, 0.5),  /* Dim Purple */
+        rgba(124, 58, 237, 0.05)  /* Very Dim Purple */
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+    animation: spin-rgb-border 5s linear infinite; /* Slightly slower */
+}
+
+.achieve-card:hover::after {
+    opacity: 0.85;
+    animation: spin-rgb-border 3s linear infinite;
+}
+
+/* 
+--------------------------------------------------------------------------------
+SKILL CARD GLOWING BORDER EFFECT (Elite Cyan)
+--------------------------------------------------------------------------------
+*/
+.skill-card {
+    position: relative;
+    /* Ensure z-index allows border behind content */
+    z-index: 1;
+}
+
+.skill-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+        from var(--bg-angle), 
+        rgba(6, 182, 212, 0.1), /* Faded Cyan */
+        rgba(6, 182, 212, 0.8), /* Vibrant Cyan */
+        rgba(10, 20, 60, 0.5),  /* Deep Blue */
+        rgba(6, 182, 212, 0.8), /* Vibrant Cyan */
+        rgba(6, 182, 212, 0.1)  /* Faded Cyan */
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+    animation: spin-rgb-border 4s linear infinite;
+}
+
+.skill-card:hover::after {
+    opacity: 1;
+    animation: spin-rgb-border 2s linear infinite;
+}
+
+/* 
+--------------------------------------------------------------------------------
+GRID NETWORK CONNECTORS (Gap spanning animations)
+--------------------------------------------------------------------------------
+*/
+.path-line-y {
+    position: absolute;
+    width: 3px;
+    height: 1.5rem; /* Matches gap-6 (24px) precisely */
+    background: rgba(var(--theme-rgb), 0.25);
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.path-line-x {
+    position: absolute;
+    height: 3px;
+    width: 1.5rem; /* Matches gap-6 (24px) precisely */
+    background: rgba(var(--theme-rgb), 0.25);
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.path-dot-y {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, rgba(var(--theme-rgb), 0.8), #fff);
+    filter: drop-shadow(0 0 12px rgb(var(--theme-rgb))) drop-shadow(0 0 4px #fff);
+    animation: flow-y 3s infinite linear;
+    border-radius: 4px;
+}
+.path-dot-x {
+    position: absolute;
+    left: -100%;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(to right, transparent, rgba(var(--theme-rgb), 0.8), #fff);
+    filter: drop-shadow(0 0 12px rgb(var(--theme-rgb))) drop-shadow(0 0 4px #fff);
+    animation: flow-x 3s infinite linear;
+    border-radius: 4px;
+}
+
+@keyframes flow-y {
+    0% { transform: translateY(0); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateY(200%); opacity: 0; }
+}
+@keyframes flow-x {
+    0% { transform: translateX(0); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateX(200%); opacity: 0; }
+}
+
+/* Specific connector absolute positioning relative to their parent cards */
+.connect-foundation-systems {
+    bottom: -1.5rem;
+    left: 4.5rem; /* Drops down from left side of Foundation */
+}
+.connect-foundation-algorithms {
+    right: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%); /* Crosses right to Algorithms */
+}
+.connect-algorithms-ecosystems {
+    bottom: -1.5rem;
+    left: 4.5rem; /* Drops down to Tech Ecosystems */
+}
+.connect-systems-ecosystems {
+    right: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%); /* Crosses right from Systems */
+}
+.connect-systems-research {
+    bottom: -1.5rem;
+    left: 4.5rem; /* Drops down from Systems to Research */
+}
+.connect-ecosystems-research {
+    bottom: -1.5rem;
+    right: 4.5rem; /* Drops down from right side of Tech Ecosystems */
+}
+.connect-research-vision {
+    bottom: -1.5rem;
+    left: 50%; /* Drops down from Research to Vision directly in middle */
+    transform: translateX(-50%);
+}
+
+/* 
+--------------------------------------------------------------------------------
+SIDEBAR DIVIDERS
+--------------------------------------------------------------------------------
+*/
+.highlights-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.4), transparent);
+    margin: 18px 0;
+}
+
+/* 
+--------------------------------------------------------------------------------
+5. NAVIGATION LINKS
+--------------------------------------------------------------------------------
+These styles handle the RGB underline and upward pop effect when hovering
+over the top navigation bar links.
+*/
+.nav-link {
+    position: relative;
+    font-size: 0.875rem; /* text-sm equivalent */
+    font-weight: 500;
+    color: #94a3b8; /* text-slate-400 */
+    transition: all 0.3s ease;
+    padding-bottom: 0.25rem;
+    display: inline-block;
+}
+
+.nav-link:hover {
+    color: white;
+    /* Pushes the text up slightly */
+    transform: translateY(-3px);
+}
+
+/* The hidden RGB underline */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    /* RGB Gradient */
+    background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+    background-size: 200% 100%;
+    /* Initially hidden by scaling it to 0 */
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+    border-radius: 2px;
+}
+
+/* When hovering on the link, make the border appear and animate */
+.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    animation: rgbSlide 2s linear infinite;
+}
+
+/* Keyframes to smoothly move the RGB gradient across the underline */
+@keyframes rgbSlide {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+/* 
+--------------------------------------------------------------------------------
+FADE UP ANIMATION ON SCROLL
+--------------------------------------------------------------------------------
+*/
+.fade-up {
+    opacity: 0;
+}
+
+.fade-up.show {
+    animation: fadeUpAnim 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 
+--------------------------------------------------------------------------------
+SKILLS SECTION ENHANCEMENTS
+--------------------------------------------------------------------------------
+*/
+.skills-section {
+    padding-bottom: 80px;
+}
+
+.title-glow {
+    text-shadow: 0 0 30px rgba(0, 200, 255, 0.8), 0 0 60px rgba(0, 200, 255, 0.4); /* Stronger glow to pop more */
+}
+
+.skill-advanced {
+    opacity: 1;
+}
+
+.skill-intermediate {
+    opacity: 0.8;
+}
+
+.skill-beginner {
+    opacity: 0.5;
+}
+
+/* 
+--------------------------------------------------------------------------------
+SKILLS GRID — HOVER LIFT & BLUR SIBLINGS
+When any card is hovered, siblings dim + blur; the hovered card lifts forward.
+--------------------------------------------------------------------------------
+*/
+
+/* Base: all cards are positioned so z-index stacking works */
+.skills-row .skill-card {
+    position: relative;
+    transition:
+        opacity        0.3s ease,
+        filter         0.3s ease,
+        transform      0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow     0.35s ease;
+    will-change: transform, box-shadow;
+}
+
+/* All Cards: dim + blur when a card in the *section* is hovered */
+.skills-section:has(.skill-card:hover) .skill-card:not(:hover) {
+    opacity: 0.4;
+    filter: blur(2px) saturate(0.5);
+    transform: scale(0.97);
+}
+
+/* The hovered card — rises off the screen */
+.skills-row .skill-card:hover {
+    transform: translateY(-28px) scale(1.03);
+    z-index: 30;
+    box-shadow:
+        0 2px 4px   rgba(0, 0, 0, 0.4),    /* paper shadow */
+        0 12px 24px rgba(0, 0, 0, 0.5),    /* mid lift */
+        0 28px 52px rgba(0, 0, 0, 0.4),    /* deep cast shadow */
+        0 48px 72px rgba(0, 0, 0, 0.25),   /* far ambient */
+        0 0  50px   rgba(6, 182, 212, 0.12); /* cyan accent glow */
+}
+
+
+/* ──────────────────────────────────────────────────────────── */
+/* HERO MICRO-INTERACTIONS & ANIMATIONS */
+/* ──────────────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 
+================================================================================
+CONTACT ME SECTION CARDS
+================================================================================
+*/
+/* 
+================================================================================
+EDUCATION SECTION CARDS
+================================================================================
+*/
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .education-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.edu-card {
+  --theme-rgb: 0, 224, 255;
+  background: rgba(11, 16, 33, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--theme-rgb), 0.05); /* Lowered base glow */
+  padding: 24px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.edu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 40px rgba(var(--theme-rgb), 0.1); /* Dramatically reduced hover glow */
+}
+
+.edu-card.featured {
+  transform: scale(1.06);
+  border: 1px solid rgba(0, 200, 255, 0.35);
+  box-shadow: 0 0 35px rgba(0, 200, 255, 0.18), 0 0 15px rgba(var(--theme-rgb), 0.05); /* Lowered base glow */
+}
+
+.edu-card.featured:hover {
+  transform: translateY(-4px) scale(1.02); /* Adjusted to preserve pop effect, but much gentler */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 40px rgba(var(--theme-rgb), 0.1); /* Dramatically reduced hover glow */
+}
+
+.edu-card img {
+  width: 65px;
+  margin-bottom: 12px;
+  filter: brightness(1.3) contrast(1.1);
+  opacity: 0.95;
+}
+
+.edu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.edu-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.edu-subtext {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 16px;
+}
+
+.edu-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.edu-value {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.edu-score {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00e0ff;
+}
+
+.edu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+  width: 100%;
+}
+
+.edu-progress-bar {
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.edu-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--fill-color, linear-gradient(90deg, #00e0ff, #00ffa3));
+  animation: fillSemBar 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.edu-section-title {
+  font-size: 36px;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(0, 200, 255, 0.25);
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.edu-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 32px;
+}
+
+/* 
+================================================================================
+SCORE VISUALIZATIONS
+================================================================================
+*/
+.donut-ring {
+  animation: drawDonut 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes drawDonut {
+  from { stroke-dasharray: 0, 100; }
+  to { stroke-dasharray: var(--target), 100; }
+}
+
+.gauge-ring {
+  animation: drawGauge 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes drawGauge {
+  from { stroke-dasharray: 0, 100; }
+  to { stroke-dasharray: var(--target), 100; }
+}
+
+.sem-fill-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--fill-color);
+  width: 0;
+  z-index: 0;
+  border-radius: 8px;
+  animation: fillSemBar 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0.5s);
+  opacity: 0.8;
+}
+
+@keyframes fillSemBar {
+  to { width: var(--target-width); }
+}
+
+/* 
+================================================================================
+B.TECH CARD SPECIFIC STYLES
+================================================================================
+*/
+
+.cgpa-overall {
+  font-size: 32px;
+  font-weight: 700;
+  color: #00e0ff;
+  margin: 16px 0 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cgpa-overall span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.section-mini-title {
+  width: 100%;
+  text-align: left;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 6px;
+}
+
+.sem-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sem-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sem-row.latest {
+  background: rgba(0, 224, 255, 0.05);
+  border: 1px solid rgba(0, 224, 255, 0.15);
+}
+
+.sem-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+}
+
+.sem-score {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  z-index: 10;
+}
+
+.sem-row.latest .sem-score {
+  color: #00e0ff;
+  font-weight: 700;
+}
+
+.sem-current-tag {
+  background: rgba(0, 224, 255, 0.15);
+  color: #00e0ff;
+  font-size: 9px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 10;
+}
+
+/* 
+================================================================================
+ACHIEVEMENTS SECTION CARDS
+================================================================================
+*/
+.achieve-card {
+  --theme-rgb: 139, 92, 246;
+  background: rgba(10, 15, 30, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+  padding: 24px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.achieve-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 40px rgba(var(--theme-rgb), 0.1);
+}
+
+.achieve-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.1);
+  transition: all 0.4s ease;
+}
+
+.achieve-card:hover .achieve-icon-wrapper {
+  background: rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.3);
+  transform: scale(1.1);
+}
+
+.achieve-icon-wrapper svg {
+  width: 28px;
+  height: 28px;
+  color: #a78bfa;
+  filter: brightness(1.3) contrast(1.1) drop-shadow(0 0 8px rgba(167, 139, 250, 0.5));
+}
+
+.achieve-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.achieve-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 16px 0;
+}
+
+.achieve-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 12px;
+}
+
+.achieve-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.achieve-list li .bullet {
+  color: #a78bfa;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.achieve-list li span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+
+.achieve-card:hover .achieve-list li span {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* 
+================================================================================
+CONTACT ME SECTION CARDS
+================================================================================
+*/
+.contact-card {
+    position: relative;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+/* Spinning RGB border that reveals on hover for all cards */
+.contact-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+        from var(--bg-angle, 0deg),
+        rgba(6, 182, 212, 0.1), 
+        rgba(6, 182, 212, 0.8), 
+        rgba(10, 20, 60, 0.5),  
+        rgba(6, 182, 212, 0.8), 
+        rgba(6, 182, 212, 0.1)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: spin-rgb-border 4s linear infinite;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+.contact-card:hover::after {
+    opacity: 1;
+}
+
+/* SMALLER GRID CARDS */
+.simple-card {
+    padding: 24px 16px;
+    background: rgba(15, 23, 42, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.simple-card:hover {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(6, 182, 212, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+.simple-card svg {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 0 0px transparent);
+}
+.simple-card:hover svg {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* HIGHLIGHTED EMAIL CARD (Left Side) */
+.highlight-card {
+    background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.08), transparent 60%), rgba(10, 15, 30, 0.4);
+    border: 1px solid rgba(6, 182, 212, 0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Highlight card starts with some border opacity by default */
+.highlight-card::after {
+    opacity: 0.4;
+}
+
+.highlight-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 35px rgba(6, 182, 212, 0.2);
+}
+.highlight-card:hover::after {
+    opacity: 0.9;
+    animation: spin-rgb-border 2s linear infinite;
+}
+
+/* 
+================================================================================
+SITE FOOTER — PREMIUM GLASSMORPHISM
+================================================================================
+A structured three-column closing section: identity · navigation · mantra.
+*/
+
+.site-footer {
+  width: 100%;
+  padding: 60px 80px 50px;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 15, 30, 0.4),
+    rgba(10, 15, 30, 0.95)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 0;
+  position: relative;
+}
+
+/* Cyan crown glow line above footer content */
+.site-footer::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 224, 255, 0.3),
+    transparent
+  );
+  margin-bottom: 30px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Three-column grid */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* LEFT: Identity */
+.footer-identity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 10px rgba(0, 224, 255, 0.12);
+  opacity: 0.95;
+  filter: brightness(1.1) contrast(1.05);
+  margin-top: 2px;
+  transition: all 0.25s ease;
+}
+
+.footer-profile-img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 14px rgba(0, 224, 255, 0.2);
+}
+
+.footer-name {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* Cyan accent on last name */
+.footer-name .accent {
+  color: #00e0ff;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-style: italic;
+  margin: 0;
+}
+
+/* CENTER: Navigation */
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.footer-nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 224, 255, 0.5);
+  margin-bottom: 10px;
+}
+
+.footer-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.footer-nav ul li a {
+  display: inline-block;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  padding: 3px 0;
+  transition: all 0.25s ease;
+}
+
+.footer-nav ul li a:hover {
+  color: #00e0ff;
+  transform: translateX(4px);
+  text-shadow: 0 0 12px rgba(0, 224, 255, 0.35);
+}
+
+/* RIGHT: Presence */
+.footer-presence {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-mantra {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.65;
+  text-align: right;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Bottom strip */
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+.footer-bottom .accent {
+  color: #00e0ff;
+}
+
+/* Responsive: stack vertically on mobile */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 48px 24px 36px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .footer-identity {
+    align-items: center;
+  }
+
+  .footer-nav {
+    align-items: center;
+  }
+
+  .footer-presence {
+    justify-content: center;
+  }
+
+  .footer-mantra {
+    text-align: center;
+  }
+
+  .footer-nav ul li a:hover {
+    transform: none;
+  }
+}
+
+/* 
+================================================================================
+B.TECH CARD — SEMESTER DASHBOARD STYLES
+================================================================================
+*/
+
+/* Overall CGPA headline */
+.cgpa-overall {
+  font-size: 22px;
+  font-weight: 700;
+  color: #00e0ff;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.cgpa-overall span {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 224, 255, 0.6);
+  margin-left: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* "Performance Trend" mini label */
+.section-mini-title {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+/* Semester rows */
+.sem-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.sem-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sem-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sem-score {
+  font-size: 14px;
+  font-weight: 500;
+  color: #00e0ff;
+  letter-spacing: 0.02em;
+}
+
+/* Latest semester — highlighted, no bottom border */
+.sem-row.latest {
+  border-bottom: none;
+}
+
+.sem-row.latest .sem-score {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* "Latest" pill tag inline with Sem 3 label */
+.sem-current-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 224, 255, 0.7);
+  background: rgba(0, 224, 255, 0.08);
+  border: 1px solid rgba(0, 224, 255, 0.2);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* 
+================================================================================
+SUBTLE SUPPORT FEATURE (Buy Me a Coffee)
+================================================================================
+*/
+
+/* 1. Footer Link */
+.bmc-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b; /* slate-500 */
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.bmc-footer-link:hover {
+  color: #fbbf24; /* amber-400 */
+  background: rgba(251, 191, 36, 0.05);
+}
+
+.bmc-footer-link .bmc-icon {
+  font-size: 14px;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.bmc-footer-link:hover .bmc-icon {
+  transform: translateY(-2px) rotate(5deg);
+  opacity: 1;
+}
+
+/* 2. Blog Post End-of-Article Block */
+.bmc-article-block {
+  margin: 3rem 0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.4); /* subtle slate background */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bmc-article-text {
+  font-size: 0.95rem;
+  color: #94a3b8; /* slate-400 */
+  line-height: 1.6;
+}
+
+.bmc-article-text strong {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* 3. Main Blog Page Block (After Get in Touch) */
+.bmc-blog-block {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.bmc-blog-block:hover {
+  opacity: 1;
+}
+
+.bmc-blog-text {
+  font-size: 0.9rem;
+  color: #64748b; /* slate-500 */
+}
+
+/* Shared Subtle Button */
+.bmc-btn-subtle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  color: #fbbf24; /* amber-400 */
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.bmc-btn-subtle:hover {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.4);
+  color: #fcd34d; /* amber-300 */
+  transform: translateY(-1px);
+}

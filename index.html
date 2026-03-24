@@ -1,0 +1,1747 @@
+<!doctype html>
+<!-- 
+================================================================================
+INDEX.HTML - PORTFOLIO STRUCTURE
+================================================================================
+This is the main structural file for your portfolio. It defines the layout using 
+HTML tags and uses Tailwind CSS (via CDN) to rapidly style elements without writing
+custom CSS for every single block. 
+
+To edit custom glows, animations, or glassmorphism effects, see index.css
+To add interactivity like scroll listeners or clicks, see script.js
+-->
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saptarshi Sadhu Portfolio Home</title>
+
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts for Icons (Material Symbols) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Typography using standard system Times New Roman font -->
+    <!-- You can remove the Google Fonts link below if you only want Times New Roman -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 
+    ----------------------------------------------------------------------------
+    TAILWIND CONFIGURATION
+    ----------------------------------------------------------------------------
+    This script overrides Tailwind's defaults to inject your custom colors
+    and font families.
+    -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#06b6d4",
+              accent: "#0891b2",
+              "background-dark": "#02040a",
+              "glass-bg": "rgba(15, 23, 42, 0.15)",
+              "glass-border": "rgba(255, 255, 255, 0.08)",
+            },
+            fontFamily: {
+              sans: ['"Times New Roman"', "Times", "serif"],
+              display: ['"Times New Roman"', "Times", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Link to your newly separated external stylesheet -->
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <!-- 
+--------------------------------------------------------------------------------
+MAIN BODY
+--------------------------------------------------------------------------------
+The 'selection:bg-primary/30' code dictates what color text highlights turn into
+when you drag your mouse over them.
+-->
+  <body
+    class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none"
+  >
+    <!-- Background Video: Currently set to 20% brightness using the Tailwind 'brightness-[0.2]' class -->
+    <video
+      class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]"
+      autoplay
+      loop
+      muted
+      playsinline
+    >
+      <source src="Background.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- 
+    Nebula Background Layer: 
+    This creates the starry sky effect and the colored glow blobs underneath the text. 
+    It is made semi-transparent so the background video still shows through.
+    -->
+    <div class="nebula-container opacity-50 mix-blend-screen">
+      <div class="stars"></div>
+      <div
+        class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"
+      ></div>
+    </div>
+
+    <!-- BIG DIGITAL GLOBE BACKGROUND -->
+    <!-- Positioned absolutely behind everything, sharp and visible -->
+    <div
+      class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40"
+    >
+      <!-- Using a placeholder for a sharp digital globe with glowing data points -->
+      <img
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+        alt="Digital Data Globe"
+        class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
+        style="
+          mask-image: radial-gradient(circle, black 50%, transparent 100%);
+          -webkit-mask-image: radial-gradient(
+            circle,
+            black 50%,
+            transparent 100%
+          );
+          object-position: center;
+        "
+      />
+    </div>
+
+    <!-- 
+    ----------------------------------------------------------------------------
+    NAVIGATION HEADER
+    ----------------------------------------------------------------------------
+    The 'backdrop-blur-md' creates the frosted glass effect at the top of the page.
+    -->
+    <header
+      class="fixed top-0 z-50 w-full backdrop-blur-md bg-[#02040a]/70 border-b border-white/5"
+    >
+      <div
+        class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between"
+      >
+        <!-- Logo / Name -->
+        <div class="flex items-center gap-3">
+          <!-- Mini circular profile photo as the logo icon -->
+          <img
+            src="my_image.png"
+            alt="Saptarshi"
+            class="w-8 h-8 rounded-full object-cover object-top border border-orange-500/60 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
+          />
+          <span
+            class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase"
+            >Saptarshi • Portfolio</span
+          >
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex items-center gap-4 lg:gap-6">
+          <a class="nav-link" href="/">Home</a>
+          <!-- Links use the custom 'nav-link' class defined in index.css for the RGB hover effect -->
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#skills">Skills</a>
+          <a class="nav-link" href="#projects">Projects</a>
+          <a class="nav-link" href="#experience">Experience</a>
+          <a class="nav-link" href="#education">Education</a>
+          <a class="nav-link" href="#achievements">Achievements</a>
+          <a class="nav-link" href="blog.html">Blog</a>
+          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="#contact"
+            >Contact</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- 
+    ----------------------------------------------------------------------------
+    MAIN CONTENT AREA
+    ----------------------------------------------------------------------------
+    -->
+    <main class="w-full relative z-10">
+      <!-- HERO SECTION (Intro + Photo) -->
+      <section
+        class="max-w-6xl mx-auto px-6 min-h-[100vh] flex flex-col justify-center pt-24 pb-12"
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+          <!-- Left Side: Profile Photo + Circular Orbit -->
+          <div
+            class="flex justify-center lg:justify-start items-center relative py-8"
+          >
+            <div
+              class="relative flex justify-center items-center w-[400px] h-[400px] md:w-[500px] md:h-[500px]"
+              id="orbit-stage"
+            >
+              <!-- ====== MINI GALAXY ORBITAL SYSTEM ====== -->
+
+              <!-- Outer orbit guide track (faint dashed ring) -->
+              <div
+                class="galaxy-ring"
+                style="
+                  width: 480px;
+                  height: 480px;
+                  border: 1px dashed rgba(139, 92, 246, 0.18);
+                  animation: galaxy-cw 120s linear infinite;
+                "
+              ></div>
+
+              <!-- Core energy halo / gravitational well shimmer -->
+              <div
+                class="galaxy-ring"
+                style="
+                  width: 440px;
+                  height: 440px;
+                  border: 1px solid rgba(56, 189, 248, 0.12);
+                  box-shadow:
+                    0 0 40px rgba(6, 182, 212, 0.12) inset,
+                    0 0 60px rgba(6, 182, 212, 0.06);
+                  animation: galaxy-shimmer 5s ease-in-out infinite;
+                  transform: translate(-50%, -50%);
+                "
+              ></div>
+
+              <!-- JavaScript will inject the moving icons, dust, and trails here -->
+              <div
+                id="orbit-icons-container"
+                class="absolute inset-0 z-0 pointer-events-none"
+              ></div>
+
+              <!-- ORANGE RING + PHOTO -->
+              <div
+                class="absolute rounded-full border-[6px] border-orange-500/80 animate-pulse-glow"
+                style="
+                  width: 250px;
+                  height: 250px;
+                  z-index: 10;
+                  pointer-events: none;
+                  box-shadow: 0 0 40px rgba(249, 115, 22, 0.3);
+                "
+              ></div>
+
+              <img
+                src="my_image.png"
+                alt="Saptarshi Sadhu Photo"
+                class="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] scale-125 -translate-y-4"
+                style="
+                  width: 250px;
+                  height: auto;
+                  position: relative;
+                  z-index: 12;
+                "
+              />
+            </div>
+          </div>
+
+          <!-- Right Side: Text and Buttons -->
+          <div class="max-w-2xl lg:ml-auto">
+            <h1
+              class="text-5xl md:text-7xl font-extrabold leading-tight text-white mb-4 tracking-tight"
+            >
+              I'm Saptarshi Sadhu
+            </h1>
+
+            <p class="text-sm font-bold tracking-[0.2em] uppercase mb-8 h-5">
+              <span id="typing-text" class="animate-text-rgb"></span
+              ><span class="animate-blink">|</span>
+            </p>
+
+            <p
+              class="text-lg text-slate-300 font-normal leading-relaxed mb-10 max-w-xl"
+            >
+              Computer Science student building full-stack applications and
+              scalable systems, while exploring machine learning, system
+              architecture, and modern cloud and DevOps practices.
+            </p>
+
+            <!-- Call to Action Buttons -->
+            <div class="flex flex-wrap items-center gap-4 mb-12">
+              <a
+                class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-cyan-600/20 glass-card border-none"
+                href="#projects"
+              >
+                Download CV
+              </a>
+              <a
+                class="px-8 py-3 border border-white/20 hover:border-white/40 hover:-translate-y-1 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white font-semibold rounded-full transition-all duration-300 glass-card"
+                href="#projects"
+              >
+                My Projects
+              </a>
+            </div>
+
+            <!-- Small informational footer underneath the buttons -->
+            <div
+              class="flex items-center gap-6 text-xs text-slate-500 font-medium border-l border-white/10 pl-4"
+            >
+              <span>Projects • Research • Experiments</span>
+
+              <span>Full-Stack • Machine Learning • Systems</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        3D WORKSTATION SECTION
+        ----------------------------------------------------------------------------
+        -->
+      <section
+        class="relative w-full h-[700px] flex items-center justify-center overflow-hidden select-none z-0 mt-8 mb-4"
+      >
+        <!-- Background Ambient Glow & Light Streaks -->
+        <div class="absolute inset-0 pointer-events-none">
+          <div
+            class="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/2"
+          ></div>
+          <div
+            class="absolute top-1/2 left-[40%] w-[500px] h-[500px] bg-cyan-400/15 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2"
+          ></div>
+        </div>
+
+        <!-- 3D Model Wrapper (parallax happens here via JS) -->
+        <div
+          id="pc-container"
+          class="relative w-full max-w-5xl mx-auto px-6 h-full flex items-center justify-center animate-pc-float"
+        >
+          <model-viewer
+            src="port3d.glb"
+            camera-controls="true"
+            interaction-prompt="none"
+            alt="A 3D model of a modern developer workstation"
+            class="w-[1000px] h-[1000px] max-w-full drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="0.8"
+            camera-orbit="0deg 80deg auto"
+            style="transform: scale(1.7); touch-action: pan-y"
+          >
+          </model-viewer>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        ABOUT ME TEXT SECTION
+        ----------------------------------------------------------------------------
+        -->
+      <section
+        id="about"
+        class="max-w-7xl mx-auto px-6 py-24 relative z-10 text-center"
+      >
+        <h1
+          class="text-5xl md:text-6xl font-orbitron font-black text-white mb-6 tracking-widest uppercase fade-up"
+          style="animation-delay: 0s"
+        >
+          About Me
+        </h1>
+        <h2
+          class="text-xl md:text-2xl text-primary font-semibold mb-16 leading-snug max-w-3xl mx-auto fade-up"
+          style="animation-delay: 0.1s"
+        >
+          Designing systems where software, data, and intelligence converge.
+        </h2>
+
+        <div
+          class="grid grid-cols-1 lg:grid-cols-10 gap-6 max-w-7xl mx-auto text-left items-start"
+        >
+          <!-- Main Grid Options (Left Span: 70%) -->
+          <div
+            class="col-span-1 lg:col-span-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 grid-flow-row-dense"
+          >
+            <!-- Card 1: The Foundation (Spans 2 columns on large screens) -->
+            <div
+              class="col-span-1 md:col-span-2 lg:col-span-2 about-card text-left flex flex-col justify-center fade-up"
+              style="--theme-rgb: 6, 182, 212; animation-delay: 0s"
+            >
+              <!-- Network Pulse: Foundation to Systems -->
+              <div
+                class="hidden lg:block path-line-y connect-foundation-systems"
+              >
+                <div class="path-dot-y" style="animation-delay: 0s"></div>
+                <div class="path-dot-y" style="animation-delay: 1s"></div>
+                <div class="path-dot-y" style="animation-delay: 2s"></div>
+              </div>
+              <!-- Network Pulse: Foundation to Algorithms -->
+              <div
+                class="hidden lg:block path-line-x connect-foundation-algorithms"
+              >
+                <div class="path-dot-x" style="animation-delay: 0.5s"></div>
+                <div class="path-dot-x" style="animation-delay: 1.5s"></div>
+                <div class="path-dot-x" style="animation-delay: 2.5s"></div>
+              </div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="material-symbols-outlined text-primary"
+                  >school</span
+                >
+                <h4
+                  class="text-primary font-bold tracking-[0.2em] uppercase text-xs"
+                >
+                  The Foundation
+                </h4>
+              </div>
+              <h3
+                class="text-lg md:text-xl text-slate-300 font-normal leading-relaxed"
+              >
+                I am a Computer Science undergraduate focused on understanding
+                and building complex digital systems. My academic journey has
+                been driven by curiosity about how software, data, and
+                infrastructure interact to create scalable and intelligent
+                applications. This focus is reflected in my academic
+                performance, maintaining CGPAs of 9.3, 9.5, and 9.43 across
+                semesters.
+              </h3>
+            </div>
+
+            <!-- Card 2: The Problem Solver -->
+            <div
+              class="col-span-1 md:col-span-1 lg:col-span-1 about-card text-left overflow-hidden flex flex-col justify-center fade-up"
+              style="--theme-rgb: 34, 211, 238; animation-delay: 0.15s"
+            >
+              <!-- Network Pulse: Algorithms to Ecosystems -->
+              <div
+                class="hidden lg:block path-line-y connect-algorithms-ecosystems"
+              >
+                <div class="path-dot-y" style="animation-delay: 0s"></div>
+                <div class="path-dot-y" style="animation-delay: 1s"></div>
+                <div class="path-dot-y" style="animation-delay: 2s"></div>
+              </div>
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] rounded-full mix-blend-screen pointer-events-none"
+              ></div>
+              <div class="flex items-center gap-3 mb-4 relative z-10">
+                <span class="material-symbols-outlined text-cyan-400"
+                  >code_blocks</span
+                >
+                <h4
+                  class="text-cyan-400 font-bold tracking-[0.2em] uppercase text-xs"
+                >
+                  Algorithms
+                </h4>
+              </div>
+              <h3
+                class="text-lg text-slate-300 font-normal leading-relaxed relative z-10"
+              >
+                I maintain a strong focus on algorithmic thinking and problem
+                solving, earning 4★ in C, 3★ in C++, and 3★ in Problem Solving
+                on HackerRank.
+              </h3>
+            </div>
+
+            <!-- Card 3: The Architect -->
+            <div
+              class="col-span-1 md:col-span-1 lg:col-span-1 about-card text-left flex flex-col justify-center fade-up"
+              style="--theme-rgb: 192, 132, 252; animation-delay: 0.45s"
+            >
+              <!-- Network Pulse: Systems to Ecosystems -->
+              <div
+                class="hidden lg:block path-line-x connect-systems-ecosystems"
+              >
+                <div class="path-dot-x" style="animation-delay: 1.5s"></div>
+                <div class="path-dot-x" style="animation-delay: 2.5s"></div>
+                <div class="path-dot-x" style="animation-delay: 3.5s"></div>
+              </div>
+              <!-- Network Pulse: Systems to Research -->
+              <div class="hidden lg:block path-line-y connect-systems-research">
+                <div class="path-dot-y" style="animation-delay: 0.5s"></div>
+                <div class="path-dot-y" style="animation-delay: 1.5s"></div>
+                <div class="path-dot-y" style="animation-delay: 2.5s"></div>
+              </div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="material-symbols-outlined text-purple-400"
+                  >architecture</span
+                >
+                <h4
+                  class="text-purple-400 font-bold tracking-[0.2em] uppercase text-xs"
+                >
+                  System Architecture
+                </h4>
+              </div>
+              <h3 class="text-lg text-slate-300 font-normal leading-relaxed">
+                My work spans full-stack development, algorithmic problem
+                solving, and machine learning research. I enjoy designing
+                systems end-to-end — from frontend interfaces and backend
+                services to databases and infrastructure — ensuring that each
+                layer works cohesively within a larger architecture.
+              </h3>
+            </div>
+
+            <!-- Card 4: The Synthesizer -->
+            <div
+              class="col-span-1 md:col-span-2 lg:col-span-2 about-card text-left flex flex-col justify-center fade-up"
+              style="--theme-rgb: 244, 114, 182; animation-delay: 0.6s"
+            >
+              <!-- Network Pulse: Ecosystems to Research -->
+              <div
+                class="hidden lg:block path-line-y connect-ecosystems-research"
+              >
+                <div class="path-dot-y" style="animation-delay: 0s"></div>
+                <div class="path-dot-y" style="animation-delay: 1s"></div>
+                <div class="path-dot-y" style="animation-delay: 2s"></div>
+              </div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="material-symbols-outlined text-pink-400">hub</span>
+                <h4
+                  class="text-pink-400 font-bold tracking-[0.2em] uppercase text-xs"
+                >
+                  Tech Ecosystems
+                </h4>
+              </div>
+              <h3 class="text-lg text-slate-300 font-normal leading-relaxed">
+                I actively strengthen my technical foundation through continuous
+                learning and experimentation across modern technologies
+                including JavaScript ecosystems, Python, React, Node.js,
+                databases, cloud platforms, and AI frameworks. Rather than
+                treating tools as isolated skills, I focus on understanding how
+                technologies integrate to form complete software ecosystems.
+                This includes how frontend frameworks interact with backend
+                services, how data flows through applications, and how
+                infrastructure supports scalable deployments. Through structured
+                learning, project development, and experimentation, I
+                continuously expand my exposure to different programming
+                paradigms, frameworks, and architectural patterns. This approach
+                helps me build a deeper understanding of the broader software
+                landscape rather than limiting myself to a single stack.
+              </h3>
+            </div>
+
+            <!-- Card 5: The Researcher -->
+            <div
+              class="col-span-1 md:col-span-2 lg:col-span-3 about-card text-left flex flex-col justify-center overflow-hidden fade-up"
+              style="--theme-rgb: 52, 211, 153; animation-delay: 0.75s"
+            >
+              <!-- Network Pulse: Research to Vision -->
+              <div class="hidden lg:block path-line-y connect-research-vision">
+                <div class="path-dot-y" style="animation-delay: 0s"></div>
+                <div class="path-dot-y" style="animation-delay: 1s"></div>
+                <div class="path-dot-y" style="animation-delay: 2s"></div>
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full mix-blend-screen pointer-events-none -translate-x-10 translate-y-10"
+              ></div>
+              <div class="flex items-center gap-3 mb-4 relative z-10">
+                <span class="material-symbols-outlined text-emerald-400"
+                  >science</span
+                >
+                <h4
+                  class="text-emerald-400 font-bold tracking-[0.2em] uppercase text-xs"
+                >
+                  Machine Learning Research
+                </h4>
+              </div>
+              <h3
+                class="text-lg md:text-xl text-slate-300 font-normal leading-relaxed relative z-10"
+              >
+                Alongside software development, I am actively involved in ML
+                research on urban air quality prediction, exploring models that
+                analyze pollutants (VOCs, O₃, NOx) using environmental and
+                temporal data. The project investigates how data-driven
+                techniques can help understand complex patterns and support
+                better forecasting.
+              </h3>
+            </div>
+
+            <!-- Card 6: The Vision (Spans full width of the left 3 columns) -->
+            <div
+              class="col-span-1 md:col-span-2 lg:col-span-3 about-card text-center bg-primary/5 overflow-hidden group fade-up"
+              style="--theme-rgb: 6, 182, 212; animation-delay: 0.9s"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl"
+              ></div>
+              <h4
+                class="text-primary font-bold tracking-[0.3em] uppercase text-sm mb-6 relative z-10"
+              >
+                Long-Term Vision
+              </h4>
+              <h3
+                class="text-[1.6rem] leading-[1.5] text-white font-semibold max-w-4xl mx-auto relative z-10"
+              >
+                My long-term goal is to grow into an engineer capable of
+                designing intelligent systems, building scalable software
+                infrastructure, and contributing to technologies that operate at
+                real-world scale.
+              </h3>
+            </div>
+
+            <!-- </div> Closes the Left Grid -->
+          </div>
+
+          <!-- </div> Closes the Left Grid -->
+          <!-- Key Highlights Sidebar (Right Span: 30%) -->
+          <!-- Key Highlights Sidebar (Right Span: 30%) -->
+          <div
+            class="col-span-1 lg:col-span-3 about-card overflow-hidden flex flex-col h-full bg-cyan-950/10 justify-between fade-up"
+            style="--theme-rgb: 34, 211, 238; animation-delay: 0.3s"
+          >
+            <!-- Glowing background accent -->
+            <div
+              class="absolute top-[-50px] right-[-50px] w-40 h-40 bg-cyan-500/15 blur-[60px] rounded-full pointer-events-none"
+            ></div>
+
+            <div
+              class="flex items-center gap-3 relative z-10 border-b border-cyan-500/20 pb-4"
+            >
+              <span class="material-symbols-outlined text-cyan-400"
+                >workspace_premium</span
+              >
+              <h3
+                class="text-cyan-400 font-bold tracking-[0.2em] uppercase text-sm"
+              >
+                Key Highlights
+              </h3>
+            </div>
+
+            <!-- Education -->
+            <div class="relative z-10 my-auto">
+              <h4
+                class="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em] mb-5 border-l-2 border-cyan-400 pl-2"
+              >
+                Education
+              </h4>
+
+              <div class="space-y-4 pl-3">
+                <div>
+                  <h5
+                    class="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-1"
+                  >
+                    WBBSE
+                  </h5>
+                  <div class="text-white font-mono text-[14px]">
+                    <span class="text-cyan-300 leading-none">93.71%</span>
+                  </div>
+                </div>
+                <div>
+                  <h5
+                    class="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-1"
+                  >
+                    WBCHSE
+                  </h5>
+                  <div class="text-white font-mono text-[14px]">
+                    <span class="text-cyan-300 leading-none">89.60%</span>
+                  </div>
+                </div>
+                <div>
+                  <h5
+                    class="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-1"
+                  >
+                    CGPA (Current)
+                  </h5>
+                  <div
+                    class="text-white font-mono text-[14px] flex items-center space-x-1.5"
+                  >
+                    <span class="text-cyan-300">9.3</span>
+                    <span class="text-slate-500">•</span>
+                    <span class="text-cyan-300">9.5</span>
+                    <span class="text-slate-500">•</span>
+                    <span class="text-cyan-300 leading-none">9.43</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlights-divider"></div>
+
+            <!-- Coding -->
+            <div class="relative z-10 my-auto">
+              <h4
+                class="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em] mb-5 border-l-2 border-cyan-400 pl-2"
+              >
+                Coding
+              </h4>
+
+              <div class="pl-3">
+                <h5
+                  class="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-3"
+                >
+                  HackerRank
+                </h5>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-200 text-sm font-medium">C</span>
+                    <span
+                      class="text-yellow-400 font-bold text-xs bg-yellow-400/10 px-2 py-1 rounded"
+                      >4★</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-200 text-sm font-medium">C++</span>
+                    <span
+                      class="text-yellow-400 font-bold text-xs bg-yellow-400/10 px-2 py-1 rounded"
+                      >3★</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-200 text-sm font-medium"
+                      >Problem Solving</span
+                    >
+                    <span
+                      class="text-yellow-400 font-bold text-xs bg-yellow-400/10 px-2 py-1 rounded"
+                      >3★</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlights-divider"></div>
+
+            <!-- Research -->
+            <div class="relative z-10 my-auto">
+              <h4
+                class="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em] mb-4 border-l-2 border-cyan-400 pl-2"
+              >
+                Research
+              </h4>
+
+              <div
+                class="text-slate-200 text-[13px] font-medium leading-relaxed pl-3"
+              >
+                Urban Air Quality Prediction<br />
+                <span
+                  class="text-cyan-500/80 text-xs font-mono mt-1 block tracking-tight"
+                  >(VOCs, O₃, NOx)</span
+                >
+              </div>
+            </div>
+
+            <div class="highlights-divider"></div>
+
+            <!-- Engineering Experiments -->
+            <div class="relative z-10 my-auto">
+              <h4
+                class="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em] mb-4 border-l-2 border-cyan-400 pl-2"
+              >
+                Engineering Experiments
+              </h4>
+
+              <div class="space-y-4 pl-3">
+                <div>
+                  <h5
+                    class="text-slate-200 text-[13px] font-medium leading-relaxed mb-0.5"
+                  >
+                    Authentication Flow Prototype
+                  </h5>
+                  <div
+                    class="text-cyan-500/80 text-[11px] font-mono tracking-tight"
+                  >
+                    Node.js · Express · MongoDB
+                  </div>
+                </div>
+                <div>
+                  <h5
+                    class="text-slate-200 text-[13px] font-medium leading-relaxed mb-0.5"
+                  >
+                    Interactive Portfolio Interface
+                  </h5>
+                  <div
+                    class="text-cyan-500/80 text-[11px] font-mono tracking-tight"
+                  >
+                    HTML · CSS · JavaScript · WebGL
+                  </div>
+                </div>
+                <div>
+                  <h5
+                    class="text-slate-200 text-[13px] font-medium leading-relaxed mb-0.5"
+                  >
+                    Frontend Component Experiments
+                  </h5>
+                  <div
+                    class="text-cyan-500/80 text-[11px] font-mono tracking-tight"
+                  >
+                    Responsive UI · Animations · Layout Systems
+                  </div>
+                </div>
+                <div>
+                  <h5
+                    class="text-slate-200 text-[13px] font-medium leading-relaxed mb-0.5"
+                  >
+                    Backend API Practice
+                  </h5>
+                  <div
+                    class="text-cyan-500/80 text-[11px] font-mono tracking-tight"
+                  >
+                    REST APIs · Database Integration
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlights-divider"></div>
+
+            <!-- Focus -->
+            <div class="relative z-10 my-auto">
+              <h4
+                class="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em] mb-4 border-l-2 border-cyan-400 pl-2"
+              >
+                Focus
+              </h4>
+
+              <div class="flex flex-wrap gap-2 pl-3">
+                <span
+                  class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] text-slate-300 tracking-wide font-medium"
+                  >Full-Stack Systems</span
+                >
+                <span
+                  class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] text-slate-300 tracking-wide font-medium"
+                  >Android Development</span
+                >
+                <span
+                  class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] text-slate-300 tracking-wide font-medium"
+                  >Game Development</span
+                >
+                <span
+                  class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] text-slate-300 tracking-wide font-medium"
+                  >Machine Learning</span
+                >
+                <span
+                  class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] text-slate-300 tracking-wide font-medium"
+                  >Cloud & DevOps</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        SKILLS & TECH STACK MATRIX
+        ----------------------------------------------------------------------------
+        -->
+      <section
+        id="skills"
+        class="max-w-7xl mx-auto px-6 py-24 relative z-10 w-full mb-12 skills-section"
+      >
+        <div class="mb-12 fade-up" style="animation-delay: 0s">
+          <h3
+            class="text-sm font-bold tracking-widest text-primary uppercase mb-2"
+          >
+            Technical Proficiency
+          </h3>
+          <h2
+            class="text-4xl md:text-5xl font-serif text-white font-bold tracking-tight mb-2 title-glow"
+          >
+            Skills & Tech Stack
+          </h2>
+        </div>
+
+        <!-- ═══ ROW 1: 3 Cards ═══ -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 skills-row">
+
+          <!-- Programming Languages -->
+          <div class="bg-[#0b1121] border border-cyan-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.1s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-cyan-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-cyan-400 leading-none">terminal</span>
+              Programming Languages
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">core · systems · mobile</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Python" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="JavaScript" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="TypeScript" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Java" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="C" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="C++" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Dart" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Kotlin" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="C#" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Go" data-level="Beginner"></div>
+              <div class="w-full skill-row" data-name="Rust" data-level="Beginner"></div>
+            </div>
+          </div>
+
+          <!-- Web Technologies -->
+          <div class="bg-[#0b1121] border border-blue-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.2s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-blue-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-blue-400 leading-none">language</span>
+              Web Technologies
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">frontend · frameworks · ui</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="React" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="HTML/CSS" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="Next.js" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="Tailwind CSS" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Vite" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Bootstrap" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Vue.js" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="jQuery" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="EJS" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Nuxt.js" data-level="Beginner"></div>
+            </div>
+          </div>
+
+          <!-- Databases & BaaS -->
+          <div class="bg-[#0b1121] border border-violet-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.3s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-violet-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-violet-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-violet-400 leading-none">database</span>
+              Databases &amp; BaaS
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">storage · realtime · persistence</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="MySQL" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="Supabase" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="MongoDB" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="PostgreSQL" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Firebase" data-level="Beginner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ ROW 2: 3 Cards ═══ -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 skills-row">
+
+          <!-- Backend Frameworks -->
+          <div class="bg-[#0b1121] border border-cyan-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.1s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-cyan-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-cyan-400 leading-none">dns</span>
+              Backend Frameworks
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">apis · servers · microservices</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Express.js" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="Node.js" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Django" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Flask" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Spring Boot" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name=".NET Framework" data-level="Beginner"></div>
+            </div>
+          </div>
+
+          <!-- Tools & Platforms -->
+          <div class="bg-[#0b1121] border border-blue-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.2s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-blue-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-blue-400 leading-none">handyman</span>
+              Tools &amp; Platforms
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">dev environment · productivity</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Git &amp; GitHub" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="VS Code" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="Android Studio" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Cursor" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Linux" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="CLI Tools" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Docker" data-level="Beginner"></div>
+              <div class="w-full skill-row" data-name="Unity" data-level="Beginner"></div>
+            </div>
+          </div>
+
+          <!-- Cloud Infrastructure -->
+          <div class="bg-[#0b1121] border border-violet-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.3s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-violet-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-violet-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-violet-400 leading-none">cloud</span>
+              Cloud Infrastructure
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">deploy · scale · distribute</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Cloudflare" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="AWS" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Google Cloud" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Azure" data-level="Beginner"></div>
+              <div class="w-full skill-row" data-name="Kubernetes" data-level="Beginner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ ROW 3: 2 Balanced Cards ═══ -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto skills-row">
+
+          <!-- Machine Learning Research -->
+          <div class="bg-[#0b1121] border border-emerald-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.1s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-emerald-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-emerald-400 leading-none">science</span>
+              Machine Learning Research
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">Urban Air Quality Prediction · VOCs, O&#x2083;, NOx</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Anaconda" data-level="Advanced"></div>
+              <div class="w-full skill-row" data-name="PyTorch" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="TensorFlow" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Data Analysis &amp; Modeling" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Research Methodology" data-level="Intermediate"></div>
+            </div>
+          </div>
+
+          <!-- Current Focus -->
+          <div class="bg-[#0b1121] border border-purple-500/20 rounded-2xl p-6 skill-card fade-up transition-all duration-300 relative overflow-hidden" style="animation-delay:0.2s">
+            <div class="absolute -top-8 -right-8 w-28 h-28 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <h4 class="text-purple-400 text-[12px] font-bold tracking-[0.18em] uppercase mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-purple-400 leading-none">track_changes</span>
+              Current Focus
+            </h4>
+            <p class="text-slate-600 text-[10px] mb-5 font-mono">AI × backend engineering × scalable systems</p>
+            <div class="space-y-3">
+              <div class="w-full skill-row" data-name="Full Stack Architecture" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Scalable Backend Systems" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="DevOps &amp; Deployment" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="Real-world ML Applications" data-level="Intermediate"></div>
+              <div class="w-full skill-row" data-name="AI System Design" data-level="Intermediate"></div>
+              
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        PROJECTS PORTFOLIO CARDS
+        ----------------------------------------------------------------------------
+        Divided into two categories (System/Low Level and Mobile/UI). 
+        The 'glass-card' class makes them look frosted and slightly transparent.
+        -->
+      <section class="max-w-6xl mx-auto px-6 py-32" id="projects">
+        <h2
+          class="text-sm font-bold tracking-widest text-primary uppercase mb-12"
+        >
+          Selected Projects
+        </h2>
+
+        <!-- Category 1: C & Systems -->
+        <div class="mb-24">
+          <div
+            class="flex items-baseline gap-4 border-b border-white/5 pb-4 mb-8"
+          >
+            <h3 class="text-xl font-bold text-white">C &amp; Systems</h3>
+            <span class="text-slate-500 text-sm font-mono"
+              >low-level &amp; performance</span
+            >
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Project Card 1 -->
+            <div
+              class="group glass-card p-5 rounded-2xl transition-all duration-300"
+            >
+              <div
+                class="aspect-video w-full rounded-xl bg-black/40 overflow-hidden mb-6 border border-white/5 relative"
+              >
+                <!-- Update the 'src' link here to change the thumbnail! -->
+                <img
+                  alt="Memory Allocator Visualization"
+                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBeURq1KzXC2bp43OcaoZa865oPkbWjol4Oh5ZxdEl9GmtJKAIFs-g5sBMrzFx-rPVNrMBMIFlW8QuRTHD03TqxdjUxM0Ekv2P4j-CsWV-ePLOhZ9QJg5OKCDGRmxMEjESQQA1LLbYDAXjMiLJY7M_Hr7Wa8vN1cMtlTwG0uZGAEEsawKNyJpqWBZ95Nkeeig3OPJ155SulAqKry8Lqel-bJ5TgZCRXShYCyS5GBQ3XwZvO7GzFw1IkgDms9AN913vwprfnwXT6V-t"
+                />
+              </div>
+              <h4
+                class="text-white text-lg font-bold mb-3 group-hover:text-primary transition-colors"
+              >
+                Custom Memory Allocator
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed mb-2">
+                A high-performance thread-safe malloc implementation with
+                minimal fragmentation using segregated fits.
+              </p>
+            </div>
+
+            <!-- Project Card 2 -->
+            <div
+              class="group glass-card p-5 rounded-2xl transition-all duration-300"
+            >
+              <div
+                class="aspect-video w-full rounded-xl bg-black/40 overflow-hidden mb-6 border border-white/5 relative"
+              >
+                <!-- Update the 'src' link here to change the thumbnail! -->
+                <img
+                  alt="Network Protocol Shell"
+                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdZQ2W_7xnUnETm32Vz9BM_POoBs4NgEUPD27rNP6frBTepllluFlYRbJYv6paNowNUINZvYB4vqKg4z_Xpr9SfGZ_1Q7swPbo5gQ15-bL5SL7-XY9zF99fxq1vQtZzpDoMXPDSrWzkjqLMcUvtM-yXtlElLMsj6grFoSJN0zYIS0gCfSd498LqjsAM_UBhqz6wdd_i-ddS902zKeLG0cqFLrd9BCBTQaiLlM3oTYZIgLJXPBQo-wna0QjoAyL6fy0w8viR4etlF_M"
+                />
+              </div>
+              <h4
+                class="text-white text-lg font-bold mb-3 group-hover:text-primary transition-colors"
+              >
+                TCP/IP Stack Simulation
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed mb-2">
+                Network packet processing engine for handling custom transport
+                layer protocols in user space.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2: Flutter & Mobile -->
+        <div class="mb-24">
+          <div
+            class="flex items-baseline gap-4 border-b border-white/5 pb-4 mb-8"
+          >
+            <h3 class="text-xl font-bold text-white">Flutter &amp; Mobile</h3>
+            <span class="text-slate-500 text-sm font-mono"
+              >cross-platform UI</span
+            >
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Project Card 3 -->
+            <div
+              class="group glass-card p-5 rounded-2xl transition-all duration-300"
+            >
+              <div
+                class="aspect-video w-full rounded-xl bg-black/40 overflow-hidden mb-6 border border-white/5 relative"
+              >
+                <!-- Update the 'src' link here to change the thumbnail! -->
+                <img
+                  alt="Fitness App UI"
+                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOONIjhwuUaZ5Qlj3R7xsXgzwsfKGZF1VdgwTdph-C3_mnXiIsgXwu3ue0XvZDFZw3SmW3bClaiL_CvrcLEZum6sYzhl93T_akhPs2Wn1GIJH0yOfmUkeEInNAKPHWF-ogz_HWNNx83lT0wOn1OJg9ELONrw6ZpUwpDT2j7dFmEaRrjt6dqDoUSnK2vNEWGTS_iQNwcQAyg9cAUeRSxM-YD-XP7EXkj6bIKLhkDsFLIkneIE_HunwqDCTst6Peq1EgchA-wxh9zP4O"
+                />
+              </div>
+              <h4
+                class="text-white text-lg font-bold mb-3 group-hover:text-primary transition-colors"
+              >
+                Focus Flow
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed mb-2">
+                Minimalist productivity tracker featuring smooth 60fps
+                animations and offline-first architecture.
+              </p>
+            </div>
+
+            <!-- Project Card 4 -->
+            <div
+              class="group glass-card p-5 rounded-2xl transition-all duration-300"
+            >
+              <div
+                class="aspect-video w-full rounded-xl bg-black/40 overflow-hidden mb-6 border border-white/5 relative"
+              >
+                <!-- Update the 'src' link here to change the thumbnail! -->
+                <img
+                  alt="Finance Dashboard"
+                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_O4US713IFxTqNUbrWxIFLEyOChEEv2cZyPHuBW9dgwY1f9VeD9sMS6md5kM_ZxR37Ck7jNPRZmQm-VFFwxn4Df4EHqHDARlNp8JfkIVnB7xI1Z2PIQTTZ_nPd59IkJpg7Dpinb55BYaESLjiArn3UbJuhrUgdcUs3hx9UbQX2Vx2YEKm3boPOfznazkLM32dpJ2GX0mHb6sqPDWTdUmerJTOl_4xsDFakkk7XywtobMHRm1dD39O4KcFjnrozYWEFds4eu_8vX2P"
+                />
+              </div>
+              <h4
+                class="text-white text-lg font-bold mb-3 group-hover:text-primary transition-colors"
+              >
+                Wealth Watch
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed mb-2">
+                Cryptocurrency portfolio manager with real-time websocket
+                updates and custom chart rendering.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        RESEARCH PUBLICATIONS SECTION
+        ----------------------------------------------------------------------------
+        Larger grid cards.
+        -->
+      <section class="max-w-6xl mx-auto px-6 py-32" id="research">
+        <h2
+          class="text-sm font-bold tracking-widest text-primary uppercase mb-12"
+        >
+          Research &amp; Publications
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Research Card 1 -->
+          <div
+            class="glass-card p-8 rounded-2xl border border-white/5 group hover:border-primary/20 transition-all duration-300"
+          >
+            <div class="flex flex-col h-full">
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary rounded-full border border-primary/20"
+                  >Machine Learning</span
+                >
+                <span class="text-slate-500 text-xs font-mono">March 2024</span>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300 leading-tight"
+              >
+                Optimizing Distributed Inference in Latency-Critical Edge
+                Environments
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                Investigated novel partitioning strategies for deep neural
+                networks across heterogeneous edge nodes. The proposed model
+                reduces communication overhead by 34% while maintaining model
+                accuracy in dynamic network conditions.
+              </p>
+              <div class="pt-6 border-t border-white/5">
+                <a
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-white transition-colors group/link"
+                  href="#"
+                >
+                  Read Paper
+                  <span
+                    class="material-symbols-outlined text-base group-hover/link:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Research Card 2 -->
+          <div
+            class="glass-card p-8 rounded-2xl border border-white/5 group hover:border-primary/20 transition-all duration-300"
+          >
+            <div class="flex flex-col h-full">
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary rounded-full border border-primary/20"
+                  >Operating Systems</span
+                >
+                <span class="text-slate-500 text-xs font-mono"
+                  >November 2023</span
+                >
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300 leading-tight"
+              >
+                Predictive Cache Management for High-Frequency I/O Operations
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                Developed a heuristic-based prefetching algorithm for
+                non-volatile memory architectures. This research demonstrates a
+                significant reduction in tail latency for database workloads
+                under heavy concurrent access.
+              </p>
+              <div class="pt-6 border-t border-white/5">
+                <a
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-white transition-colors group/link"
+                  href="#"
+                >
+                  Read Paper
+                  <span
+                    class="material-symbols-outlined text-base group-hover/link:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- 
+        ----------------------------------------------------------------------------
+        EDUCATION SECTION
+        ----------------------------------------------------------------------------
+        -->
+      <section id="education" class="py-24 relative overflow-hidden">
+        <!-- Atmospheric Orbs -->
+        <div class="blur-orb bg-cyan-900/20 w-[500px] h-[500px] top-1/2 right-0 transform -translate-y-1/2 pointer-events-none absolute"></div>
+        <div class="blur-orb bg-indigo-900/20 w-[350px] h-[350px] bottom-10 left-10 pointer-events-none absolute"></div>
+
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+          
+          <!-- Section Header -->
+          <div class="mb-16 md:mb-24 animate-fade-in-up text-center flex flex-col items-center">
+            <h3 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">Academic Background</h3>
+            <h2 class="text-4xl md:text-5xl font-serif text-white font-bold tracking-tight mb-4 title-glow">Education</h2>
+            <p class="text-slate-400 text-base max-w-xl">Consistent academic performance with strong technical foundation.</p>
+          </div>
+
+          <!-- Education Cards Grid -->
+          <div class="education-grid relative">
+
+            <!-- Card 1: Secondary -->
+            <div class="edu-card animate-fade-in-up" auto-delay="0.1s">
+              <img src="assets/wbbse.png" alt="WBBSE Logo">
+              <h3 class="edu-title">Secondary Education</h3>
+              <p class="edu-subtext">B. T. Road Gov. Spon. H. S. School</p>
+              
+              <div class="edu-divider"></div>
+
+              <div class="edu-row mb-2">
+                <span class="edu-label">Board</span>
+                <span class="edu-value">WBBSE</span>
+              </div>
+              <div class="edu-row mb-2">
+                <span class="edu-label">Passing Year</span>
+                <span class="edu-value">2019</span>
+              </div>
+              <div class="edu-row mb-2">
+                <span class="edu-label">Curriculum</span>
+                <span class="edu-value">General</span>
+              </div>
+              <!-- Donut Score Visualizer -->
+              <div class="mt-8 flex flex-col items-center justify-center">
+                <div class="relative w-24 h-24 flex items-center justify-center">
+                  <!-- Background ring -->
+                  <svg class="w-full h-full transform -rotate-90 drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]" viewBox="0 0 36 36">
+                    <path class="text-slate-700/50" stroke-width="2.5" stroke="currentColor" fill="none"
+                          stroke-dasharray="2 2"
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <!-- Foreground ring -->
+                    <path class="donut-ring text-cyan-400" stroke-width="2.5" stroke="currentColor" fill="none"
+                          stroke-linecap="round" stroke-dasharray="0, 100"
+                          style="--target: 93.71;"
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                  <div class="absolute inset-0 flex items-center justify-center flex-col">
+                    <span class="text-xl font-bold text-white tracking-wide">93.7<span class="text-xs text-cyan-400">%</span></span>
+                  </div>
+                </div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-3 font-semibold">Overall Score</span>
+              </div>
+            </div>
+
+            <!-- Card 2: Higher Secondary -->
+            <div class="edu-card animate-fade-in-up" auto-delay="0.2s">
+              <img src="assets/wbchse.png" alt="WBCHSE Logo" style="background-color: white; border-radius: 50%; padding: 4px;">
+              <h3 class="edu-title">Higher Secondary</h3>
+              <p class="edu-subtext">B. T. Road Gov. Spon. H. S. School</p>
+              
+              <div class="edu-divider"></div>
+              
+              <div class="edu-row mb-2">
+                <span class="edu-label">Board</span>
+                <span class="edu-value">WBCHSE</span>
+              </div>
+              <div class="edu-row mb-2">
+                <span class="edu-label">Passing Year</span>
+                <span class="edu-value">2021</span>
+              </div>
+              <div class="edu-row mb-2">
+                <span class="edu-label">Stream</span>
+                <span class="edu-value">Pure Science (PCMB)</span>
+              </div>
+              <!-- Gauge Score Visualizer -->
+              <div class="mt-8 flex flex-col items-center justify-center">
+                <div class="relative w-32 h-16 flex items-end justify-center overflow-hidden">
+                  <svg class="w-full h-full transform drop-shadow-[0_0_8px_rgba(34,197,94,0.3)]" viewBox="0 0 36 18">
+                    <!-- Background half-ring -->
+                    <path class="text-slate-700/50" stroke-width="2.5" stroke="currentColor" fill="none"
+                          stroke-dasharray="2 2"
+                          d="M 2.0845 18 a 15.9155 15.9155 0 0 1 31.831 0" />
+                    <!-- Foreground half-ring. 89.6% of 50 = 44.8 -->
+                    <path class="gauge-ring text-green-400" stroke-width="2.5" stroke="currentColor" fill="none"
+                          stroke-linecap="round" stroke-dasharray="0, 100"
+                          style="--target: 44.8;"
+                          d="M 2.0845 18 a 15.9155 15.9155 0 0 1 31.831 0" />
+                  </svg>
+                  <div class="absolute bottom-0 flex flex-col items-center translate-y-2">
+                    <span class="text-xl font-bold text-white tracking-wide">89.6<span class="text-xs text-green-400">%</span></span>
+                  </div>
+                </div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-4 font-semibold">Overall Score</span>
+              </div>
+            </div>
+
+            <!-- Card 3: B.Tech -->
+            <div class="edu-card featured animate-fade-in-up" auto-delay="0.3s">
+              <img src="assets/Adamas_University_Logo.png" alt="Adamas University Logo">
+              <h3 class="edu-title">B.Tech in Computer Science</h3>
+              <p class="edu-subtext">Adamas University</p>
+
+              <div class="edu-divider"></div>
+
+              <div class="edu-row mb-2">
+                <span class="edu-label">Status</span>
+                <span class="edu-value">Ongoing</span>
+              </div>
+
+              <!-- Overall CGPA -->
+              <div class="cgpa-overall">9.41 <span>CGPA</span></div>
+
+              <!-- Semester breakdown -->
+              <div class="section-mini-title">Performance Trend</div>
+
+              <div class="sem-row !flex-col !items-stretch">
+                <div class="flex justify-between items-center w-full">
+                  <span class="sem-label">Sem 1</span>
+                  <span class="sem-score">9.3</span>
+                </div>
+                <div class="edu-progress-bar !mt-2">
+                  <div class="edu-progress-fill" style="--target-width: 93%; --delay: 0.8s; --fill-color: linear-gradient(90deg, #00e0ff, #00ffa3);"></div>
+                </div>
+              </div>
+              <div class="sem-row !flex-col !items-stretch">
+                <div class="flex justify-between items-center w-full">
+                  <span class="sem-label">Sem 2</span>
+                  <span class="sem-score" style="color: #4ade80;">9.5</span>
+                </div>
+                <div class="edu-progress-bar !mt-2">
+                  <div class="edu-progress-fill" style="--target-width: 95%; --delay: 1.0s; --fill-color: linear-gradient(90deg, #4ade80, #22c55e);"></div>
+                </div>
+              </div>
+              <div class="sem-row latest !flex-col !items-stretch">
+                <div class="flex justify-between items-center w-full">
+                  <span class="sem-label">Sem 3 <span class="sem-current-tag">Latest</span></span>
+                  <span class="sem-score">9.43</span>
+                </div>
+                <div class="edu-progress-bar !mt-2">
+                  <div class="edu-progress-fill" style="--target-width: 94.3%; --delay: 1.2s; --fill-color: linear-gradient(90deg, #00e0ff, #0a84ff);"></div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        OPEN TO OPPORTUNITIES
+        ----------------------------------------------------------------------------
+        -->
+      <section id="opportunities" class="py-16 relative overflow-hidden flex flex-col items-center justify-center">
+        <!-- Atmospheric Blur Background -->
+        <div class="blur-orb bg-cyan-900/20 w-[400px] h-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none absolute"></div>
+
+        <div class="container mx-auto px-6 relative z-10 max-w-4xl border-0">
+          
+          <div class="about-card w-full flex flex-col items-center text-center p-10 md:p-14 animate-fade-in-up" auto-delay="0.1s" style="--theme-rgb: 6, 182, 212;">
+            
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                <svg class="w-7 h-7 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09l2.846.813-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path>
+                </svg>
+              </div>
+              <h2 class="text-3xl md:text-4xl font-serif font-bold text-white tracking-tight title-glow">Open to Opportunities</h2>
+            </div>
+            
+            <!-- Urgent Tag -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs md:text-sm font-semibold tracking-wide mb-8">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+              </span>
+              Available for immediate internship opportunities
+            </div>
+
+            <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+              I’m currently looking for opportunities where I can contribute, learn, and build real-world systems. 
+              I enjoy working on backend development, problem solving, and scalable applications.
+            </p>
+
+            <div class="w-full max-w-xl mx-auto flex flex-col items-start gap-5 mb-12 text-left">
+              <div class="flex items-start gap-4">
+                <svg class="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <span class="text-slate-300 text-base md:text-lg">Open to <strong class="text-white font-semibold">Internships (Software Development / Backend / Full-Stack)</strong></span>
+              </div>
+              <div class="flex items-start gap-4">
+                <svg class="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <span class="text-slate-300 text-base md:text-lg">Interested in <strong class="text-white font-semibold">problem-solving and system-focused roles</strong></span>
+              </div>
+              <div class="flex items-start gap-4">
+                <svg class="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <span class="text-slate-300 text-base md:text-lg">Comfortable working with <strong class="text-white font-semibold">Node.js, C++, Java, and databases</strong></span>
+              </div>
+              <div class="flex items-start gap-4">
+                <svg class="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <span class="text-slate-300 text-base md:text-lg">Fast learner with ability to <strong class="text-white font-semibold">build and ship quickly</strong></span>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full mt-2">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=saptarshisadhuofficial@gmail.com" target="_blank" class="px-8 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold text-lg transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] flex items-center justify-center gap-2 w-full sm:w-auto">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Contact Me
+              </a>
+              <a href="https://github.com/SAPTARSHI-coder" target="_blank" class="px-8 py-3.5 rounded-xl bg-[#0f172a]/80 border border-slate-700 hover:border-slate-400 text-white font-bold text-lg transition-all hover:bg-[#1e293b] hover:-translate-y-1 flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg hover:shadow-xl hover:shadow-cyan-500/10">
+                <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View GitHub
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        ACHIEVEMENTS SECTION
+        ----------------------------------------------------------------------------
+        -->
+      <section id="achievements" class="py-24 relative overflow-hidden">
+        <!-- Atmospheric Orbs -->
+        <div class="blur-orb bg-purple-900/20 w-[500px] h-[500px] top-1/2 left-0 transform -translate-y-1/2 pointer-events-none absolute"></div>
+        <div class="blur-orb bg-cyan-900/20 w-[400px] h-[400px] bottom-0 right-20 pointer-events-none absolute"></div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+          
+          <!-- Section Header -->
+          <div class="mb-16 md:mb-24 animate-fade-in-up text-center flex flex-col items-center">
+            <h3 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">Track Record</h3>
+            <h2 class="text-4xl md:text-5xl font-serif text-white font-bold tracking-tight mb-4 title-glow">Achievements &amp; Engagement</h2>
+            <p class="text-slate-400 text-base max-w-xl">Highlights from hackathons, continuous learning, and technical milestones.</p>
+          </div>
+
+          <!-- Achievements Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+            
+            <!-- Card 1: Technical Achievements -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.1s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+              </div>
+              <h3 class="achieve-title">Technical Achievements</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Built a complete full-stack auth system solo, start to finish</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Trained an ML model on real-world air quality data (VOC, O₃, NOx)</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Shipped a Unity horror game prototype with custom AI enemy logic</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Consistently moved from idea to working prototype without extended planning</span></li>
+              </ul>
+            </div>
+
+            <!-- Card 2: Hackathons & Competitions -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.2s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
+              </div>
+              <h3 class="achieve-title">Hackathons &amp; Competitions</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Urban Vision Hackathon 2025 — Ministry of Education, India</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Smart India Hackathon (SIH) — national-level participation</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Adobe India Hackathon — design &amp; tech challenge</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>MH Techin Innovation Challenge — cleared multiple rounds</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Hackground India 2K25 &amp; Ideat-A-Thon via Unstop</span></li>
+              </ul>
+            </div>
+
+            <!-- Card 3: Problem Solving & Coding -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.3s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <h3 class="achieve-title">Coding Engagement</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Solved structured problems in #T20DSA Challenge — Stacks, Queues &amp; Range Queries</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Actively competed in CodeClash August Arena timed challenge</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Competed in Clash of Coders 2.0 and 3.0 — finalist in 2.0</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Engaged in DSA Quiz &amp; Coding Competitions across Unstop</span></li>
+              </ul>
+            </div>
+
+            <!-- Card 4: Events & Workshops -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.4s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+              </div>
+              <h3 class="achieve-title">Events &amp; Workshops</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Competed in 24-Hour UI/UX Design Hackathon using Figma</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Attended React.js Unfiltered — ALCHEMIST workshop</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Engaged in IdeateX ideation &amp; product thinking sessions</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Participated in BuildFolio — portfolio development event</span></li>
+              </ul>
+            </div>
+
+            <!-- Card 5: Aptitude & Tech Assessments -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.5s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              </div>
+              <h3 class="achieve-title">Aptitude &amp; Assessments</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Appeared in technical &amp; aptitude quizzes on Unstop</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Cleared multiple rounds of MH Techin Innovation Challenge</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Participated in cross-domain tech challenges beyond core stack</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 18l6-6-6-6"></path></svg><span>Consistently active across competitive platforms throughout college</span></li>
+              </ul>
+            </div>
+
+            <!-- Card 6: Recognition & Exposure -->
+            <div class="achieve-card animate-fade-in-up" auto-delay="0.6s">
+              <div class="achieve-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              </div>
+              <h3 class="achieve-title">Recognition &amp; Exposure</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Shortlisted for AWS College Showcase Program</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Selected for CTRLS Data Center Industrial Visit</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Participated in Smart India Hackathon — national scale</span></li>
+                <li><svg class="w-4 h-4 bullet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg><span>Represented college at Clash of Coders competition</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        CONTACT SECTION
+        ----------------------------------------------------------------------------
+        -->
+      <section id="contact" class="py-32 relative overflow-hidden flex flex-col items-center justify-center">
+          
+          <!-- Atmospheric Blur Backgrounds -->
+          <div class="blur-orb bg-cyan-900/30 w-[400px] h-[400px] top-10 left-10 pointer-events-none"></div>
+          <div class="blur-orb bg-blue-900/30 w-[300px] h-[300px] bottom-10 right-10 pointer-events-none"></div>
+
+          <div class="container mx-auto px-6 relative z-10 max-w-6xl">
+              
+              <!-- Section Header -->
+              <div class="text-center mb-16 animate-fade-in-up">
+                  <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 title-glow">Let's Connect</h2>
+                  <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">
+                      Open to collaborations, projects, and meaningful conversations.
+                  </p>
+                  <p class="text-cyan-400/80 text-sm md:text-base mt-2 font-medium tracking-wide">
+                      Let’s build something meaningful.
+                  </p>
+              </div>
+
+              <!-- Contact Grid Layout -->
+              <div class="flex flex-col lg:flex-row gap-6">
+                  
+                  <!-- Highlighted Quick Contact Card (Left) -->
+                  <div class="lg:w-1/3 w-full animate-fade-in-up" auto-delay="0.1s">
+                      <div class="contact-card highlight-card h-full flex flex-col justify-center items-center text-center p-8">
+                          <div class="contact-icon-wrapper mb-6 p-4 rounded-full bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-300">
+                              <svg class="w-8 h-8 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                          </div>
+                          <h3 class="text-2xl font-bold text-white mb-2">Prefer email?</h3>
+                          <p class="text-slate-400 mb-8 text-sm">Reach out directly to my inbox.</p>
+                          
+                          <div class="w-full relative group">
+                              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=saptarshisadhuofficial@gmail.com" target="_blank" id="open-email-link" class="bg-[#0a0f1c]/80 border border-slate-700 hover:border-cyan-500 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300 rounded-xl p-3 w-full flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-cyan-500/50" aria-label="Send email">
+                                  <span class="text-slate-200 font-mono text-sm truncate mr-2 ml-2 transition-colors duration-300 group-hover:text-white">saptarshisadhuofficial@gmail.com</span>
+                                  <div class="p-2.5 bg-cyan-500/10 group-hover:bg-cyan-500/20 text-cyan-400 rounded-lg transition-all flex items-center justify-center">
+                                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                  </div>
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Social Links Grid (Right) -->
+                  <div class="lg:w-2/3 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      
+                      <!-- LinkedIn -->
+                      <a href="https://www.linkedin.com/in/saptarshi-sadhu/" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.2s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-blue-500 transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">LinkedIn</h4>
+                          <p class="text-xs text-slate-400">Professional network</p>
+                      </a>
+                      
+                      <!-- GitHub -->
+                      <a href="https://github.com/SAPTARSHI-coder" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.3s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-white transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">GitHub</h4>
+                          <p class="text-xs text-slate-400">Code repositories</p>
+                      </a>
+
+                      <!-- X / Twitter -->
+                      <a href="https://x.com/SaptarshiSadhu_" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.4s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-gray-100 transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">X</h4>
+                          <p class="text-xs text-slate-400">Thoughts & updates</p>
+                      </a>
+                            
+                      <!-- WhatsApp -->
+                      <a href="https://wa.me/9432772854" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.6s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-green-500 transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.033-.967-.275-.099-.477-.148-.678.15-.201.298-.768.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.679-1.634-.929-2.233-.243-.585-.49-.505-.678-.515-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">WhatsApp</h4>
+                          <p class="text-xs text-slate-400">Direct message</p>
+                      </a>
+                      <a href="https://www.facebook.com/saptarshi.sadhu.dev/" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.6s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-blue-500 transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">Facebook</h4>
+                          <p class="text-xs text-slate-400">Connect on Facebook</p>
+                      </a>
+                      <a href="https://www.instagram.com/saptarshi.sadhu/" target="_blank" class="contact-card simple-card group animate-fade-in-up" style="animation-delay: 0.6s;">
+                          <svg class="w-8 h-8 text-slate-400 group-hover:text-pink-500 transition-colors duration-300 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                          <h4 class="text-base font-bold text-white mb-1">Instagram</h4>
+                          <p class="text-xs text-slate-400">Follow on Instagram</p>
+                      </a>
+
+                      <!-- Resume Download -->
+                      
+
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- 
+        ----------------------------------------------------------------------------
+        BUY ME A COFFEE
+        ----------------------------------------------------------------------------
+        -->
+      
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+
+          <!-- LEFT: Identity -->
+          <div class="footer-identity">
+            <img src="my_image.png" alt="Saptarshi Sadhu" class="footer-profile-img">
+            <div>
+              <span class="footer-name">Saptarshi <span class="accent">Sadhu</span></span>
+              <p class="footer-tagline">Building scalable systems<br>with clarity and intent</p>
+            </div>
+          </div>
+
+          <!-- CENTER: Navigation -->
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <span class="footer-nav-label">Navigate</span>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#skills">Skills</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#education">Education</a></li>
+              <li><a href="blog.html">Blog</a></li>
+            </ul>
+          </nav>
+
+          <!-- RIGHT: Presence -->
+          <div class="footer-presence">
+            <span class="footer-mantra">Designed for clarity.<br>Built for scale.</span>
+          </div>
+
+        </div>
+
+        <!-- Bottom strip -->
+        <div class="footer-bottom">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <div>© 2026 Saptarshi Sadhu &nbsp;•&nbsp; <span class="accent">Systems over shortcuts</span></div>
+            <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link">
+              <span class="bmc-icon">☕</span> Support my work &rarr; Buy me a coffee
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Import Google's model-viewer web component for 3D GLB assets -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+    ></script>
+
+    <!-- Connects javascript logic to the DOM -->
+    <script src="script.js"></script>
+  </body>
+</html>
