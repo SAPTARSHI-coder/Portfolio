@@ -39,4 +39,24 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://saptarshisadhu.co.in/blog_posts/ai-system.html</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saptarshisadhu.co.in/blog_posts/dsa.html</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saptarshisadhu.co.in/blog_posts/flutter.html</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
