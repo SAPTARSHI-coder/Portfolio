@@ -1,0 +1,11 @@
+# robots.txt — saptarshisadhu.co.in
+# Allow all crawlers to index all content
+
+User-agent: *
+Allow: /
+
+# Block access to any development or private dirs (add as needed)
+Disallow: /.git/
+
+# Sitemap location
+Sitemap: https://saptarshisadhu.co.in/sitemap.xml

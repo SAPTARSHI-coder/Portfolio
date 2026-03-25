@@ -15,7 +15,94 @@ To add interactivity like scroll listeners or clicks, see script.js
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Saptarshi Sadhu Portfolio Home</title>
+
+    <!-- ═══════════════════════════════════════════════════
+         SEO: CORE META TAGS
+    ═══════════════════════════════════════════════════ -->
+    <title>Saptarshi Sadhu — Full Stack Developer & ML Researcher, Kolkata</title>
+    <meta name="description" content="Saptarshi Sadhu designs and engineers full-stack systems, machine learning pipelines, and scalable software architectures. CS undergraduate at Kolkata, India. Focused on systems that perform at real-world scale." />
+    <meta name="author" content="Saptarshi Sadhu" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://saptarshisadhu.co.in/" />
+
+    <!-- ═══════════════════════════════════════════════════
+         SEO: OPEN GRAPH (LinkedIn, WhatsApp, Facebook)
+    ═══════════════════════════════════════════════════ -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://saptarshisadhu.co.in/" />
+    <meta property="og:title" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta property="og:description" content="Engineering scalable systems and machine learning pipelines from Kolkata, India. Portfolio of a CS undergraduate who values architecture over shortcuts." />
+    <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta property="og:site_name" content="Saptarshi Sadhu" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="profile:first_name" content="Saptarshi" />
+    <meta property="profile:last_name" content="Sadhu" />
+
+    <!-- ═══════════════════════════════════════════════════
+         SEO: TWITTER / X CARD
+    ═══════════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta name="twitter:description" content="Systems-focused CS undergraduate from Kolkata building scalable full-stack applications and ML research pipelines." />
+    <meta name="twitter:image" content="https://saptarshisadhu.co.in/my_image.png" />
+    <meta name="twitter:image:alt" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+
+    <!-- ═══════════════════════════════════════════════════
+         SEO: JSON-LD STRUCTURED DATA (Person Schema)
+    ═══════════════════════════════════════════════════ -->
+    <!-- JSON-LD: Person — primary identity signal -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://saptarshisadhu.co.in/#person",
+      "name": "Saptarshi Sadhu",
+      "url": "https://saptarshisadhu.co.in",
+      "image": "https://saptarshisadhu.co.in/my_image.png",
+      "jobTitle": "Full Stack Developer & Machine Learning Researcher",
+      "description": "Saptarshi Sadhu is a Full Stack Developer and Machine Learning Researcher based in Kolkata, India. He designs scalable software systems and applies machine learning to real-world environmental problems.",
+      "sameAs": [
+        "https://www.linkedin.com/in/saptarshi-sadhu/",
+        "https://github.com/SAPTARSHI-coder",
+        "https://buymeacoffee.com/saptarshisadhu"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": [
+        "Full Stack Development",
+        "Machine Learning Research",
+        "System Architecture",
+        "React", "Node.js", "Python",
+        "Deep Learning", "Environmental AI"
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Full Stack Developer",
+        "occupationLocation": { "@type": "City", "name": "Kolkata" }
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite — enables sitelinks search box in Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Saptarshi Sadhu",
+      "url": "https://saptarshisadhu.co.in",
+      "description": "Portfolio of Saptarshi Sadhu — Full Stack Developer and ML Researcher from Kolkata, India.",
+      "author": { "@id": "https://saptarshisadhu.co.in/#person" }
+    }
+    </script>
+    <!-- Performance: Preload above-the-fold profile image (in LCP zone) -->
+    <link rel="preload" href="my_image.png" as="image" />
 
     <!-- Tailwind CSS Script -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -26,8 +113,7 @@ To add interactivity like scroll listeners or clicks, see script.js
       rel="stylesheet"
     />
 
-    <!-- Typography using standard system Times New Roman font -->
-    <!-- You can remove the Google Fonts link below if you only want Times New Roman -->
+    <!-- Typography -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
       rel="stylesheet"
@@ -107,7 +193,10 @@ when you drag your mouse over them.
       <!-- Using a placeholder for a sharp digital globe with glowing data points -->
       <img
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-        alt="Digital Data Globe"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        fetchpriority="low"
         class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
         style="
           mask-image: radial-gradient(circle, black 50%, transparent 100%);
@@ -251,6 +340,11 @@ when you drag your mouse over them.
             >
               I'm Saptarshi Sadhu
             </h1>
+            
+            <h2
+              class="text-2xl md:text-3xl italic leading-tight text-white mb-4 tracking-tight  "
+            >Full Stack Developer & ML Researcher
+            </h2>
 
             <p class="text-sm font-bold tracking-[0.2em] uppercase mb-8 h-5">
               <span id="typing-text" class="animate-text-rgb"></span
@@ -260,9 +354,7 @@ when you drag your mouse over them.
             <p
               class="text-lg text-slate-300 font-normal leading-relaxed mb-10 max-w-xl"
             >
-              Computer Science student building full-stack applications and
-              scalable systems, while exploring machine learning, system
-              architecture, and modern cloud and DevOps practices.
+              I focus on designing and engineering scalable full-stack systems, intelligent applications, and robust software architectures where performance, structure, and real-world usability matter.
             </p>
 
             <!-- Call to Action Buttons -->
@@ -283,7 +375,7 @@ when you drag your mouse over them.
 
             <!-- Small informational footer underneath the buttons -->
             <div
-              class="flex items-center gap-6 text-xs text-slate-500 font-medium border-l border-white/10 pl-4"
+              class="flex items-center gap-6 text-xs text-slate-900 font-medium border-l border-white/10 pl-4"
             >
               <span>Projects • Research • Experiments</span>
 
@@ -341,12 +433,12 @@ when you drag your mouse over them.
         id="about"
         class="max-w-7xl mx-auto px-6 py-24 relative z-10 text-center"
       >
-        <h1
+        <h2
           class="text-5xl md:text-6xl font-orbitron font-black text-white mb-6 tracking-widest uppercase fade-up"
           style="animation-delay: 0s"
         >
           About Me
-        </h1>
+        </h2>
         <h2
           class="text-xl md:text-2xl text-primary font-semibold mb-16 leading-snug max-w-3xl mx-auto fade-up"
           style="animation-delay: 0.1s"
