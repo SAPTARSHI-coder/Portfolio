@@ -19,7 +19,7 @@ To add interactivity like scroll listeners or clicks, see script.js
     <!-- ═══════════════════════════════════════════════════
          SEO: CORE META TAGS
     ═══════════════════════════════════════════════════ -->
-    <title>Saptarshi Sadhu — Full Stack Developer & ML Researcher, Kolkata</title>
+    <title>Saptarshi Sadhu - Full Stack Developer</title>
     <meta name="description" content="Saptarshi Sadhu designs and engineers full-stack systems, machine learning pipelines, and scalable software architectures. CS undergraduate at Kolkata, India. Focused on systems that perform at real-world scale." />
     <meta name="author" content="Saptarshi Sadhu" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -30,7 +30,7 @@ To add interactivity like scroll listeners or clicks, see script.js
     ═══════════════════════════════════════════════════ -->
     <meta property="og:type" content="profile" />
     <meta property="og:url" content="https://saptarshisadhu.co.in/" />
-    <meta property="og:title" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta property="og:title" content="Saptarshi Sadhu - Full Stack Developer" />
     <meta property="og:description" content="Engineering scalable systems and machine learning pipelines from Kolkata, India. Portfolio of a CS undergraduate who values architecture over shortcuts." />
     <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
     <meta property="og:image:width" content="1200" />
@@ -45,7 +45,7 @@ To add interactivity like scroll listeners or clicks, see script.js
          SEO: TWITTER / X CARD
     ═══════════════════════════════════════════════════ -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta name="twitter:title" content="Saptarshi Sadhu - Full Stack Developer" />
     <meta name="twitter:description" content="Systems-focused CS undergraduate from Kolkata building scalable full-stack applications and ML research pipelines." />
     <meta name="twitter:image" content="https://saptarshisadhu.co.in/my_image.png" />
     <meta name="twitter:image:alt" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
@@ -186,28 +186,21 @@ when you drag your mouse over them.
     </div>
 
     <!-- BIG DIGITAL GLOBE BACKGROUND -->
-    <!-- Positioned absolutely behind everything, sharp and visible -->
+    <!-- CSS background-image keeps this decorative asset invisible to Google's image crawler -->
     <div
       class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40"
+      aria-hidden="true"
     >
-      <!-- Using a placeholder for a sharp digital globe with glowing data points -->
-      <img
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        fetchpriority="low"
-        class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
+      <div
+        class="w-[800px] h-[800px] rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
         style="
+          background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+          background-size: cover;
+          background-position: center;
           mask-image: radial-gradient(circle, black 50%, transparent 100%);
-          -webkit-mask-image: radial-gradient(
-            circle,
-            black 50%,
-            transparent 100%
-          );
-          object-position: center;
+          -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
         "
-      />
+      ></div>
     </div>
 
     <!-- 
@@ -320,8 +313,10 @@ when you drag your mouse over them.
               ></div>
 
               <img
+                id="profile-photo"
                 src="my_image.png"
-                alt="Saptarshi Sadhu Photo"
+                alt="Saptarshi Sadhu — Full Stack Developer"
+                itemprop="image"
                 class="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] scale-125 -translate-y-4"
                 style="
                   width: 250px;
@@ -338,7 +333,7 @@ when you drag your mouse over them.
             <h1
               class="text-5xl md:text-7xl font-extrabold leading-tight text-white mb-4 tracking-tight"
             >
-              I'm Saptarshi Sadhu
+              Saptarshi Sadhu
             </h1>
             
             <h2
