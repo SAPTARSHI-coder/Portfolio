@@ -156,6 +156,53 @@ To add interactivity like scroll listeners or clicks, see script.js
 
     <!-- Link to your newly separated external stylesheet -->
     <link rel="stylesheet" href="index.css" />
+    <style>
+      .switch-wrapper-fixed {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          text-decoration: none;
+          color: #ffffff;
+          cursor: pointer;
+          transition: color 0.3s ease;
+          z-index: 9999;
+      }
+
+      .switch-wrapper-fixed .switch-text {
+          font-size: 16px;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .switch-wrapper-fixed .switch {
+          position: relative;
+          width: 60px;
+          height: 30px;
+          background-color: #06b6d4;
+          border-radius: 30px;
+          transition: background-color 0.3s ease;
+      }
+
+      .switch-wrapper-fixed .switch::before {
+          content: "";
+          position: absolute;
+          height: 22px;
+          width: 22px;
+          right: 4px; /* ON position */
+          bottom: 4px;
+          background-color: #ffffff;
+          border-radius: 50%;
+          transition: transform 0.3s ease;
+      }
+
+      .switch-wrapper-fixed:hover .switch {
+          background-color: #0891b2;
+      }
+    </style>
   </head>
 
   <!-- 
@@ -245,7 +292,7 @@ when you drag your mouse over them.
 
         <!-- Navigation Links -->
         <nav class="flex items-center gap-4 lg:gap-6">
-          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="#">Home</a>
           <!-- Links use the custom 'nav-link' class defined in index.css for the RGB hover effect -->
           <a class="nav-link" href="#about">About</a>
           <a class="nav-link" href="#skills">Skills</a>
@@ -1806,7 +1853,7 @@ when you drag your mouse over them.
           <nav class="footer-nav" aria-label="Footer navigation">
             <span class="footer-nav-label">Navigate</span>
             <ul>
-              <li><a href="/">Home</a></li>
+              <li><a href="#">Home</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#skills">Skills</a></li>
               <li><a href="#projects">Projects</a></li>
@@ -1842,5 +1889,10 @@ when you drag your mouse over them.
 
     <!-- Connects javascript logic to the DOM -->
     <script src="script.js"></script>
+
+    <a href="index.html" class="switch-wrapper-fixed" title="Switch to Static Mode">
+        <span class="switch-text">3D Mode</span>
+        <div class="switch"></div>
+    </a>
   </body>
 </html>
