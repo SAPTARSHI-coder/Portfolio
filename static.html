@@ -968,6 +968,262 @@
         .skill-card--wide { grid-column: 1; }
         .about-section, .skills-section { padding: 4rem 0; }
       }
+
+      /* ─────────────────────────────────────────
+         PROJECTS
+      ───────────────────────────────────────── */
+      .projects-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .proj-category { margin-bottom: 3.5rem; }
+      .proj-category-header {
+        display: flex; align-items: baseline; gap: 1rem;
+        padding-bottom: 0.75rem; margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .proj-category-title { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+      .proj-category-sub   { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+      .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+      .proj-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 16px; overflow: hidden;
+        transition: border-color .2s, transform .2s, box-shadow .2s;
+      }
+      .proj-card:hover { border-color: var(--border-h); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+      .proj-thumb { aspect-ratio: 16/9; overflow: hidden; background: rgba(0,0,0,.3); }
+      .proj-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: opacity .3s; }
+      .proj-card:hover .proj-thumb img { opacity: 1; }
+      .proj-info { padding: 1.25rem; }
+      .proj-title { font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+      .proj-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; margin-bottom: .85rem; }
+      .proj-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+      .proj-tag {
+        font-family: var(--mono); font-size: .6rem; font-weight: 700;
+        letter-spacing: .06em; text-transform: uppercase;
+        padding: 2px 9px; border-radius: 999px;
+        border: 1px solid var(--border); color: var(--muted);
+        background: var(--bg-card-2);
+      }
+
+      /* ─────────────────────────────────────────
+         RESEARCH
+      ───────────────────────────────────────── */
+      .research-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .research-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+      .research-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 16px; padding: 2rem;
+        display: flex; flex-direction: column; gap: .85rem;
+        transition: border-color .2s;
+      }
+      .research-card:hover { border-color: var(--border-h); }
+      .research-card-top { display: flex; align-items: center; gap: .85rem; }
+      .research-tag {
+        font-family: var(--mono); font-size: .62rem; font-weight: 700;
+        letter-spacing: .1em; text-transform: uppercase;
+        padding: 2px 10px; border-radius: 999px;
+        background: rgba(6,182,212,.07); border: 1px solid rgba(6,182,212,.2); color: var(--accent);
+      }
+      .research-date { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+      .research-title { font-size: 1rem; font-weight: 700; color: var(--white); line-height: 1.4; }
+      .research-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; flex: 1; }
+      .research-link {
+        display: inline-flex; align-items: center; gap: 4px;
+        font-size: .78rem; font-weight: 600; color: var(--accent);
+        text-decoration: none; margin-top: .5rem;
+        transition: gap .2s;
+      }
+      .research-link:hover { gap: 8px; }
+
+      /* ─────────────────────────────────────────
+         EDUCATION
+      ───────────────────────────────────────── */
+      .edu-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .edu-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+      .edu-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 16px; padding: 1.75rem;
+        display: flex; flex-direction: column; gap: .65rem;
+        transition: border-color .2s;
+      }
+      .edu-card--featured { border-color: rgba(6,182,212,.2); }
+      .edu-card:hover { border-color: var(--border-h); }
+      .edu-logo { width: 48px; height: 48px; object-fit: contain; border-radius: 8px; margin-bottom: .25rem; }
+      .edu-card-title { font-size: .95rem; font-weight: 800; color: var(--white); }
+      .edu-card-school { font-size: .75rem; color: var(--muted); font-family: var(--mono); }
+      .edu-divider { height: 1px; background: var(--border); margin: .5rem 0; }
+      .edu-row { display: flex; justify-content: space-between; font-size: .78rem; }
+      .edu-label { color: var(--muted); }
+      .edu-value { color: #94a3b8; font-weight: 500; }
+      .edu-score-block { text-align: center; padding-top: .75rem; }
+      .edu-score-num { font-size: 2rem; font-weight: 900; font-family: var(--mono); line-height: 1; }
+      .edu-score-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: .35rem; font-family: var(--mono); }
+      .edu-cgpa { font-size: 2rem; font-weight: 900; color: var(--accent); font-family: var(--mono); margin: .5rem 0; }
+      .edu-cgpa span { font-size: .9rem; color: var(--muted); }
+      .edu-sem-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-family: var(--mono); margin-bottom: .75rem; }
+      .edu-sem-row { margin-bottom: .75rem; }
+      .edu-sem-top { display: flex; justify-content: space-between; margin-bottom: .35rem; }
+      .edu-sem-name { font-size: .78rem; color: #94a3b8; display: flex; align-items: center; gap: .4rem; }
+      .edu-sem-score { font-size: .78rem; font-weight: 700; color: var(--accent); font-family: var(--mono); }
+      .edu-sem-tag { font-size: .55rem; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); color: var(--accent); padding: 1px 6px; border-radius: 999px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      .edu-bar-track { height: 4px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden; }
+      .edu-bar-fill { height: 100%; border-radius: 999px; }
+
+      /* ─────────────────────────────────────────
+         OPPORTUNITIES
+      ───────────────────────────────────────── */
+      .opp-section { padding: 4rem 0; border-top: 1px solid var(--border); }
+      .opp-card {
+        background: var(--bg-card); border: 1px solid rgba(6,182,212,.15);
+        border-radius: 20px; padding: 3rem;
+        max-width: 850px; margin: 0 auto;
+      }
+      .opp-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .opp-pulse-dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: var(--accent); flex-shrink: 0;
+        box-shadow: 0 0 0 0 rgba(6,182,212,.5);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.5)} 50%{box-shadow:0 0 0 8px rgba(6,182,212,0)} }
+      .opp-title { font-size: 1.5rem; font-weight: 800; color: var(--white); }
+      .opp-desc { font-size: .9rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+      .opp-list { list-style: none; display: flex; flex-direction: column; gap: .85rem; margin-bottom: 2rem; }
+      .opp-list li { display: flex; align-items: center; gap: .65rem; font-size: .9rem; color: #94a3b8; }
+      .opp-list li strong { color: var(--white); }
+      .opp-ctas { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+      /* ─────────────────────────────────────────
+         ACHIEVEMENTS
+      ───────────────────────────────────────── */
+      .achieve-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .achieve-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+      .achieve-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 16px; padding: 1.5rem;
+        transition: border-color .2s;
+      }
+      .achieve-card:hover { border-color: var(--border-h); }
+      .achieve-icon { margin-bottom: .75rem; }
+      .achieve-icon .material-symbols-outlined { font-size: 28px; }
+      .achieve-title { font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--white); }
+      .achieve-divider { height: 1px; background: var(--border); margin: .85rem 0; }
+      .achieve-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+      .achieve-list li { font-size: .8rem; color: var(--muted); line-height: 1.55; padding-left: .75rem; position: relative; }
+      .achieve-list li::before { content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+      /* ─────────────────────────────────────────
+         CONTACT
+      ───────────────────────────────────────── */
+      .contact-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .contact-layout { display: flex; gap: 1.5rem; align-items: flex-start; }
+      .contact-email-card {
+        flex: 0 0 280px; background: var(--bg-card);
+        border: 1px solid rgba(6,182,212,.2);
+        border-radius: 16px; padding: 2rem;
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+      }
+      .contact-email-icon { margin-bottom: 1rem; }
+      .contact-email-title { font-size: 1.1rem; font-weight: 800; color: var(--white); margin-bottom: .4rem; }
+      .contact-email-sub { font-size: .8rem; color: var(--muted); margin-bottom: 1.25rem; }
+      .contact-email-btn {
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+        width: 100%; padding: .65rem 1rem;
+        background: rgba(6,182,212,.04); border: 1px solid rgba(6,182,212,.18);
+        border-radius: 10px; text-decoration: none;
+        transition: border-color .2s, background .2s;
+      }
+      .contact-email-btn:hover { background: rgba(6,182,212,.1); border-color: rgba(6,182,212,.4); }
+      .contact-email-addr { font-family: var(--mono); font-size: .7rem; color: #94a3b8; }
+      .contact-social-grid { flex: 1; display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+      .social-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1.25rem;
+        text-decoration: none; transition: border-color .2s, transform .2s;
+        display: flex; flex-direction: column; gap: .35rem;
+      }
+      .social-card:hover { border-color: var(--border-h); transform: translateY(-2px); }
+      .social-icon { width: 28px; height: 28px; color: var(--muted); margin-bottom: .35rem; transition: color .2s; }
+      .social-card:hover .social-icon { color: var(--white); }
+      .social-name { font-size: .85rem; font-weight: 700; color: var(--white); }
+      .social-sub { font-size: .72rem; color: var(--muted); }
+
+      /* ─────────────────────────────────────────
+         FOOTER
+      ───────────────────────────────────────── */
+      .site-footer { border-top: 1px solid var(--border); padding: 3.5rem 2rem 2rem; background: var(--bg); }
+      .footer-inner { max-width: 1200px; margin: 0 auto; }
+      .footer-grid { display: grid; grid-template-columns: auto 1fr auto; gap: 3rem; align-items: start; margin-bottom: 3rem; }
+      .footer-identity { display: flex; align-items: flex-start; gap: 12px; }
+      .footer-profile-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; border: 1.5px solid rgba(249,115,22,.4); }
+      .footer-name { display: block; font-size: .85rem; font-weight: 800; color: var(--white); margin-bottom: .25rem; }
+      .footer-name .accent { color: #f97316; }
+      .footer-tagline { font-size: .72rem; color: var(--muted); line-height: 1.6; }
+      .footer-nav-label { display: block; font-family: var(--mono); font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: .85rem; }
+      .footer-nav ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+      .footer-nav a { font-size: .78rem; color: var(--muted); text-decoration: none; transition: color .2s; }
+      .footer-nav a:hover { color: var(--white); }
+      .footer-mantra { font-size: .78rem; color: var(--muted); line-height: 1.7; text-align: right; }
+      .footer-bottom {
+        padding-top: 1.75rem; border-top: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        flex-wrap: wrap; font-family: var(--mono); font-size: .68rem; color: #334155;
+      }
+      .footer-bottom .accent { color: rgba(6,182,212,.6); }
+      .bmc-footer-link {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: .72rem; font-family: var(--mono); color: var(--muted);
+        text-decoration: none; padding: 5px 12px; border-radius: 999px;
+        border: 1px solid var(--border); transition: all .2s;
+      }
+      .bmc-footer-link:hover { border-color: var(--border-h); color: var(--white); }
+      .bmc-icon { font-size: 1rem; }
+
+      /* ─────────────────────────────────────────
+         BUTTON SHARED
+      ───────────────────────────────────────── */
+      .btn-primary {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: .75rem 1.75rem; border-radius: 10px;
+        background: var(--accent); color: #0a0f1c;
+        font-size: .82rem; font-weight: 800; letter-spacing: .05em;
+        text-decoration: none; transition: background .2s, transform .2s;
+        border: none; cursor: pointer;
+      }
+      .btn-primary:hover { background: #22d3ee; transform: translateY(-2px); }
+      .btn-ghost {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: .75rem 1.75rem; border-radius: 10px;
+        background: transparent; color: var(--white);
+        border: 1px solid var(--border); font-size: .82rem; font-weight: 700;
+        text-decoration: none; transition: border-color .2s, transform .2s;
+        cursor: pointer;
+      }
+      .btn-ghost:hover { border-color: var(--border-h); transform: translateY(-2px); }
+
+      /* ─────────────────────────────────────────
+         RESPONSIVE — LOWER SECTIONS
+      ───────────────────────────────────────── */
+      @media (max-width: 1023px) {
+        .proj-grid { grid-template-columns: 1fr; }
+        .research-grid { grid-template-columns: 1fr; }
+        .edu-grid { grid-template-columns: repeat(2,1fr); }
+        .achieve-grid { grid-template-columns: repeat(2,1fr); }
+        .contact-layout { flex-direction: column; }
+        .contact-email-card { flex: none; width: 100%; }
+        .contact-social-grid { grid-template-columns: repeat(3,1fr); }
+        .footer-grid { grid-template-columns: 1fr 1fr; }
+        .footer-presence { display: none; }
+      }
+      @media (max-width: 640px) {
+        .edu-grid { grid-template-columns: 1fr; }
+        .achieve-grid { grid-template-columns: 1fr; }
+        .contact-social-grid { grid-template-columns: repeat(2,1fr); }
+        .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+        .footer-bottom { flex-direction: column; align-items: flex-start; }
+        .opp-card { padding: 1.75rem; }
+        .opp-ctas { flex-direction: column; }
+        .projects-section, .research-section, .edu-section,
+        .achieve-section, .contact-section { padding: 4rem 0; }
+      }
     </style>
   </head>
 
@@ -1440,12 +1696,432 @@
         </div>
       </section>
 
-      <!-- Placeholder for remaining sections -->
-      <section id="projects" style="min-height:60vh;display:flex;align-items:center;justify-content:center;border-top:1px solid var(--border)">
-        <p style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;">Projects — coming next</p>
+      <!-- ════════════════════════════════════════
+           PROJECTS SECTION
+      ════════════════════════════════════════ -->
+      <section id="projects" class="projects-section">
+        <div class="section-container">
+          <div class="section-header">
+            <div class="section-eyebrow">
+              <span class="section-line"></span>
+              <span class="section-label-text">Selected Work</span>
+            </div>
+            <h2 class="section-title">Projects</h2>
+          </div>
+
+          <!-- Category: C & Systems -->
+          <div class="proj-category">
+            <div class="proj-category-header">
+              <h3 class="proj-category-title">C &amp; Systems</h3>
+              <span class="proj-category-sub">low-level &amp; performance</span>
+            </div>
+            <div class="proj-grid">
+              <div class="proj-card">
+                <div class="proj-thumb">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBeURq1KzXC2bp43OcaoZa865oPkbWjol4Oh5ZxdEl9GmtJKAIFs-g5sBMrzFx-rPVNrMBMIFlW8QuRTHD03TqxdjUxM0Ekv2P4j-CsWV-ePLOhZ9QJg5OKCDGRmxMEjESQQA1LLbYDAXjMiLJY7M_Hr7Wa8vN1cMtlTwG0uZGAEEsawKNyJpqWBZ95Nkeeig3OPJ155SulAqKry8Lqel-bJ5TgZCRXShYCyS5GBQ3XwZvO7GzFw1IkgDms9AN913vwprfnwXT6V-t" alt="Memory Allocator Visualization" />
+                </div>
+                <div class="proj-info">
+                  <h4 class="proj-title">Custom Memory Allocator</h4>
+                  <p class="proj-desc">A high-performance thread-safe malloc implementation with minimal fragmentation using segregated fits.</p>
+                  <div class="proj-tags">
+                    <span class="proj-tag">C</span><span class="proj-tag">Systems</span><span class="proj-tag">Memory</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="proj-card">
+                <div class="proj-thumb">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdZQ2W_7xnUnETm32Vz9BM_POoBs4NgEUPD27rNP6frBTepllluFlYRbJYv6paNowNUINZvYB4vqKg4z_Xpr9SfGZ_1Q7swPbo5gQ15-bL5SL7-XY9zF99fxq1vQtZzpDoMXPDSrWzkjqLMcUvtM-yXtlElLMsj6grFoSJN0zYIS0gCfSd498LqjsAM_UBhqz6wdd_i-ddS902zKeLG0cqFLrd9BCBTQaiLlM3oTYZIgLJXPBQo-wna0QjoAyL6fy0w8viR4etlF_M" alt="Network Protocol Shell" />
+                </div>
+                <div class="proj-info">
+                  <h4 class="proj-title">TCP/IP Stack Simulation</h4>
+                  <p class="proj-desc">Network packet processing engine for handling custom transport layer protocols in user space.</p>
+                  <div class="proj-tags">
+                    <span class="proj-tag">C</span><span class="proj-tag">Networking</span><span class="proj-tag">Protocols</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category: Flutter & Mobile -->
+          <div class="proj-category">
+            <div class="proj-category-header">
+              <h3 class="proj-category-title">Flutter &amp; Mobile</h3>
+              <span class="proj-category-sub">cross-platform UI</span>
+            </div>
+            <div class="proj-grid">
+              <div class="proj-card">
+                <div class="proj-thumb">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOONIjhwuUaZ5Qlj3R7xsXgzwsfKGZF1VdgwTdph-C3_mnXiIsgXwu3ue0XvZDFZw3SmW3bClaiL_CvrcLEZum6sYzhl93T_akhPs2Wn1GIJH0yOfmUkeEInNAKPHWF-ogz_HWNNx83lT0wOn1OJg9ELONrw6ZpUwpDT2j7dFmEaRrjt6dqDoUSnK2vNEWGTS_iQNwcQAyg9cAUeRSxM-YD-XP7EXkj6bIKLhkDsFLIkneIE_HunwqDCTst6Peq1EgchA-wxh9zP4O" alt="Fitness App UI" />
+                </div>
+                <div class="proj-info">
+                  <h4 class="proj-title">Focus Flow</h4>
+                  <p class="proj-desc">Minimalist productivity tracker featuring smooth 60fps animations and offline-first architecture.</p>
+                  <div class="proj-tags">
+                    <span class="proj-tag">Flutter</span><span class="proj-tag">Dart</span><span class="proj-tag">Mobile</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="proj-card">
+                <div class="proj-thumb">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_O4US713IFxTqNUbrWxIFLEyOChEEv2cZyPHuBW9dgwY1f9VeD9sMS6md5kM_ZxR37Ck7jNPRZmQm-VFFwxn4Df4EHqHDARlNp8JfkIVnB7xI1Z2PIQTTZ_nPd59IkJpg7Dpinb55BYaESLjiArn3UbJuhrUgdcUs3hx9UbQX2Vx2YEKm3boPOfznazkLM32dpJ2GX0mHb6sqPDWTdUmerJTOl_4xsDFakkk7XywtobMHRm1dD39O4KcFjnrozYWEFds4eu_8vX2P" alt="Finance Dashboard" />
+                </div>
+                <div class="proj-info">
+                  <h4 class="proj-title">Wealth Watch</h4>
+                  <p class="proj-desc">Cryptocurrency portfolio manager with real-time websocket updates and custom chart rendering.</p>
+                  <div class="proj-tags">
+                    <span class="proj-tag">Flutter</span><span class="proj-tag">WebSockets</span><span class="proj-tag">Crypto</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           RESEARCH SECTION
+      ════════════════════════════════════════ -->
+      <section id="research" class="research-section">
+        <div class="section-container">
+          <div class="section-header">
+            <div class="section-eyebrow">
+              <span class="section-line"></span>
+              <span class="section-label-text">Academic Output</span>
+            </div>
+            <h2 class="section-title">Research &amp; Publications</h2>
+          </div>
+
+          <div class="research-grid">
+            <div class="research-card">
+              <div class="research-card-top">
+                <span class="research-tag">Machine Learning</span>
+                <span class="research-date">March 2024</span>
+              </div>
+              <h3 class="research-title">Optimizing Distributed Inference in Latency-Critical Edge Environments</h3>
+              <p class="research-desc">Investigated novel partitioning strategies for deep neural networks across heterogeneous edge nodes. The proposed model reduces communication overhead by 34% while maintaining model accuracy in dynamic network conditions.</p>
+              <a href="#" class="research-link">Read Paper <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle">arrow_forward</span></a>
+            </div>
+
+            <div class="research-card">
+              <div class="research-card-top">
+                <span class="research-tag">Operating Systems</span>
+                <span class="research-date">November 2023</span>
+              </div>
+              <h3 class="research-title">Predictive Cache Management for High-Frequency I/O Operations</h3>
+              <p class="research-desc">Developed a heuristic-based prefetching algorithm for non-volatile memory architectures. This research demonstrates a significant reduction in tail latency for database workloads under heavy concurrent access.</p>
+              <a href="#" class="research-link">Read Paper <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle">arrow_forward</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           EDUCATION SECTION
+      ════════════════════════════════════════ -->
+      <section id="education" class="edu-section">
+        <div class="section-container">
+          <div class="section-header" style="text-align:center;align-items:center">
+            <div class="section-eyebrow" style="justify-content:center">
+              <span class="section-line"></span>
+              <span class="section-label-text">Academic Background</span>
+            </div>
+            <h2 class="section-title">Education</h2>
+            <p class="section-subtitle">Consistent academic performance with a strong technical foundation.</p>
+          </div>
+
+          <div class="edu-grid">
+            <!-- Secondary -->
+            <div class="edu-card">
+              <img src="assets/wbbse.png" alt="WBBSE" class="edu-logo" />
+              <h3 class="edu-card-title">Secondary Education</h3>
+              <p class="edu-card-school">B. T. Road Gov. Spon. H. S. School</p>
+              <div class="edu-divider"></div>
+              <div class="edu-row"><span class="edu-label">Board</span><span class="edu-value">WBBSE</span></div>
+              <div class="edu-row"><span class="edu-label">Year</span><span class="edu-value">2019</span></div>
+              <div class="edu-row"><span class="edu-label">Curriculum</span><span class="edu-value">General</span></div>
+              <div class="edu-score-block">
+                <div class="edu-score-num" style="color:#06b6d4">93.71<span style="font-size:1rem">%</span></div>
+                <div class="edu-score-label">Overall Score</div>
+              </div>
+            </div>
+
+            <!-- Higher Secondary -->
+            <div class="edu-card">
+              <img src="assets/wbchse.png" alt="WBCHSE" class="edu-logo" style="background:#fff;border-radius:50%;padding:4px;" />
+              <h3 class="edu-card-title">Higher Secondary</h3>
+              <p class="edu-card-school">B. T. Road Gov. Spon. H. S. School</p>
+              <div class="edu-divider"></div>
+              <div class="edu-row"><span class="edu-label">Board</span><span class="edu-value">WBCHSE</span></div>
+              <div class="edu-row"><span class="edu-label">Year</span><span class="edu-value">2021</span></div>
+              <div class="edu-row"><span class="edu-label">Stream</span><span class="edu-value">Pure Science (PCMB)</span></div>
+              <div class="edu-score-block">
+                <div class="edu-score-num" style="color:#4ade80">89.60<span style="font-size:1rem">%</span></div>
+                <div class="edu-score-label">Overall Score</div>
+              </div>
+            </div>
+
+            <!-- B.Tech — featured -->
+            <div class="edu-card edu-card--featured">
+              <img src="assets/Adamas_University_Logo.png" alt="Adamas University" class="edu-logo" />
+              <h3 class="edu-card-title">B.Tech in Computer Science</h3>
+              <p class="edu-card-school">Adamas University</p>
+              <div class="edu-divider"></div>
+              <div class="edu-row"><span class="edu-label">Status</span><span class="edu-value" style="color:#06b6d4">Ongoing</span></div>
+              <div class="edu-cgpa">9.41 <span>CGPA</span></div>
+              <div class="edu-sem-label">Performance Trend</div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 1</span><span class="edu-sem-score">9.3</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:93%;background:linear-gradient(90deg,#00e0ff,#00ffa3)"></div></div>
+              </div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 2</span><span class="edu-sem-score" style="color:#4ade80">9.5</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:95%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
+              </div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 3 <span class="edu-sem-tag">Latest</span></span><span class="edu-sem-score">9.43</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:94.3%;background:linear-gradient(90deg,#00e0ff,#0a84ff)"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           OPPORTUNITIES STRIP
+      ════════════════════════════════════════ -->
+      <section id="opportunities" class="opp-section">
+        <div class="section-container">
+          <div class="opp-card">
+            <div class="opp-header">
+              <div class="opp-pulse-dot"></div>
+              <h2 class="opp-title">Available for Internship</h2>
+            </div>
+            <p class="opp-desc">I'm currently looking for opportunities where I can contribute, learn, and build real-world systems. I enjoy working on backend development, problem solving, and scalable applications.</p>
+            <ul class="opp-list">
+              <li><span class="material-symbols-outlined" style="color:#06b6d4;font-size:18px">check_circle</span>Open to Internships (Software Development / Backend / Full-Stack)</li>
+              <li><span class="material-symbols-outlined" style="color:#06b6d4;font-size:18px">check_circle</span>Interested in problem-solving and system-focused roles</li>
+              <li><span class="material-symbols-outlined" style="color:#06b6d4;font-size:18px">check_circle</span>Comfortable with Node.js, C++, Java, and databases</li>
+              <li><span class="material-symbols-outlined" style="color:#06b6d4;font-size:18px">check_circle</span>Fast learner — able to build and ship quickly</li>
+            </ul>
+            <div class="opp-ctas">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=saptarshisadhuofficial@gmail.com" target="_blank" class="btn-primary">
+                <span class="material-symbols-outlined">mail</span> Contact Me
+              </a>
+              <a href="https://github.com/SAPTARSHI-coder" target="_blank" class="btn-ghost">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           ACHIEVEMENTS SECTION
+      ════════════════════════════════════════ -->
+      <section id="achievements" class="achieve-section">
+        <div class="section-container">
+          <div class="section-header" style="text-align:center;align-items:center">
+            <div class="section-eyebrow" style="justify-content:center">
+              <span class="section-line"></span>
+              <span class="section-label-text">Track Record</span>
+            </div>
+            <h2 class="section-title">Achievements &amp; Engagement</h2>
+            <p class="section-subtitle">Highlights from hackathons, continuous learning, and technical milestones.</p>
+          </div>
+
+          <div class="achieve-grid">
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#06b6d4">rocket_launch</span></div>
+              <h3 class="achieve-title">Technical Achievements</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Built a complete full-stack auth system solo, start to finish</li>
+                <li>Trained an ML model on real-world air quality data (VOC, O₃, NOx)</li>
+                <li>Shipped a Unity horror game prototype with custom AI enemy logic</li>
+                <li>Consistently moved from idea to working prototype without extended planning</li>
+              </ul>
+            </div>
+
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#a78bfa">emoji_events</span></div>
+              <h3 class="achieve-title">Hackathons &amp; Competitions</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Urban Vision Hackathon 2025 — Ministry of Education, India</li>
+                <li>Smart India Hackathon (SIH) — national-level participation</li>
+                <li>Adobe India Hackathon — design &amp; tech challenge</li>
+                <li>MH Techin Innovation Challenge — cleared multiple rounds</li>
+                <li>Hackground India 2K25 &amp; Ideat-A-Thon via Unstop</li>
+              </ul>
+            </div>
+
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#34d399">monitoring</span></div>
+              <h3 class="achieve-title">Coding Engagement</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Solved structured problems in #T20DSA Challenge — Stacks, Queues &amp; Range Queries</li>
+                <li>Competed in CodeClash August Arena timed challenge</li>
+                <li>Competed in Clash of Coders 2.0 and 3.0 — finalist in 2.0</li>
+                <li>Engaged in DSA Quiz &amp; Coding Competitions across Unstop</li>
+              </ul>
+            </div>
+
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#fb923c">calendar_month</span></div>
+              <h3 class="achieve-title">Events &amp; Workshops</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Competed in 24-Hour UI/UX Design Hackathon using Figma</li>
+                <li>Attended React.js Unfiltered — ALCHEMIST workshop</li>
+                <li>Engaged in IdeateX ideation &amp; product thinking sessions</li>
+                <li>Participated in BuildFolio — portfolio development event</li>
+              </ul>
+            </div>
+
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#60a5fa">public</span></div>
+              <h3 class="achieve-title">Aptitude &amp; Assessments</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Appeared in technical &amp; aptitude quizzes on Unstop</li>
+                <li>Cleared multiple rounds of MH Techin Innovation Challenge</li>
+                <li>Participated in cross-domain tech challenges beyond core stack</li>
+                <li>Consistently active across competitive platforms throughout college</li>
+              </ul>
+            </div>
+
+            <div class="achieve-card">
+              <div class="achieve-icon"><span class="material-symbols-outlined" style="color:#f472b6">workspace_premium</span></div>
+              <h3 class="achieve-title">Recognition &amp; Exposure</h3>
+              <div class="achieve-divider"></div>
+              <ul class="achieve-list">
+                <li>Shortlisted for AWS College Showcase Program</li>
+                <li>Selected for CTRLS Data Center Industrial Visit</li>
+                <li>Participated in Smart India Hackathon — national scale</li>
+                <li>Represented college at Clash of Coders competition</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           CONTACT SECTION
+      ════════════════════════════════════════ -->
+      <section id="contact" class="contact-section">
+        <div class="section-container">
+          <div class="section-header" style="text-align:center;align-items:center">
+            <div class="section-eyebrow" style="justify-content:center">
+              <span class="section-line"></span>
+              <span class="section-label-text">Reach Out</span>
+            </div>
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-subtitle">Open to collaborations, projects, and meaningful conversations.</p>
+          </div>
+
+          <div class="contact-layout">
+            <!-- Email card -->
+            <div class="contact-email-card">
+              <div class="contact-email-icon">
+                <span class="material-symbols-outlined" style="font-size:32px;color:#06b6d4">mail</span>
+              </div>
+              <h3 class="contact-email-title">Prefer email?</h3>
+              <p class="contact-email-sub">Reach out directly to my inbox.</p>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=saptarshisadhuofficial@gmail.com" target="_blank" class="contact-email-btn" id="open-email-link">
+                <span class="contact-email-addr">saptarshisadhuofficial@gmail.com</span>
+                <span class="material-symbols-outlined" style="font-size:18px;color:#06b6d4">open_in_new</span>
+              </a>
+            </div>
+
+            <!-- Social grid -->
+            <div class="contact-social-grid">
+              <a href="https://www.linkedin.com/in/saptarshi-sadhu/" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                <h4 class="social-name">LinkedIn</h4>
+                <p class="social-sub">Professional network</p>
+              </a>
+
+              <a href="https://github.com/SAPTARSHI-coder" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <h4 class="social-name">GitHub</h4>
+                <p class="social-sub">Code repositories</p>
+              </a>
+
+              <a href="https://x.com/saptarshi_sadhu" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <h4 class="social-name">X</h4>
+                <p class="social-sub">Thoughts &amp; updates</p>
+              </a>
+
+              <a href="https://wa.me/9432772854" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.033-.967-.275-.099-.477-.148-.678.15-.201.298-.768.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.679-1.634-.929-2.233-.243-.585-.49-.505-.678-.515-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                <h4 class="social-name">WhatsApp</h4>
+                <p class="social-sub">Direct message</p>
+              </a>
+
+              <a href="https://www.facebook.com/saptarshi.sadhu.dev/" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <h4 class="social-name">Facebook</h4>
+                <p class="social-sub">Connect on Facebook</p>
+              </a>
+
+              <a href="https://www.instagram.com/saptarshi.sadhu/" target="_blank" class="social-card">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <h4 class="social-name">Instagram</h4>
+                <p class="social-sub">Follow on Instagram</p>
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
     </main>
+
+    <!-- ════════════════════════════════════════
+         FOOTER
+    ════════════════════════════════════════ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-identity">
+            <img src="my_image.png" alt="Saptarshi Sadhu" class="footer-profile-img" />
+            <div>
+              <span class="footer-name">Saptarshi <span class="accent">Sadhu</span></span>
+              <p class="footer-tagline">Building scalable systems<br>with clarity and intent</p>
+            </div>
+          </div>
+
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <span class="footer-nav-label">Navigate</span>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#skills">Skills</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#education">Education</a></li>
+              <li><a href="static_blog.html">Blog</a></li>
+              <li><a href="static_gallery.html">Gallery</a></li>
+            </ul>
+          </nav>
+
+          <div class="footer-presence">
+            <span class="footer-mantra">Designed for clarity.<br>Built for scale.</span>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>© 2026 Saptarshi Sadhu &nbsp;•&nbsp; <span class="accent">Systems over shortcuts</span></div>
+          <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-footer-link">
+            <span class="bmc-icon">☕</span> Support my work → Buy me a coffee
+          </a>
+        </div>
+      </div>
+    </footer>
 
     <script>
       // Hamburger
