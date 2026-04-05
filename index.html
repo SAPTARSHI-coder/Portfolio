@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saptarshi Sadhu</title>
-    <!-- Auto-redirect to static portfolio (default mode) -->
-    <meta http-equiv="refresh" content="0; url=static.html" />
-    <script>window.location.replace('static.html');</script>
+    <meta http-equiv="refresh" content="0; url=static.html" id="meta-refresh" />
+    <script>
+        const hash = window.location.hash;
+        document.getElementById('meta-refresh').setAttribute('content', '0; url=static.html' + hash);
+        window.location.replace('static.html' + hash);
+    </script>
 </head>
 <body>
     <p style="font-family:sans-serif;color:#fff;background:#000;margin:0;padding:20px;">

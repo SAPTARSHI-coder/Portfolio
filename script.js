@@ -475,4 +475,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /*
+    ----------------------------------------------------------------------------
+    CROSS-PAGE STATE PERSISTENCE (Sync Active Section across Modes)
+    ----------------------------------------------------------------------------
+    */
+    const modeSwitches = document.querySelectorAll('.mode-switch, .switch-wrapper-fixed');
+    const sections = document.querySelectorAll('section[id]');
+    
+    if (modeSwitches.length > 0 && sections.length > 0) {
+        let currentHash = window.location.hash;
+
+        // Update link hrefs when scrolled
+        const updateModeSwitchLinks = (hash) => {
+            modeSwitches.forEach(switchEl => {
+                const baseHref = switchEl.getAttribute('href').split('#')[0];
+                let targetPage = baseHref;
+                // If it points to index.html redirect to static.html directly for mode swap
+                if (targetPage.endsWith('index.html')) {
+                    targetPage = targetPage.replace('index.html', 'static.html');
+                }
+                switchEl.setAttribute('href', targetPage + hash);
+            });
+        };
+
+        // 1. If loaded with a hash, try scrolling to it explicitly after a tiny delay
+        if (currentHash) {
+            updateModeSwitchLinks(currentHash);
+            setTimeout(() => {
+                const targetEl = document.querySelector(currentHash);
+                if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        // 2. Observe sections scrolling into view
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // If a section occupies the main part of the viewport, update hash
+                if (entry.isIntersecting) {
+                    currentHash = '#' + entry.target.id;
+                    updateModeSwitchLinks(currentHash);
+                }
+            });
+        }, {
+            // Typical active-nav threshold: triggers when a section crosses the upper middle 
+            rootMargin: '-20% 0px -60% 0px' 
+        });
+
+        sections.forEach(sec => sectionObserver.observe(sec));
+        
+        // 3. Fallback: If user clicks a nav link, use that immediately
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const hrefList = this.getAttribute('href');
+                if (hrefList.length > 1) { // Skip empty #
+                    updateModeSwitchLinks(hrefList);
+                }
+            });
+        });
+    }
+
 });
