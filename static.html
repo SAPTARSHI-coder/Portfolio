@@ -2243,6 +2243,26 @@
         btn.classList.toggle('open', isOpen);
         btn.setAttribute('aria-expanded', isOpen);
       });
+
+      // Cross-mode Navigation State Persistence (Static -> 3D)
+      const modeSwitch = document.querySelector('.mode-switch');
+      const sections = document.querySelectorAll('section[id]');
+      
+      if (modeSwitch && sections.length > 0) {
+          const sectionObserver = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      const hash = '#' + entry.target.id;
+                      const baseHref = modeSwitch.getAttribute('href').split('#')[0];
+                      modeSwitch.setAttribute('href', baseHref + hash);
+                  }
+              });
+          }, {
+              rootMargin: '-20% 0px -60% 0px'
+          });
+
+          sections.forEach(sec => sectionObserver.observe(sec));
+      }
     </script>
 
   </body>
