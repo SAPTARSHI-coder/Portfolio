@@ -1,0 +1,194 @@
+/*
+ * static.css
+ * -----------
+ * Stylesheet for the Static Mode version of the Saptarshi Sadhu portfolio.
+ * This is the non-3D, clean counterpart to 3d.css.
+ * Design will be filled in — this is the scaffold.
+ *
+ * Structure mirrors 3d.css but overrides animations, 3D effects, and heavy
+ * glassmorphism with a crisp, clean, high-performance static aesthetic.
+ */
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-sans:   'Inter', sans-serif;
+  --font-mono:   'JetBrains Mono', monospace;
+  --font-serif:  'Manrope', sans-serif;
+
+  /* Color palette — will be updated with static design */
+  --color-bg:        #0a0a0a;
+  --color-surface:   #111111;
+  --color-border:    rgba(255,255,255,0.08);
+  --color-text:      #e2e8f0;
+  --color-muted:     #64748b;
+  --color-accent:    #06b6d4;
+  --color-accent-2:  #a855f7;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover { color: #67e8f9; }
+
+/* ── Nav Link ── */
+.nav-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.nav-link:hover { color: #ffffff; }
+
+/* ── Mode Switch (fixed top-right) — Static version ── */
+.switch-wrapper-fixed {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.switch-wrapper-fixed .switch {
+  position: relative;
+  width: 80px;
+  height: 32px;
+  border-radius: 32px;
+  background: #000000;
+  border: 2px solid rgba(255,255,255,0.35);
+  box-shadow: 0 0 14px rgba(255,255,255,0.45);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.switch-wrapper-fixed:hover .switch {
+  border-color: rgba(255,255,255,0.75);
+  box-shadow: 0 0 22px rgba(255,255,255,0.85);
+}
+
+.switch-wrapper-fixed .switch::before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  top: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.switch-wrapper-fixed .switch::after {
+  content: "STATIC";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(255,255,255,0.9);
+}
+
+@media (max-width: 768px) {
+  .switch-wrapper-fixed {
+    top: 14px;
+    right: 14px;
+    transform: scale(0.82);
+    transform-origin: top right;
+  }
+}
+
+/* ── Hamburger ── */
+#hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 9999;
+  padding: 4px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  transition: background 0.2s;
+}
+#hamburger:hover { background: rgba(255,255,255,0.08); }
+#hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #e2e8f0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+#hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+#hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 1023px) {
+  #hamburger { display: flex; }
+  #desktop-nav { display: none !important; }
+}
+
+/* ── Utilities ── */
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+}
+
+.divider-gradient {
+  height: 1px;
+  background: linear-gradient(to right, rgba(6,182,212,0.3), rgba(168,85,247,0.15), transparent);
+}
+
+/* ── Placeholder: design tokens will expand here ── */
+/*
+   DESIGN TOKENS TO ADD:
+   - Card styles
+   - Hero layout
+   - About / Skills / Projects sections
+   - Blog card grid
+   - Gallery grid
+   - Footer
+   - Responsive breakpoints
+*/

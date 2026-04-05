@@ -1,0 +1,324 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery — Saptarshi Sadhu</title>
+    <meta name="description" content="Visual gallery of Saptarshi Sadhu's projects, designs, and creative work." />
+    <meta name="author" content="Saptarshi Sadhu" />
+    <meta property="og:title" content="Gallery — Saptarshi Sadhu" />
+    <meta property="og:description" content="A visual showcase of projects and creative work." />
+    <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#06b6d4",
+              accent:  "#0891b2",
+            },
+            fontFamily: {
+              sans: ['"Inter"', "sans-serif"],
+              mono: ['"JetBrains Mono"', "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="3d.css" />
+
+    <style>
+      /* ── Mode Switch ── */
+      .switch-wrapper-fixed {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          cursor: pointer;
+          z-index: 10000;
+      }
+      .switch-wrapper-fixed .switch {
+          position: relative;
+          width: 80px;
+          height: 32px;
+          border-radius: 32px;
+          background: linear-gradient(135deg, #ff007a, #7a00ff, #00d4ff, #00ff7a);
+          background-size: 300% 300%;
+          animation: rgbGradient 4s ease infinite, floatAnim 3s ease-in-out infinite;
+          box-shadow: 0 4px 18px rgba(122,0,255,0.5);
+      }
+      .switch-wrapper-fixed:hover .switch { filter: brightness(1.15); }
+      @keyframes rgbGradient {
+          0%   { background-position: 0% 50%; }
+          50%  { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+      }
+      @keyframes floatAnim {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-4px); }
+      }
+      .switch-wrapper-fixed .switch::before {
+          content: "";
+          position: absolute;
+          height: 24px; width: 24px;
+          right: 4px; top: 4px;
+          background: #ffffff;
+          border-radius: 50%;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      }
+      .switch-wrapper-fixed .switch::after {
+          content: "3D";
+          position: absolute;
+          left: 12px; top: 50%;
+          transform: translateY(-50%);
+          color: #fff;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.2px;
+          text-shadow: 0 0 8px rgba(255,255,255,0.95);
+      }
+      @media (max-width: 768px) {
+          .switch-wrapper-fixed {
+              top: 14px; right: 14px;
+              transform: scale(0.82);
+              transform-origin: top right;
+          }
+      }
+
+      /* ── Hamburger ── */
+      #hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+          width: 36px; height: 36px;
+          cursor: pointer;
+          z-index: 9999;
+          padding: 4px;
+          border-radius: 8px;
+          transition: background 0.2s;
+          background: none;
+          border: none;
+      }
+      #hamburger:hover { background: rgba(255,255,255,0.08); }
+      #hamburger span {
+          display: block; height: 2px; width: 100%;
+          background: #e2e8f0; border-radius: 2px;
+          transition: all 0.3s ease; transform-origin: center;
+      }
+      #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      #hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      #mobile-nav-gallery {
+          display: none;
+          position: absolute; top: 100%; left: 0; width: 100%;
+          background: rgba(2,4,10,0.97);
+          backdrop-filter: blur(20px);
+          border-top: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 1rem 1.5rem 1.5rem;
+          flex-direction: column; gap: 0;
+          z-index: 9998;
+          animation: slideDown 0.25s ease;
+      }
+      #mobile-nav-gallery.open { display: flex; }
+      @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+      }
+      #mobile-nav-gallery a {
+          padding: 0.7rem 0;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          color: #94a3b8;
+          font-size: 0.85rem; font-weight: 600;
+          letter-spacing: 0.06em; text-transform: uppercase;
+          text-decoration: none; transition: color 0.2s;
+      }
+      #mobile-nav-gallery a:last-child { border-bottom: none; }
+      #mobile-nav-gallery a:hover { color: #06b6d4; }
+
+      @media (max-width: 1023px) {
+          #hamburger { display: flex; }
+          #desktop-nav-gallery { display: none !important; }
+      }
+
+      /* ── Coming Soon placeholder ── */
+      .coming-soon-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          text-align: center;
+          padding: 2rem;
+          gap: 1.5rem;
+      }
+      .coming-soon-label {
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: #06b6d4;
+          font-family: 'JetBrains Mono', monospace;
+      }
+      .coming-soon-title {
+          font-size: clamp(2.5rem, 8vw, 5rem);
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.1;
+          background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+      }
+      .coming-soon-sub {
+          color: #64748b;
+          font-size: 1rem;
+          max-width: 400px;
+          line-height: 1.7;
+      }
+      .coming-soon-divider {
+          width: 60px;
+          height: 2px;
+          background: linear-gradient(90deg, #06b6d4, #a855f7);
+          border-radius: 2px;
+      }
+      /* Pulsing icon */
+      .coming-soon-icon {
+          font-size: 3.5rem;
+          animation: pulseFade 2.5s ease-in-out infinite;
+          color: #06b6d4;
+      }
+      @keyframes pulseFade {
+          0%, 100% { opacity: 0.5; transform: scale(1); }
+          50%       { opacity: 1;   transform: scale(1.08); }
+      }
+    </style>
+  </head>
+
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
+
+    <!-- Background Video -->
+    <video
+      class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.2]"
+      autoplay loop muted playsinline
+    >
+      <source src="Background.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Nebula layer -->
+    <div class="nebula-container opacity-50 mix-blend-screen">
+      <div class="stars"></div>
+      <div class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"></div>
+    </div>
+
+    <!-- Rotating digital globe bg -->
+    <div class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-25">
+      <img
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        class="w-[700px] h-[700px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
+        style="mask-image:radial-gradient(circle,black 50%,transparent 100%);-webkit-mask-image:radial-gradient(circle,black 50%,transparent 100%)"
+      />
+    </div>
+
+    <!-- ── NAVIGATION ── -->
+    <header class="fixed top-0 z-50 w-full backdrop-blur-md bg-[#02040a]/70 border-b border-white/5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative">
+        <div class="flex items-center gap-3">
+          <img src="my_image.png" alt="Saptarshi"
+            class="w-8 h-8 rounded-full object-cover object-top border border-orange-500/60 shadow-[0_0_10px_rgba(249,115,22,0.5)]" />
+          <span class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase">Saptarshi Sadhu</span>
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav id="desktop-nav-gallery" class="flex items-center gap-4 lg:gap-6">
+          <a class="nav-link" href="3d.html">Home</a>
+          <a class="nav-link" href="3d.html#about">About</a>
+          <a class="nav-link" href="3d.html#skills">Skills</a>
+          <a class="nav-link" href="3d.html#projects">Projects</a>
+          <a class="nav-link" href="3d.html#experience">Experience</a>
+          <a class="nav-link" href="3d.html#education">Education</a>
+          <a class="nav-link" href="3d.html#achievements">Achievements</a>
+          <a class="nav-link" href="blog.html">Blog</a>
+          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="gallery.html">Gallery</a>
+          <a class="nav-link" href="3d.html#contact">Contact</a>
+        </nav>
+
+        <!-- Hamburger -->
+        <button id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- Mobile Dropdown -->
+      <nav id="mobile-nav-gallery" aria-label="Mobile navigation">
+        <a href="3d.html">Home</a>
+        <a href="3d.html#about">About</a>
+        <a href="3d.html#skills">Skills</a>
+        <a href="3d.html#projects">Projects</a>
+        <a href="3d.html#experience">Experience</a>
+        <a href="3d.html#education">Education</a>
+        <a href="3d.html#achievements">Achievements</a>
+        <a href="blog.html">Blog</a>
+        <a href="gallery.html" style="color:#06b6d4">Gallery</a>
+        <a href="3d.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <script>
+      (function() {
+        const btn = document.getElementById('hamburger');
+        const menu = document.getElementById('mobile-nav-gallery');
+        btn.addEventListener('click', function() {
+          const isOpen = menu.classList.toggle('open');
+          btn.classList.toggle('open', isOpen);
+          btn.setAttribute('aria-expanded', isOpen);
+        });
+        menu.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            menu.classList.remove('open');
+            btn.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      })();
+    </script>
+
+    <!-- ── MAIN ── -->
+    <main class="w-full relative z-10">
+      <div class="coming-soon-container">
+        <p class="coming-soon-label">Saptarshi Sadhu</p>
+        <span class="material-symbols-outlined coming-soon-icon">photo_library</span>
+        <div class="coming-soon-divider"></div>
+        <h1 class="coming-soon-title">Gallery</h1>
+        <p class="coming-soon-sub">
+          A curated visual showcase of projects, designs &amp; creative work.<br />Coming soon.
+        </p>
+      </div>
+    </main>
+
+    <!-- Mode Switch (fixed top-right) -->
+    <a href="index.html" class="switch-wrapper-fixed" title="Switch to Static Mode">
+      <div class="switch"></div>
+    </a>
+
+    <footer class="border-t border-white/5 py-8 flex flex-col items-center gap-2 text-center text-xs tracking-widest font-mono opacity-60 hover:opacity-100 transition-opacity duration-500">
+      <div class="text-slate-400">© 2026 Saptarshi Sadhu</div>
+      <div class="text-slate-500">Built with intention &nbsp;·&nbsp; <span class="text-cyan-400/80 font-medium tracking-normal">Systems over shortcuts</span></div>
+    </footer>
+
+  </body>
+</html>
