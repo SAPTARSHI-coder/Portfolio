@@ -159,7 +159,7 @@ To add interactivity like scroll listeners or clicks, see script.js
     <style>
       .switch-wrapper-fixed {
           position: fixed;
-          bottom: 30px;
+          top: 30px;
           right: 30px;
           display: flex;
           align-items: center;
@@ -167,7 +167,7 @@ To add interactivity like scroll listeners or clicks, see script.js
           text-decoration: none;
           color: #ffffff;
           cursor: pointer;
-          transition: color 0.3s ease;
+          transition: all 0.3s ease;
           z-index: 9999;
       }
 
@@ -201,6 +201,15 @@ To add interactivity like scroll listeners or clicks, see script.js
 
       .switch-wrapper-fixed:hover .switch {
           background-color: #0891b2;
+      }
+
+      @media (max-width: 480px) {
+          .switch-wrapper-fixed {
+              top: 15px;
+              right: 15px;
+              transform: scale(0.85); /* Shorter/smaller for mobile */
+              transform-origin: top right;
+          }
       }
     </style>
   </head>
