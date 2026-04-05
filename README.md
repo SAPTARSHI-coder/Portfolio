@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="my_image.png" alt="Saptarshi Sadhu" width="120" style="border-radius: 50%;" />
+<img src="my_image.png" alt="Saptarshi Sadhu" width="120" style="border-radius: 50%; border: 2px solid #06b6d4; padding: 4px;" />
 
 # Saptarshi Sadhu
 
@@ -15,183 +15,172 @@
 
 ---
 
-## Overview
+## ⚡ Overview
 
-This repository contains the source code for my personal portfolio — a production-grade, performance-optimized web experience built to reflect my approach to software: precise architecture, systems thinking, and visual craftsmanship.
+Welcome to the source code of my personal portfolio. This repository is not just a digital resume — it is a **Dual-Mode Web Application** built from the ground up without heavy frameworks. It demonstrates frontend architecture, graphics rendering, performance optimization, and systems thinking.
 
 > **Live →** [saptarshisadhu.co.in](https://saptarshisadhu.co.in)
 
-The portfolio documents my work across full-stack engineering, machine learning research, and low-level systems programming. It's also a technical artifact in its own right — featuring a custom galaxy orbital animation system, a full interactive 3D workstation model, parallax scroll effects, typed text sequences, and a complete SEO/structured data implementation.
+The portfolio captures my journey across full-stack engineering, machine learning research, and low-level systems programming. 
 
 ---
 
-## Architecture & Technical Design
+## 🚀 Dual-Mode Architecture
+
+To serve different user preferences and network conditions, the portfolio features a unique dual-mode routing system accessible via the main landing portal (`index.html`).
+
+### 1️⃣ 3D Interactive Mode (`3d.html`)
+A cinematic, GPU-accelerated immersive experience.
+- **3D Workstation:** Features a fully interactive developer room rendered using Google's `<model-viewer>` (WebGL), complete with orbit controls, realistic lighting, and environment maps.
+- **Orbital Physics System:** A custom physics engine written in Vanilla JS where technology icons orbit along math-calculated spiral paths with dynamic light arcs and dust trails.
+- **Parallax & Video Layers:** Composited `.mp4` background with screen-blend elements and responsive scroll observers.
+
+### 2️⃣ High-Speed Static Mode (`static.html`)
+A lightning-fast, high-contrast, editorial layout optimized for mobile and low-bandwidth connections.
+- **Minimalist UI:** Clean glassmorphism, sharp typography, and instantaneous load times.
+- **No WebGL Overhead:** Stripped of heavy 3D assets and complex physics loops while maintaining identical content parity with the 3D mode.
+
+---
+
+## 🧠 Integrated Dual-Mode Blog
+
+The portfolio includes a fully integrated blogging system, echoing the dual-mode philosophy:
+- **`blog.html` (Dynamic Router):** Uses a Vanilla JS routing engine to load Markdown-style HTML posts asynchronously, providing an SPA (Single Page Application) feel with a frosted-glass UI.
+- **`static_blog.html` (Static Delivery):** Directly links to fully pre-rendered static HTML files (`static_blog_posts/`) for maximum SEO compatibility and immediate rendering.
+
+---
+
+## 🏗️ Technical Directory Structure
 
 ```
 Portfolio/
-├── index.html          # Main document — 1800+ lines, fully semantic HTML5
-├── index.css           # Custom CSS system — glassmorphism, animations, layout
-├── script.js           # Vanilla JS — orbital physics, scroll observers, typing engine
-├── blog.html           # Blog index page
-├── blog_posts/         # Technical writing — DSA, Full Stack, ML, AI, Flutter, DevOps
-│   ├── dsa.html
-│   ├── fullstack.html
-│   ├── ml.html
-│   ├── ai-system.html
-│   ├── devops.html
-│   └── flutter.html
-├── port3d.glb          # 3D developer workstation model (WebGL / model-viewer)
-├── Background.mp4      # Cinematic background video layer
-├── sitemap.xml         # SEO sitemap
-└── robots.txt          # Crawler directives
+├── index.html              # Main Gateway (Mode Selector)
+├── index.css               # Global Gateway Styles
+|
+├── 3d.html                 # Complete 3D Immersive Portfolio
+├── 3d.css                  # Styles for 3D Mode & Animations
+├── script.js               # Orbital Physics, 3D Observer Engine
+|
+├── static.html             # High-Performance Static Portfolio
+├── static.css              # Editorial Minimalist Styles
+|
+├── blog.html               # Dynamic SPA Blog Index
+├── blog_posts/             # Async-loaded Blog Content
+|
+├── static_blog.html        # Fully Static SSR Blog Index
+├── static_blog_posts/      # SEO-optimized Hardcoded Posts
+|
+├── port3d.glb              # High-Res 3D Developer Workstation
+├── Background.mp4          # Cinematic Background Compositing Layer
+└── sitemap.xml & robots.txt# Full Technical SEO Suite
 ```
 
-**No build system. No bundler. No framework overhead.** The entire site is hand-authored HTML, CSS, and JavaScript — a deliberate architectural decision to maximize performance, control rendering behavior at the lowest level, and demonstrate first-principles engineering.
+**Zero Frameworks. Zero Bundlers.** 
+This application is purely hand-authored HTML, CSS, and JS. This ensures maximum control over browser paint cycles, memory allocation, and DOM manipulation.
 
 ---
 
-## Key Features
+## 💻 Tech Stack
 
-### Visual & Interaction Layer
-| Feature | Implementation |
-|---|---|
-| **Galaxy Orbital System** | Custom JS physics engine — tech icons orbit on spiral paths with dust trails and light arcs |
-| **3D Workstation Model** | `<model-viewer>` rendering a `.glb` scene with camera controls, shadow casting, and environment maps |
-| **Glassmorphism Cards** | `backdrop-filter: blur`, layered `rgba` surfaces, and subtle inset borders |
-| **Scroll Animations** | `IntersectionObserver` API — section elements fade and slide into view as you scroll |
-| **Typing Animation** | Vanilla JS string sequencer cycling through role descriptors with a blinking cursor |
-| **Parallax Background** | Composited video layer + starfield + radial glow orbs with `mix-blend-mode: screen` |
-| **Network Pulse Lines** | CSS absolute-positioned animated paths connecting the About section cards |
+### Languages
+<p>
+  <img src="https://img.shields.io/badge/Python-Advanced-3776AB?style=flat-square&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/JavaScript-Advanced-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/TypeScript-Intermediate-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Java-Intermediate-ED8B00?style=flat-square&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/C-Intermediate-A8B9CC?style=flat-square&logo=c&logoColor=black" />
+  <img src="https://img.shields.io/badge/Dart-Intermediate-0175C2?style=flat-square&logo=dart&logoColor=white" />
+</p>
 
-### Technical SEO
-- Full **Schema.org JSON-LD** structured data: `Person`, `WebSite` schemas
-- **Open Graph** and **Twitter Card** meta tags for social link previews
-- `sitemap.xml` with `lastmod` dates covering all pages and blog posts
-- `robots.txt` with selective crawl directives
-- `<link rel="canonical">`, `<link rel="preload">` for LCP image (above-the-fold optimization)
-- Semantic heading hierarchy (`h1` → `h2` → `h3`) across all pages
+### Frontend Engineering
+<p>
+  <img src="https://img.shields.io/badge/React-Advanced-61DAFB?style=flat-square&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Next.js-Advanced-000000?style=flat-square&logo=next.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/HTML5%2FCSS3-Advanced-E34F26?style=flat-square&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/badge/WebGL%20(Model_Viewer)-Specialist-FF0000?style=flat-square&logo=webgl&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind-Advanced-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white" />
+</p>
 
----
+### Backend Architecture
+<p>
+  <img src="https://img.shields.io/badge/Node.js-Intermediate-339933?style=flat-square&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express.js-Advanced-000000?style=flat-square&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/Django-Intermediate-092E20?style=flat-square&logo=django&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-Intermediate-6DB33F?style=flat-square&logo=spring-boot&logoColor=white" />
+</p>
 
-## Tech Stack
+### Databases & Cloud
+<p>
+  <img src="https://img.shields.io/badge/MySQL-Advanced-4479A1?style=flat-square&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Supabase-Advanced-3ECF8E?style=flat-square&logo=supabase&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-Intermediate-47A248?style=flat-square&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/AWS-Intermediate-FF9900?style=flat-square&logo=amazon-aws&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-Beginner-2496ED?style=flat-square&logo=docker&logoColor=white" />
+</p>
 
-**Languages**
-
-![Python](https://img.shields.io/badge/Python-Advanced-3776AB?style=flat-square&logo=python&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-Advanced-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-Intermediate-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Java](https://img.shields.io/badge/Java-Intermediate-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![C](https://img.shields.io/badge/C-Intermediate-A8B9CC?style=flat-square&logo=c&logoColor=black)
-![Dart](https://img.shields.io/badge/Dart-Intermediate-0175C2?style=flat-square&logo=dart&logoColor=white)
-
-**Frontend**
-
-![React](https://img.shields.io/badge/React-Advanced-61DAFB?style=flat-square&logo=react&logoColor=black)
-![Next.js](https://img.shields.io/badge/Next.js-Advanced-000000?style=flat-square&logo=next.js&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5%2FCSS3-Advanced-E34F26?style=flat-square&logo=html5&logoColor=white)
-![Vue.js](https://img.shields.io/badge/Vue.js-Intermediate-4FC08D?style=flat-square&logo=vue.js&logoColor=white)
-
-**Backend**
-
-![Node.js](https://img.shields.io/badge/Node.js-Intermediate-339933?style=flat-square&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-Advanced-000000?style=flat-square&logo=express&logoColor=white)
-![Django](https://img.shields.io/badge/Django-Intermediate-092E20?style=flat-square&logo=django&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-Intermediate-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
-
-**Databases**
-
-![MySQL](https://img.shields.io/badge/MySQL-Advanced-4479A1?style=flat-square&logo=mysql&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-Advanced-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Intermediate-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Intermediate-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-
-**ML / AI**
-
-![PyTorch](https://img.shields.io/badge/PyTorch-Intermediate-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-Intermediate-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
-![Anaconda](https://img.shields.io/badge/Anaconda-Advanced-44A833?style=flat-square&logo=anaconda&logoColor=white)
-
-**Cloud & Infrastructure**
-
-![AWS](https://img.shields.io/badge/AWS-Intermediate-FF9900?style=flat-square&logo=amazon-aws&logoColor=white)
-![Google Cloud](https://img.shields.io/badge/Google_Cloud-Intermediate-4285F4?style=flat-square&logo=google-cloud&logoColor=white)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-Intermediate-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Beginner-2496ED?style=flat-square&logo=docker&logoColor=white)
+### AI & ML
+<p>
+  <img src="https://img.shields.io/badge/PyTorch-Intermediate-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" />
+  <img src="https://img.shields.io/badge/TensorFlow-Intermediate-FF6F00?style=flat-square&logo=tensorflow&logoColor=white" />
+  <img src="https://img.shields.io/badge/Scikit_Learn-Advanced-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" />
+</p>
 
 ---
 
-## Research
+## 🔬 Featured Research
 
-**Urban Air Quality Prediction using Machine Learning**
-
-Ongoing ML research investigating data-driven models to predict ground-level concentrations of volatile organic compounds (VOCs), ozone (O₃), and nitrogen oxides (NOx) in urban environments. The work explores temporal and environmental feature interactions to improve short-term pollutant forecasting — a problem with direct implications for public health monitoring and smart city infrastructure.
-
-*Stack: Python · PyTorch · TensorFlow · Anaconda · Statistical Modeling*
+**Urban Air Quality Prediction using Machine Learning**  
+An ongoing data-driven research initiative investigating ML models to predict ground-level concentrations of volatile organic compounds (VOCs), ozone (O₃), and nitrogen oxides (NOx) in urban environments. The project models temporal and environmental feature interactions for short-term forecasting, aiding public health and smart city development.  
+*Stack: Python, TensorFlow, PyTorch, Statistical Modeling*
 
 ---
 
-## Blog
-
-Technical writing published at [saptarshisadhu.co.in/blog.html](https://saptarshisadhu.co.in/blog.html), covering:
-
-| Post | Topic |
-|---|---|
-| [Data Structures & Algorithms](https://saptarshisadhu.co.in/blog_posts/dsa.html) | Algorithmic thinking, time complexity, problem solving methodology |
-| [Full Stack Engineering](https://saptarshisadhu.co.in/blog_posts/fullstack.html) | System design, REST APIs, client-server architecture |
-| [Machine Learning](https://saptarshisadhu.co.in/blog_posts/ml.html) | Model architecture, training pipelines, evaluation |
-| [AI Systems](https://saptarshisadhu.co.in/blog_posts/ai-system.html) | LLM integration, AI application design |
-| [DevOps & Deployment](https://saptarshisadhu.co.in/blog_posts/devops.html) | CI/CD, containerization, cloud infrastructure |
-| [Flutter & Mobile](https://saptarshisadhu.co.in/blog_posts/flutter.html) | Cross-platform development, Dart, mobile architecture |
-
----
-
-## Academic Record
+## 🎓 Academic Record
 
 | Level | Board | Score |
 |---|---|---|
 | Secondary | WBBSE | **93.71%** |
 | Higher Secondary | WBCHSE | **89.60%** |
-| B.Tech CS (Ongoing) | Semester GPA | **9.3 → 9.5 → 9.43** |
+| B.Tech Computer Science | Semester GPA Progression | **9.3 → 9.5 → 9.43** |
 
 ---
 
-## Running Locally
+## 🛠️ Running Locally
 
-No build step required.
+Because the project relies on dynamically loaded modules (for the 3D `.glb` model) and local file fetching (for the dynamic blog routing), opening the files directly using `file://` will cause CORS restrictions. **You must run a local HTTP server.**
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/SAPTARSHI-coder/Portfolio.git
 cd Portfolio
 
-# Option 1 — VS Code Live Server (recommended)
-# Install the Live Server extension → right-click index.html → Open with Live Server
-
-# Option 2 — Python HTTP server
+# 2. Run a local server
+# (Using Python 3)
 python -m http.server 8080
-# Open http://localhost:8080
-```
 
-> **Note:** The 3D model (`port3d.glb`) and background video (`Background.mp4`) are served as static assets. A local server is required — `file://` protocol will block asset loading due to CORS.
+# (Using Node/NPX)
+npx serve .
+```
+Navigate to `http://localhost:8080` in your web browser.
 
 ---
 
-## Contact
+## 📬 Contact & Connect
 
-Open to internships, research collaborations, and engineering opportunities.
+I am actively open to software engineering internships, systems/ML research collaborations, and open-source opportunities.
 
-| Channel | Link |
+| Network | Link |
 |---|---|
-| **Email** | via [saptarshisadhu.co.in/#contact](https://saptarshisadhu.co.in/#contact) |
 | **LinkedIn** | [linkedin.com/in/saptarshi-sadhu](https://www.linkedin.com/in/saptarshi-sadhu/) |
 | **GitHub** | [github.com/SAPTARSHI-coder](https://github.com/SAPTARSHI-coder) |
-| **Support** | [buymeacoffee.com/saptarshisadhu](https://buymeacoffee.com/saptarshisadhu) |
+| **Email** | Available via [Contact Section](https://saptarshisadhu.co.in/#contact) |
+| **Support** | [Buy Me a Coffee](https://buymeacoffee.com/saptarshisadhu) |
 
 ---
 
 <div align="center">
-
-**Saptarshi Sadhu** · Kolkata, West Bengal, India
-
-*Designing systems that operate at real-world scale.*
-
+  <br/>
+  <i>Designing systems that operate at real-world scale.</i>
+  <br/>
+  <b>Made with ⚡ by Saptarshi Sadhu</b>
 </div>

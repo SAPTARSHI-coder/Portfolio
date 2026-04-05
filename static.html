@@ -970,6 +970,66 @@
       }
 
       /* ─────────────────────────────────────────
+         ENGINEERING HIGHLIGHTS
+      ───────────────────────────────────────── */
+      .highlights-section {
+        padding: 4rem 2rem;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: rgba(10, 15, 28, 0.4);
+      }
+      .highlights-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .highlights-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+      .highlights-title {
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--white);
+      }
+      .highlights-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+      }
+      .highlight-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .highlight-icon {
+        color: var(--accent);
+        font-size: 1.8rem;
+        opacity: 0.8;
+      }
+      .highlight-info-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.4rem;
+      }
+      .highlight-info-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      @media (max-width: 1024px) {
+        .highlights-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 640px) {
+        .highlights-grid { grid-template-columns: 1fr; gap: 2rem; }
+      }
+
+      /* ─────────────────────────────────────────
          PROJECTS
       ───────────────────────────────────────── */
       .projects-section { padding: 6rem 0; border-top: 1px solid var(--border); }
@@ -1375,6 +1435,52 @@
         <div class="hero-scroll-hint" aria-hidden="true">
           <span class="hero-scroll-hint-text">Scroll</span>
           <div class="hero-scroll-hint-line"></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════
+           ENGINEERING HIGHLIGHTS
+      ══════════════════════════════════════════ -->
+      <section class="highlights-section">
+        <div class="highlights-container">
+          <div class="highlights-header">
+            <span class="material-symbols-outlined" style="color:var(--accent)">memory</span>
+            <h3 class="highlights-title">Engineering Highlights</h3>
+          </div>
+          
+          <div class="highlights-grid">
+            <div class="highlight-card">
+              <span class="material-symbols-outlined highlight-icon">architecture</span>
+              <div class="highlight-info">
+                <p class="highlight-info-title">Dual-Mode Architecture</p>
+                <p class="highlight-info-desc">Integrated 3D Immersive & High-Performance Static execution branches.</p>
+              </div>
+            </div>
+            
+            <div class="highlight-card">
+              <span class="material-symbols-outlined highlight-icon">view_in_ar</span>
+              <div class="highlight-info">
+                <p class="highlight-info-title">WebGL Rendering</p>
+                <p class="highlight-info-desc">Hardware accelerated GPU rendering via model-viewer and custom shaders.</p>
+              </div>
+            </div>
+            
+            <div class="highlight-card">
+              <span class="material-symbols-outlined highlight-icon">cyclone</span>
+              <div class="highlight-info">
+                <p class="highlight-info-title">Vanilla JS Physics</p>
+                <p class="highlight-info-desc">Math-calculated orbital UI systems executed without heavy frameworks.</p>
+              </div>
+            </div>
+            
+            <div class="highlight-card">
+              <span class="material-symbols-outlined highlight-icon">speed</span>
+              <div class="highlight-info">
+                <p class="highlight-info-title">100/100 Lighthouse</p>
+                <p class="highlight-info-desc">Zero-dependency, heavily optimized static mode for instant load times.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
