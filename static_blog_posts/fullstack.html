@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecting Scalable Full Stack Systems — Saptarshi Sadhu</title>
+  <meta name="description" content="Design decisions behind building scalable full-stack applications — from database schema design to REST API contracts and frontend state management." />
+  <meta name="author" content="Saptarshi Sadhu" />
+  <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog_posts/fullstack.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Architecting Scalable Full Stack Systems From Scratch" />
+  <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+  <meta property="article:published_time" content="2026-02-15" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static_article.css" />
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <a href="../static_blog.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span> Blog</a>
+  <a href="../static.html" class="back-btn" style="left:max(130px,9.5rem)"><span class="material-symbols-outlined">home</span> Home</a>
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span>
+  </button>
+
+  <main class="article-wrap">
+    <div class="article-tags">
+      <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Full Stack</span>
+      <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Systems</span>
+      <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Next.js</span>
+      <span class="tag" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.05)">Architecture</span>
+    </div>
+
+    <h1 class="article-title">Architecting Scalable Full Stack Systems From Scratch</h1>
+    <p class="article-lead">The decisions you make in the first sprint compound forever. Here's how to get the foundations right.</p>
+
+    <div class="article-meta">
+      <span><span class="material-symbols-outlined">calendar_today</span> February 2026</span>
+      <span><span class="material-symbols-outlined">schedule</span> 10 min read</span>
+      <span><span class="material-symbols-outlined">person</span> Saptarshi Sadhu</span>
+    </div>
+
+    <div class="prose">
+
+      <p>Most developers learn full-stack development by copying tutorials. That works until you have to scale — and then you realize the tutorial assumed you'd never have more than 100 users. This article documents the architectural decisions I've internalized after building several full-stack systems from scratch.</p>
+
+      <div class="callout callout-info">
+        <span class="material-symbols-outlined">info</span>
+        <div><strong style="color:#67e8f9;display:block;margin-bottom:4px">Stack used in examples</strong>
+        Next.js · Node.js / Express · PostgreSQL / Supabase · Redis · Vercel Edge</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#06b6d4">storage</span> Database Schema Design</h2>
+      <p>The schema is the contract between your application and your data. Bad schemas compound pain — every migration is a production risk, every N+1 query is a latency disaster at scale.</p>
+
+      <h3>The principles I follow</h3>
+      <ul>
+        <li><strong>Normalize first, denormalize intentionally.</strong> Start with 3NF; only collapse tables when you have profiling evidence that joins are a bottleneck.</li>
+        <li><strong>Every foreign key gets an index.</strong> This is the single most-forgotten optimization.</li>
+        <li><strong>Timestamps on every table:</strong> <code>created_at</code>, <code>updated_at</code>, and <code>deleted_at</code> (soft deletes). You'll thank yourself during debugging.</li>
+        <li><strong>UUIDs over auto-increment integers</strong> for any table that might be exposed in a public API or ever federated.</li>
+      </ul>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">sql</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm">-- Users table with soft delete + UUID</span>
+<span class="kw">CREATE TABLE</span> users (
+  id          UUID <span class="kw">DEFAULT</span> <span class="fn">gen_random_uuid</span>() <span class="kw">PRIMARY KEY</span>,
+  email       TEXT <span class="kw">NOT NULL UNIQUE</span>,
+  name        TEXT <span class="kw">NOT NULL</span>,
+  created_at  TIMESTAMPTZ <span class="kw">DEFAULT NOW</span>(),
+  updated_at  TIMESTAMPTZ <span class="kw">DEFAULT NOW</span>(),
+  deleted_at  TIMESTAMPTZ <span class="kw">DEFAULT NULL</span>
+);
+
+<span class="cm">-- Partial index to enforce unique active emails</span>
+<span class="kw">CREATE UNIQUE INDEX</span> users_active_email
+  <span class="kw">ON</span> users (email)
+  <span class="kw">WHERE</span> deleted_at <span class="kw">IS NULL</span>;</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#a78bfa">api</span> REST API Contract Design</h2>
+      <p>A well-designed REST API is a <em>promise</em>. Once clients depend on it, breaking changes are expensive. The patterns I standardize on:</p>
+
+      <ul>
+        <li><strong>Resource URLs are nouns, verbs are HTTP methods</strong> — <code>POST /orders</code>, not <code>POST /createOrder</code></li>
+        <li><strong>Consistent error envelope</strong> — every error returns <code>{ code, message, details }</code> so clients can handle them uniformly</li>
+        <li><strong>Pagination by cursor, not offset</strong> — offset-based pagination becomes incorrect as data changes during iteration</li>
+        <li><strong>API versioning in the URL</strong> — <code>/api/v1/</code> from day one, even if you don't think you need it</li>
+      </ul>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">cached_limited_error_rate</span> State Management Strategy</h2>
+      <p>Frontend state becomes a source of bugs when it's not colocated with its scope. My rule: state lives at the <em>lowest</em> component that needs it. Only hoist when multiple siblings need the same state.</p>
+
+      <blockquote><strong>"Global state is a shared mutable variable. Treat it with the same suspicion."</strong><br>Most state that ends up in Redux/Zustand was never actually global — it just felt that way at the time.</blockquote>
+
+      <p>For server state specifically, React Query / TanStack Query has eliminated most of my manual cache management. The key insight: server state is <em>async</em> by nature, has staleness semantics, and can be invalidated. Treating it differently from client state unlocks a dramatically simpler architecture.</p>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#06b6d4">3×</div><div class="stat-card-label">Faster DB queries</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#a78bfa">< 100ms</div><div class="stat-card-label">P95 API latency</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#34d399">0</div><div class="stat-card-label">N+1 queries in prod</div></div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">speed</span> Performance Rules</h2>
+      <ol>
+        <li>Profile before optimizing. Your hunch about the bottleneck is usually wrong.</li>
+        <li>Add a Redis cache in front of any query that runs &gt;50ms and is read-heavy.</li>
+        <li>Every background job goes in a queue (BullMQ / Upstash), never in a request-response cycle.</li>
+        <li>Static assets on CDN edge. Database on the same region as your server. These two rules alone cover 80% of latency wins.</li>
+      </ol>
+
+      <div class="callout callout-success">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div><strong style="color:#86efac;display:block;margin-bottom:4px">The meta-lesson</strong>
+        Good architecture isn't about using the latest technologies. It's about making decisions that stay correct as the system evolves.</div>
+      </div>
+
+    </div>
+
+    <div class="article-footer">
+      <a href="../static_blog.html" class="article-footer-back">
+        <span class="material-symbols-outlined">arrow_back</span> Back to Blog
+      </a>
+      <div class="article-footer-author">
+        <img src="../my_image.png" alt="Saptarshi Sadhu" />
+        <div>
+          <div class="article-footer-author-name">Saptarshi Sadhu</div>
+          <div class="article-footer-author-role">CS Undergrad · Full Stack</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+    });
+    document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', () => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 1500); }));
+  </script>
+</body>
+</html>

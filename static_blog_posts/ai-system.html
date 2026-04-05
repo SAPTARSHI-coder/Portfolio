@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing AI Systems That Scale Beyond the Prototype — Saptarshi Sadhu</title>
+  <meta name="description" content="How to bridge the gap between a working ML model and a production AI system — inference pipelines, latency, model versioning, and serving at scale." />
+  <meta name="author" content="Saptarshi Sadhu" />
+  <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog_posts/ai-system.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Designing AI Systems That Scale Beyond the Prototype" />
+  <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+  <meta property="article:published_time" content="2026-01-10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static_article.css" />
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <a href="../static_blog.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span> Blog</a>
+  <a href="../static.html" class="back-btn" style="left:max(130px,9.5rem)"><span class="material-symbols-outlined">home</span> Home</a>
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span>
+  </button>
+
+  <main class="article-wrap">
+    <div class="article-tags">
+      <span class="tag" style="color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.05)">AI Systems</span>
+      <span class="tag" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)">ML Ops</span>
+      <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Backend</span>
+      <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Inference</span>
+    </div>
+
+    <h1 class="article-title">Designing AI Systems That Scale Beyond the Prototype</h1>
+    <p class="article-lead">A Jupyter notebook is not an AI system. Here's what it actually takes to deploy ML models that survive production traffic.</p>
+
+    <div class="article-meta">
+      <span><span class="material-symbols-outlined">calendar_today</span> January 2026</span>
+      <span><span class="material-symbols-outlined">schedule</span> 13 min read</span>
+      <span><span class="material-symbols-outlined">person</span> Saptarshi Sadhu</span>
+    </div>
+
+    <div class="prose">
+
+      <p>The gap between "my model works in a notebook" and "my model serves 10,000 requests per day reliably" is one of the most underestimated engineering challenges in the field. Most ML education stops at model accuracy. This article starts where accuracy ends.</p>
+
+      <div class="callout callout-info">
+        <span class="material-symbols-outlined">info</span>
+        <div><strong style="color:#67e8f9;display:block;margin-bottom:4px">What this covers</strong>
+        Inference pipeline design · Latency budgets · Model versioning · Serving infrastructure · Monitoring in production</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#c084fc">schema</span> The Three Failure Modes</h2>
+      <p>Production AI systems fail in three distinct ways that prototype evaluation doesn't catch:</p>
+      <ol>
+        <li><strong>Distribution shift</strong> — the real-world input distribution drifts from training data over time. Your accuracy degrades silently.</li>
+        <li><strong>Latency at the tail</strong> — P99 latency is often 10× the median. ML inference is particularly susceptible because model evaluation time varies with input complexity.</li>
+        <li><strong>Infrastructure coupling</strong> — the model is entangled with the serving code, making updates, rollbacks, and A/B testing fragile.</li>
+      </ol>
+
+      <blockquote><strong>"An ML model in production is not a static artifact — it's a living component that decays."</strong><br>Model quality is a function of time since training, not just architecture choice.</blockquote>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">route</span> Inference Pipeline Design</h2>
+      <p>Structure the inference path as a pipeline of composable stages: <strong>pre-processing → model inference → post-processing → response</strong>. Each stage should be independently testable and replaceable.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># Composable inference pipeline</span>
+<span class="kw">class</span> <span class="fn">InferencePipeline</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, preprocessor, model, postprocessor):
+        self.preprocessor  = preprocessor
+        self.model         = model
+        self.postprocessor = postprocessor
+
+    <span class="kw">def</span> <span class="fn">predict</span>(self, raw_input):
+        features = self.preprocessor.<span class="fn">transform</span>(raw_input)
+        raw_pred = self.model.<span class="fn">infer</span>(features)
+        <span class="kw">return</span> self.postprocessor.<span class="fn">decode</span>(raw_pred)
+
+<span class="cm"># Swap model without touching serving logic</span>
+pipeline_v2 = <span class="fn">InferencePipeline</span>(
+    preprocessor=FeatureEngineerV2(),
+    model=<span class="fn">load_model</span>(<span class="str">"model_v2.onnx"</span>),
+    postprocessor=ResponseDecoder(),
+)</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#60a5fa">timer</span> Latency Budget Allocation</h2>
+      <p>Define your total latency budget first (e.g., P95 &lt; 200ms), then work backwards. Typical breakdown:</p>
+      <ul>
+        <li><strong>Network + load balancer:</strong> ~15ms</li>
+        <li><strong>Pre-processing:</strong> &lt;20ms (profile and optimize this — it's often the hidden bottleneck)</li>
+        <li><strong>Model inference:</strong> ~100ms (with GPU, much less)</li>
+        <li><strong>Post-processing + serialization:</strong> ~20ms</li>
+        <li><strong>Buffer for tail latency:</strong> ~45ms</li>
+      </ul>
+
+      <p>Export your model to <strong>ONNX</strong> and serve with ONNX Runtime — this typically gives 2–4× speedup over native PyTorch serving with no accuracy loss.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="kw">import</span> onnxruntime <span class="kw">as</span> ort
+<span class="kw">import</span> torch
+
+<span class="cm"># Export to ONNX</span>
+torch.<span class="fn">onnx.export</span>(
+    model, dummy_input,
+    <span class="str">"model.onnx"</span>,
+    opset_version=<span class="nu">17</span>,
+    input_names=[<span class="str">"input"</span>],
+    output_names=[<span class="str">"logits"</span>],
+    dynamic_axes={<span class="str">"input"</span>: {<span class="nu">0</span>: <span class="str">"batch_size"</span>}},
+)
+
+<span class="cm"># Serve with ORT (GPU or CPU)</span>
+session = ort.<span class="fn">InferenceSession</span>(
+    <span class="str">"model.onnx"</span>,
+    providers=[<span class="str">"CUDAExecutionProvider"</span>, <span class="str">"CPUExecutionProvider"</span>]
+)</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">history</span> Model Versioning Strategy</h2>
+      <p>Treat models as first-class versioned artifacts — not files on a server. Each deployed version should have:</p>
+      <ul>
+        <li>A content-addressable checksum (SHA-256 of weights)</li>
+        <li>Metadata: training date, dataset version, evaluation metrics</li>
+        <li>A deployment timestamp and traffic percentage</li>
+        <li>A rollback path to the previous stable version</li>
+      </ul>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#c084fc">2–4×</div><div class="stat-card-label">ONNX speedup</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#34d399">&lt;200ms</div><div class="stat-card-label">Target P95</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#60a5fa">100%</div><div class="stat-card-label">Rollback coverage</div></div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">monitoring</span> Production Monitoring</h2>
+      <p>Accuracy on a held-out test set is not a substitute for production monitoring. Measure:</p>
+      <ul>
+        <li><strong>Input distribution drift</strong> — compare feature statistics vs. training baseline using KL divergence or Population Stability Index</li>
+        <li><strong>Prediction distribution</strong> — sudden shifts in output confidence signal model or data problems</li>
+        <li><strong>Business metrics</strong> — ultimately, does the model improve the metric it was deployed to optimize?</li>
+      </ul>
+
+      <div class="callout callout-success">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div><strong style="color:#86efac;display:block;margin-bottom:4px">The production mindset</strong>
+        Building an AI system means owning it after deployment — not just during experimentation. Design for observability from the first line of serving code.</div>
+      </div>
+
+    </div>
+
+    <div class="article-footer">
+      <a href="../static_blog.html" class="article-footer-back"><span class="material-symbols-outlined">arrow_back</span> Back to Blog</a>
+      <div class="article-footer-author">
+        <img src="../my_image.png" alt="Saptarshi Sadhu" />
+        <div>
+          <div class="article-footer-author-name">Saptarshi Sadhu</div>
+          <div class="article-footer-author-role">CS Undergrad · ML Research</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const d=document.documentElement, pct=(window.scrollY/(d.scrollHeight-d.clientHeight))*100;
+      document.getElementById('progress-bar').style.width=pct+'%';
+      document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+    });
+    document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',()=>{b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',1500);}));
+  </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSA Patterns That Actually Matter in Interviews — Saptarshi Sadhu</title>
+  <meta name="description" content="A pragmatic guide to the 12 DSA patterns — sliding window, two pointers, monotonic stacks — with real implementations and when to apply each one." />
+  <meta name="author" content="Saptarshi Sadhu" />
+  <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog_posts/dsa.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="DSA Patterns That Actually Matter in Interviews" />
+  <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+  <meta property="article:published_time" content="2026-01-20" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static_article.css" />
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <a href="../static_blog.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span> Blog</a>
+  <a href="../static.html" class="back-btn" style="left:max(130px,9.5rem)"><span class="material-symbols-outlined">home</span> Home</a>
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span>
+  </button>
+
+  <main class="article-wrap">
+    <div class="article-tags">
+      <span class="tag" style="color:#fb923c;border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.05)">DSA</span>
+      <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Algorithms</span>
+      <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Python</span>
+      <span class="tag" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)">Interview Prep</span>
+    </div>
+
+    <h1 class="article-title">DSA Patterns That Actually Matter in Interviews</h1>
+    <p class="article-lead">Stop memorizing solutions. Learn to recognize the 12 patterns that underpin 90% of coding interview questions.</p>
+
+    <div class="article-meta">
+      <span><span class="material-symbols-outlined">calendar_today</span> January 2026</span>
+      <span><span class="material-symbols-outlined">schedule</span> 11 min read</span>
+      <span><span class="material-symbols-outlined">person</span> Saptarshi Sadhu</span>
+    </div>
+
+    <div class="prose">
+
+      <p>Grinding 500 LeetCode problems isn't a strategy — it's a superstition. The developers who consistently pass technical screens don't have every solution memorized. They recognize the structural patterns that problems belong to, then apply the right template. This article breaks down the patterns that actually appear, with examples and the signal to watch for.</p>
+
+      <div class="callout callout-info">
+        <span class="material-symbols-outlined">info</span>
+        <div><strong style="color:#67e8f9;display:block;margin-bottom:4px">Pattern-first thinking</strong>
+        For each pattern: what it solves, the recognition signal, and a canonical Python implementation.</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">view_week</span> Pattern 1 — Sliding Window</h2>
+      <p><strong>What it solves:</strong> Contiguous subarray problems — max sum, longest substring with constraint, minimum window.</p>
+      <p><strong>Recognition signal:</strong> The problem involves a <em>contiguous</em> portion of an array/string, and you need to find something optimal about it.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># Maximum sum subarray of size k — O(n)</span>
+<span class="kw">def</span> <span class="fn">max_sum_subarray</span>(arr, k):
+    window_sum = <span class="fn">sum</span>(arr[:k])
+    best = window_sum
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(k, <span class="fn">len</span>(arr)):
+        window_sum += arr[i] - arr[i - k]
+        best = <span class="fn">max</span>(best, window_sum)
+    <span class="kw">return</span> best</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#06b6d4">compare_arrows</span> Pattern 2 — Two Pointers</h2>
+      <p><strong>What it solves:</strong> Pair search in sorted arrays, removing duplicates, palindrome checks, container with most water.</p>
+      <p><strong>Recognition signal:</strong> Sorted input (or sortable), and you need to find pairs or partition in-place without extra space.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># Two Sum II (sorted array) — O(n)</span>
+<span class="kw">def</span> <span class="fn">two_sum_sorted</span>(nums, target):
+    lo, hi = <span class="nu">0</span>, <span class="fn">len</span>(nums) - <span class="nu">1</span>
+    <span class="kw">while</span> lo < hi:
+        s = nums[lo] + nums[hi]
+        <span class="kw">if</span>   s == target: <span class="kw">return</span> [lo+<span class="nu">1</span>, hi+<span class="nu">1</span>]
+        <span class="kw">elif</span> s < target:  lo += <span class="nu">1</span>
+        <span class="kw">else</span>:             hi -= <span class="nu">1</span></pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#a78bfa">stacks</span> Pattern 3 — Monotonic Stack</h2>
+      <p><strong>What it solves:</strong> Next Greater Element, largest rectangle in histogram, daily temperatures, trapping rain water.</p>
+      <p><strong>Recognition signal:</strong> The problem asks about the <em>next/previous larger or smaller element</em> for each position.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># Next Greater Element — O(n)</span>
+<span class="kw">def</span> <span class="fn">next_greater</span>(nums):
+    result = [-<span class="nu">1</span>] * <span class="fn">len</span>(nums)
+    stack = []  <span class="cm"># stores indices</span>
+    <span class="kw">for</span> i, n <span class="kw">in</span> <span class="fn">enumerate</span>(nums):
+        <span class="kw">while</span> stack <span class="kw">and</span> nums[stack[-<span class="nu">1</span>]] < n:
+            result[stack.pop()] = n
+        stack.append(i)
+    <span class="kw">return</span> result</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">account_tree</span> Pattern 4 — BFS / Level-Order Tree</h2>
+      <p><strong>What it solves:</strong> Shortest path in unweighted graphs, level-order traversal, multi-source BFS, word ladder.</p>
+      <p><strong>Recognition signal:</strong> You need the <em>shortest path</em> or are processing nodes <em>level by level</em>.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="fn">bfs</span>(root):
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    result, queue = [], deque([root])
+    <span class="kw">while</span> queue:
+        level = []
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(queue)):
+            node = queue.popleft()
+            level.append(node.val)
+            <span class="kw">if</span> node.left:  queue.append(node.left)
+            <span class="kw">if</span> node.right: queue.append(node.right)
+        result.append(level)
+    <span class="kw">return</span> result</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#60a5fa">linear_scale</span> Pattern 5 — Binary Search on Answer</h2>
+      <p><strong>What it solves:</strong> "Find minimum X such that condition holds" — capacity problems, Koko eating bananas, split array largest sum.</p>
+      <p><strong>Recognition signal:</strong> The problem has a <em>monotonic</em> feasibility condition — if X works, then X+1 also works (or vice versa).</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># Template: find smallest k where feasible(k) is True</span>
+<span class="kw">def</span> <span class="fn">binary_search_answer</span>(lo, hi, feasible):
+    <span class="kw">while</span> lo < hi:
+        mid = (lo + hi) // <span class="nu">2</span>
+        <span class="kw">if</span> <span class="fn">feasible</span>(mid):
+            hi = mid
+        <span class="kw">else</span>:
+            lo = mid + <span class="nu">1</span>
+    <span class="kw">return</span> lo</pre>
+      </div>
+
+      <div class="callout callout-warning">
+        <span class="material-symbols-outlined">lightbulb</span>
+        <div><strong style="color:#fdba74;display:block;margin-bottom:4px">The remaining 7 patterns</strong>
+        Fast &amp; slow pointers · In-place linked list reversal · Merge intervals · Top-K with heap · Backtracking · Dynamic programming · Union-Find — each deserves its own deep dive.</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">tips_and_updates</span> How to Practice</h2>
+      <ol>
+        <li>Do 3–5 problems per pattern, not 50 random problems per day.</li>
+        <li>After solving, ask: <em>what was the key insight?</em> Write it in one sentence.</li>
+        <li>Re-solve the problem from memory 48 hours later. Spaced repetition is the actual secret.</li>
+        <li>When you're stuck, map the problem to a pattern before looking at hints.</li>
+      </ol>
+
+      <blockquote><strong>"The goal isn't to have solved this exact problem — it's to recognize which category it belongs to."</strong><br>Pattern recognition is a trainable skill, not an innate talent.</blockquote>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#fb923c">12</div><div class="stat-card-label">Core patterns</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#06b6d4">~90%</div><div class="stat-card-label">Problems covered</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#34d399">4★</div><div class="stat-card-label">HackerRank — C</div></div>
+      </div>
+
+    </div>
+
+    <div class="article-footer">
+      <a href="../static_blog.html" class="article-footer-back"><span class="material-symbols-outlined">arrow_back</span> Back to Blog</a>
+      <div class="article-footer-author">
+        <img src="../my_image.png" alt="Saptarshi Sadhu" />
+        <div>
+          <div class="article-footer-author-name">Saptarshi Sadhu</div>
+          <div class="article-footer-author-role">CS Undergrad · Algorithms</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const d=document.documentElement, pct=(window.scrollY/(d.scrollHeight-d.clientHeight))*100;
+      document.getElementById('progress-bar').style.width=pct+'%';
+      document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+    });
+    document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',()=>{b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',1500);}));
+  </script>
+</body>
+</html>

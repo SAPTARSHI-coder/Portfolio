@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog — Saptarshi Sadhu</title>
+    <meta name="description" content="Thoughts on Systems, AI, and Engineering — written from the intersection of code and curiosity." />
+    <meta name="author" content="Saptarshi Sadhu" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blog — Saptarshi Sadhu" />
+    <meta property="og:description" content="Thoughts on Systems, AI, and Engineering." />
+    <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+
+    <style>
+      /* ─── Reset ─── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #0c0c0f;
+        --bg-card:     #121217;
+        --bg-card-2:   #16161d;
+        --border:      rgba(255,255,255,0.07);
+        --border-h:    rgba(255,255,255,0.13);
+        --text:        #e2e8f0;
+        --muted:       #64748b;
+        --accent:      #06b6d4;
+        --white:       #ffffff;
+        --font:        'Inter', sans-serif;
+        --mono:        'JetBrains Mono', monospace;
+        --radius:      14px;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Grain */
+      body::before {
+        content:"";
+        position:fixed; inset:0;
+        background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        opacity:.4; pointer-events:none; z-index:0;
+      }
+      body::after {
+        content:"";
+        position:fixed; inset:0;
+        background:
+          radial-gradient(ellipse 700px 400px at 0% 0%, rgba(6,182,212,0.03) 0%, transparent 70%),
+          radial-gradient(ellipse 500px 500px at 100% 100%, rgba(168,85,247,0.03) 0%, transparent 70%);
+        pointer-events:none; z-index:0;
+      }
+
+      /* ─── NAV ─── */
+      .nav {
+        position: fixed; top:0; left:0; right:0; z-index:100;
+        background: rgba(12,12,15,0.88);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-inner {
+        max-width:1200px; margin:0 auto; padding:0 1.5rem;
+        height:64px; display:flex; align-items:center;
+        justify-content:space-between; gap:2rem; position:relative;
+      }
+      .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+      .nav-logo img { width:32px; height:32px; border-radius:50%; object-fit:cover; object-position:top; border:1.5px solid rgba(249,115,22,0.5); }
+      .nav-logo-name { font-size:0.72rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--white); }
+      .nav-links { display:flex; align-items:center; gap:1.75rem; list-style:none; }
+      .nav-links a { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+      .nav-links a:hover { color:var(--white); }
+      .nav-links a.active { color:var(--accent); }
+
+      /* Mode switch */
+      .mode-switch { position:fixed; top:16px; right:20px; z-index:10000; display:flex; align-items:center; text-decoration:none; cursor:pointer; }
+      .mode-pill { position:relative; width:80px; height:32px; border-radius:32px; background:#000; border:1.5px solid rgba(255,255,255,0.3); box-shadow:0 0 12px rgba(255,255,255,0.3); transition:border-color 0.3s,box-shadow 0.3s; }
+      .mode-switch:hover .mode-pill { border-color:rgba(255,255,255,0.7); box-shadow:0 0 20px rgba(255,255,255,0.7); }
+      .mode-pill::before { content:""; position:absolute; width:22px; height:22px; left:4px; top:3px; background:#fff; border-radius:50%; }
+      .mode-pill::after { content:"STATIC"; position:absolute; right:8px; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.8px; color:#fff; text-shadow:0 0 6px rgba(255,255,255,0.8); }
+
+      /* Hamburger */
+      .hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:4px; border-radius:8px; transition:background 0.2s; }
+      .hamburger:hover { background:rgba(255,255,255,0.06); }
+      .hamburger span { display:block; height:2px; width:100%; background:#e2e8f0; border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
+      .hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+      .hamburger.open span:nth-child(2){ opacity:0; transform:scaleX(0); }
+      .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+      .mobile-nav { display:none; position:absolute; top:100%; left:0; right:0; background:rgba(12,12,15,0.98); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:1rem 1.5rem 1.5rem; flex-direction:column; }
+      .mobile-nav.open { display:flex; }
+      .mobile-nav a { padding:0.75rem 0; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; transition:color 0.2s; }
+      .mobile-nav a:last-child { border-bottom:none; }
+      .mobile-nav a:hover { color:var(--white); }
+
+      @media (max-width:1023px) {
+        .nav-links { display:none; }
+        .hamburger { display:flex; }
+        .mode-switch { top:12px; right:14px; transform:scale(0.82); transform-origin:top right; }
+      }
+
+      /* ─── PAGE HERO ─── */
+      .page-hero {
+        position:relative; z-index:1;
+        padding: 8rem 1.5rem 5rem;
+        max-width:1200px; margin:0 auto;
+        border-bottom:1px solid var(--border);
+      }
+      .page-hero-eyebrow { display:flex; align-items:center; gap:10px; margin-bottom:1.25rem; }
+      .page-hero-line { width:28px; height:1.5px; background:var(--accent); flex-shrink:0; }
+      .page-hero-label { font-family:var(--mono); font-size:0.7rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); }
+      .page-hero h1 { font-size:clamp(3rem,7vw,5.5rem); font-weight:900; color:var(--white); letter-spacing:-0.04em; line-height:1; margin-bottom:1rem; }
+      .page-hero-sub { font-size:1rem; color:var(--muted); max-width:480px; line-height:1.75; }
+
+      /* ─── BLOG GRID ─── */
+      .blog-main { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:4rem 1.5rem 6rem; }
+
+      .blog-grid {
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:1.5rem;
+        margin-bottom:4rem;
+      }
+
+      /* Featured card (first) spans 2 cols */
+      .blog-card--featured { grid-column: span 2; }
+
+      .blog-card {
+        background:var(--bg-card);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:1.75rem;
+        display:flex;
+        flex-direction:column;
+        gap:1.1rem;
+        text-decoration:none;
+        transition:border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        position:relative;
+        overflow:hidden;
+        cursor:pointer;
+      }
+      .blog-card:hover {
+        border-color:var(--border-h);
+        transform:translateY(-3px);
+        box-shadow:0 12px 36px rgba(0,0,0,0.35);
+      }
+
+      /* Accent top bar */
+      .blog-card::before {
+        content:"";
+        position:absolute;
+        top:0; left:0; right:0;
+        height:2px;
+        background:var(--card-accent, transparent);
+        border-radius:var(--radius) var(--radius) 0 0;
+        opacity:0;
+        transition:opacity 0.2s;
+      }
+      .blog-card:hover::before { opacity:1; }
+
+      .blog-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+
+      .blog-card-icon {
+        width:40px; height:40px; border-radius:10px;
+        display:flex; align-items:center; justify-content:center;
+        flex-shrink:0;
+        border:1px solid var(--icon-border, rgba(255,255,255,0.08));
+        background:var(--icon-bg, rgba(255,255,255,0.03));
+      }
+      .blog-card-icon .material-symbols-outlined { font-size:20px; color:var(--icon-color,#94a3b8); }
+
+      .blog-card-date { font-family:var(--mono); font-size:0.62rem; color:#334155; letter-spacing:0.08em; white-space:nowrap; padding-top:2px; }
+
+      .blog-card h2 { font-size:1rem; font-weight:700; color:var(--white); line-height:1.4; }
+      .blog-card--featured h2 { font-size:1.2rem; }
+
+      .blog-card-excerpt { font-size:0.85rem; color:var(--muted); line-height:1.7; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+      .blog-card-tags { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:auto; }
+
+      .tag {
+        display:inline-flex; align-items:center; gap:4px;
+        padding:3px 10px; border-radius:999px;
+        font-family:var(--mono); font-size:0.6rem; font-weight:700;
+        letter-spacing:0.08em; text-transform:uppercase;
+        border:1px solid; transition:opacity 0.2s;
+      }
+
+      .blog-card-read-more {
+        display:flex; align-items:center; gap:6px;
+        font-family:var(--mono); font-size:0.65rem;
+        font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+        color:var(--read-more-color, var(--accent));
+        margin-top:0.5rem;
+        transition:gap 0.2s;
+      }
+      .blog-card:hover .blog-card-read-more { gap:10px; }
+      .blog-card-read-more .material-symbols-outlined { font-size:14px; }
+
+      /* ─── NEWSLETTER STRIP ─── */
+      .newsletter-strip {
+        background:var(--bg-card);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:3rem 2.5rem;
+        text-align:center;
+        position:relative;
+        overflow:hidden;
+        margin-bottom:2rem;
+      }
+      .newsletter-strip::before {
+        content:"";
+        position:absolute; top:-60px; left:50%; transform:translateX(-50%);
+        width:300px; height:120px;
+        background:radial-gradient(ellipse, rgba(6,182,212,0.08) 0%, transparent 70%);
+        pointer-events:none;
+      }
+      .newsletter-icon { font-size:2.5rem; color:var(--accent); margin-bottom:1rem; display:block; }
+      .newsletter-strip h2 { font-size:1.5rem; font-weight:800; color:var(--white); margin-bottom:0.5rem; }
+      .newsletter-strip p { font-size:0.875rem; color:var(--muted); max-width:420px; margin:0 auto 1.5rem; line-height:1.7; }
+      .newsletter-cta {
+        display:inline-flex; align-items:center; gap:8px;
+        padding:0.75rem 1.75rem; border-radius:999px;
+        background:rgba(6,182,212,0.08); border:1.5px solid rgba(6,182,212,0.3);
+        color:var(--accent); font-size:0.78rem; font-weight:700;
+        letter-spacing:0.08em; text-transform:uppercase; text-decoration:none;
+        transition:background 0.2s,border-color 0.2s;
+      }
+      .newsletter-cta:hover { background:rgba(6,182,212,0.15); border-color:rgba(6,182,212,0.6); }
+
+      /* ─── BMC ─── */
+      .bmc-strip { text-align:center; padding:1.5rem 0; color:var(--muted); font-size:0.8rem; display:flex; align-items:center; justify-content:center; gap:1rem; }
+      .bmc-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:999px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--muted); font-size:0.75rem; font-weight:600; text-decoration:none; transition:all 0.2s; }
+      .bmc-btn:hover { border-color:var(--border-h); color:var(--white); }
+
+      /* ─── FOOTER ─── */
+      footer { border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; position:relative; z-index:1; }
+      footer p { font-size:0.72rem; font-family:var(--mono); color:#334155; letter-spacing:0.1em; }
+      footer span { color:rgba(6,182,212,0.6); }
+
+      /* ─── RESPONSIVE ─── */
+      @media (max-width:1023px) { .blog-grid { grid-template-columns:repeat(2,1fr); } .blog-card--featured { grid-column:span 2; } }
+      @media (max-width:640px)  { .blog-grid { grid-template-columns:1fr; } .blog-card--featured { grid-column:span 1; } .page-hero { padding:7rem 1rem 3rem; } .blog-main { padding:3rem 1rem 5rem; } }
+    </style>
+  </head>
+
+  <body>
+    <!-- ─── NAV ─── -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="static.html" class="nav-logo">
+          <img src="my_image.png" alt="Saptarshi" />
+          <span class="nav-logo-name">Saptarshi Sadhu</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="static.html">Home</a></li>
+          <li><a href="static.html#about">About</a></li>
+          <li><a href="static.html#skills">Skills</a></li>
+          <li><a href="static.html#projects">Projects</a></li>
+          <li><a href="static.html#experience">Experience</a></li>
+          <li><a href="static.html#education">Education</a></li>
+          <li><a href="static.html#achievements">Achievements</a></li>
+          <li><a href="static_blog.html" class="active">Blog</a></li>
+          <li><a href="static_gallery.html">Gallery</a></li>
+          <li><a href="static.html#contact" style="color:var(--accent)">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="mobile-nav" id="mobile-nav">
+        <a href="static.html">Home</a>
+        <a href="static.html#about">About</a>
+        <a href="static.html#skills">Skills</a>
+        <a href="static.html#projects">Projects</a>
+        <a href="static.html#experience">Experience</a>
+        <a href="static.html#education">Education</a>
+        <a href="static.html#achievements">Achievements</a>
+        <a href="static_blog.html" style="color:var(--accent)">Blog</a>
+        <a href="static_gallery.html">Gallery</a>
+        <a href="static.html#contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Mode Switch -->
+    <a href="blog.html" class="mode-switch" title="Switch to 3D Mode">
+      <div class="mode-pill"></div>
+    </a>
+
+    <!-- ─── PAGE HERO ─── -->
+    <div class="page-hero">
+      <div class="page-hero-eyebrow">
+        <span class="page-hero-line"></span>
+        <span class="page-hero-label">Knowledge Hub</span>
+      </div>
+      <h1>Blog</h1>
+      <p class="page-hero-sub">Thoughts on Systems, AI, and Engineering — written from the intersection of code and curiosity.</p>
+    </div>
+
+    <!-- ─── BLOG GRID ─── -->
+    <main class="blog-main">
+      <div class="blog-grid">
+
+        <!-- Card 1: ML Research (featured) -->
+        <a href="static_blog_posts/ml.html" class="blog-card blog-card--featured" style="--card-accent:#34d399;--icon-bg:rgba(52,211,153,0.08);--icon-border:rgba(52,211,153,0.2);--icon-color:#34d399;--read-more-color:#34d399">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">science</span></div>
+            <time class="blog-card-date">Mar 2026</time>
+          </div>
+          <div>
+            <h2>Urban Air Quality Prediction Using Temporal ML Models</h2>
+          </div>
+          <p class="blog-card-excerpt">How I built a machine learning pipeline to predict VOCs, O₃, and NOx concentrations in urban environments — from raw sensor data to real-time forecasts using PyTorch TFT.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)">Machine Learning</span>
+            <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Research</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">PyTorch</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+        <!-- Card 2: Full Stack -->
+        <a href="static_blog_posts/fullstack.html" class="blog-card" style="--card-accent:#06b6d4;--icon-bg:rgba(6,182,212,0.08);--icon-border:rgba(6,182,212,0.2);--icon-color:#06b6d4;--read-more-color:#06b6d4">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">layers</span></div>
+            <time class="blog-card-date">Feb 2026</time>
+          </div>
+          <h2>Architecting Scalable Full Stack Systems From Scratch</h2>
+          <p class="blog-card-excerpt">A deep dive into design decisions behind building scalable full-stack applications — from database schema to REST API contracts and frontend state management.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Full Stack</span>
+            <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Systems</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Next.js</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+        <!-- Card 3: DevOps -->
+        <a href="static_blog_posts/devops.html" class="blog-card" style="--card-accent:#a78bfa;--icon-bg:rgba(167,139,250,0.08);--icon-border:rgba(167,139,250,0.2);--icon-color:#a78bfa;--read-more-color:#a78bfa">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">rocket_launch</span></div>
+            <time class="blog-card-date">Feb 2026</time>
+          </div>
+          <h2>CI/CD, Docker, and Zero-Downtime Deployments</h2>
+          <p class="blog-card-excerpt">Practical lessons from setting up automated deployment pipelines — containerizing apps with Docker, writing CI/CD workflows, and shipping without breaking production.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.05)">DevOps</span>
+            <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Docker</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Cloud</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+        <!-- Card 4: DSA -->
+        <a href="static_blog_posts/dsa.html" class="blog-card" style="--card-accent:#fb923c;--icon-bg:rgba(251,146,60,0.08);--icon-border:rgba(251,146,60,0.2);--icon-color:#fb923c;--read-more-color:#fb923c">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">account_tree</span></div>
+            <time class="blog-card-date">Jan 2026</time>
+          </div>
+          <h2>DSA Patterns That Actually Matter in Interviews</h2>
+          <p class="blog-card-excerpt">A pragmatic guide to the 12 DSA patterns — sliding window, two pointers, monotonic stacks — with real implementations and when to apply each one.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#fb923c;border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.05)">DSA</span>
+            <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Algorithms</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Python</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+        <!-- Card 5: AI Systems -->
+        <a href="static_blog_posts/ai-system.html" class="blog-card" style="--card-accent:#c084fc;--icon-bg:rgba(192,132,252,0.08);--icon-border:rgba(192,132,252,0.2);--icon-color:#c084fc;--read-more-color:#c084fc">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">hub</span></div>
+            <time class="blog-card-date">Jan 2026</time>
+          </div>
+          <h2>Designing AI Systems That Scale Beyond the Prototype</h2>
+          <p class="blog-card-excerpt">The gap between a working ML model and a production AI system is enormous. Inference pipelines, latency, model versioning, and serving at scale.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.05)">AI Systems</span>
+            <span class="tag" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)">ML Ops</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Backend</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+        <!-- Card 6: Flutter -->
+        <a href="static_blog_posts/flutter.html" class="blog-card" style="--card-accent:#60a5fa;--icon-bg:rgba(96,165,250,0.08);--icon-border:rgba(96,165,250,0.2);--icon-color:#60a5fa;--read-more-color:#60a5fa">
+          <div class="blog-card-top">
+            <div class="blog-card-icon"><span class="material-symbols-outlined">phone_android</span></div>
+            <time class="blog-card-date">Dec 2025</time>
+          </div>
+          <h2>Flutter Architecture Patterns for Production Apps</h2>
+          <p class="blog-card-excerpt">What I learned shipping Flutter apps to production — clean architecture, state management with Riverpod, and how to structure code that survives a growing team.</p>
+          <div class="blog-card-tags">
+            <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Flutter</span>
+            <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Mobile</span>
+            <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Dart</span>
+          </div>
+          <div class="blog-card-read-more">Read Article <span class="material-symbols-outlined">arrow_forward</span></div>
+        </a>
+
+      </div><!-- end .blog-grid -->
+
+      <!-- Newsletter strip -->
+      <div class="newsletter-strip">
+        <span class="material-symbols-outlined newsletter-icon">rss_feed</span>
+        <h2>More posts in the pipeline</h2>
+        <p>Writing about systems programming, AI deployment strategies, and engineering craft. New posts ship regularly.</p>
+        <a href="static.html#contact" class="newsletter-cta">
+          Get in touch <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- BMC -->
+      <div class="bmc-strip">
+        <span>Enjoying the articles?</span>
+        <a href="https://buymeacoffee.com/saptarshisadhu" target="_blank" rel="noopener noreferrer" class="bmc-btn">
+          ☕ Support my work
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2026 Saptarshi Sadhu &nbsp;·&nbsp; <span>Systems over shortcuts</span></p>
+    </footer>
+
+    <script>
+      const btn = document.getElementById('hamburger');
+      const menu = document.getElementById('mobile-nav');
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        menu.classList.remove('open'); btn.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+      }));
+    </script>
+  </body>
+</html>

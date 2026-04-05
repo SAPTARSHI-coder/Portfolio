@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flutter Architecture Patterns for Production Apps — Saptarshi Sadhu</title>
+  <meta name="description" content="What I learned shipping Flutter apps to production — clean architecture, state management with Riverpod, and how to structure code that survives a growing team." />
+  <meta name="author" content="Saptarshi Sadhu" />
+  <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog_posts/flutter.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Flutter Architecture Patterns for Production Apps" />
+  <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+  <meta property="article:published_time" content="2025-12-10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static_article.css" />
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <a href="../static_blog.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span> Blog</a>
+  <a href="../static.html" class="back-btn" style="left:max(130px,9.5rem)"><span class="material-symbols-outlined">home</span> Home</a>
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span>
+  </button>
+
+  <main class="article-wrap">
+    <div class="article-tags">
+      <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Flutter</span>
+      <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">Mobile</span>
+      <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Dart</span>
+      <span class="tag" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.05)">Architecture</span>
+    </div>
+
+    <h1 class="article-title">Flutter Architecture Patterns for Production Apps</h1>
+    <p class="article-lead">The widget tree is not your architecture. Here's how to structure Flutter apps that don't collapse under their own weight.</p>
+
+    <div class="article-meta">
+      <span><span class="material-symbols-outlined">calendar_today</span> December 2025</span>
+      <span><span class="material-symbols-outlined">schedule</span> 10 min read</span>
+      <span><span class="material-symbols-outlined">person</span> Saptarshi Sadhu</span>
+    </div>
+
+    <div class="prose">
+
+      <p>Flutter's widget-first mental model is one of its greatest strengths for prototyping — and one of its greatest risks for production. When business logic leaks into widgets, you end up with a UI layer that's impossible to test, impossible to reason about, and impossible to hand off to another developer. This article documents the architecture patterns I've settled on after shipping Flutter apps to the Play Store.</p>
+
+      <div class="callout callout-info">
+        <span class="material-symbols-outlined">info</span>
+        <div><strong style="color:#67e8f9;display:block;margin-bottom:4px">Stack used</strong>
+        Flutter 3.x · Dart · Riverpod 2.x · Freezed · GoRouter · Dio · Hive</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#60a5fa">folder_open</span> Clean Architecture in Flutter</h2>
+      <p>The folder structure communicates intent. I use a feature-first organization within a clean architecture shell:</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">text</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre>lib/
+├── core/              <span class="cm"># shared infra (router, DI, theme, HTTP)</span>
+├── features/
+│   ├── auth/
+│   │   ├── data/      <span class="cm"># repository impl, remote/local sources</span>
+│   │   ├── domain/    <span class="cm"># entities, repository interface, use cases</span>
+│   │   └── presentation/  <span class="cm"># providers, screens, widgets</span>
+│   └── home/
+│       └── ...
+└── main.dart</pre>
+      </div>
+
+      <p>The key rule: <strong>nothing in <code>presentation/</code> imports from <code>data/</code> directly</strong>. The domain layer defines interfaces; the data layer implements them. Dependency inversion means you can swap SQLite for Supabase without touching a single widget.</p>
+
+      <h2><span class="material-symbols-outlined" style="color:#a78bfa">manage_accounts</span> State Management with Riverpod 2</h2>
+      <p>Riverpod's code-generation approach (<code>@riverpod</code> annotations) eliminates boilerplate while making providers statically analyzable. The pattern I use for async feature state:</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">dart</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm">// Domain: pure functions, no Flutter imports</span>
+<span class="kw">abstract class</span> <span class="fn">UserRepository</span> {
+  Future&lt;List&lt;User&gt;&gt; <span class="fn">getUsers</span>();
+}
+
+<span class="cm">// Presentation: AsyncNotifier for loading/error/data</span>
+@<span class="fn">riverpod</span>
+<span class="kw">class</span> <span class="fn">UsersNotifier</span> <span class="kw">extends</span> <span class="fn">AsyncNotifier</span>&lt;List&lt;User&gt;&gt; {
+  @override
+  Future&lt;List&lt;User&gt;&gt; <span class="fn">build</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> repo = ref.<span class="fn">read</span>(userRepositoryProvider);
+    <span class="kw">return</span> repo.<span class="fn">getUsers</span>();
+  }
+
+  Future&lt;<span class="kw">void</span>&gt; <span class="fn">refresh</span>() <span class="kw">async</span> {
+    state = <span class="kw">const</span> AsyncValue.loading();
+    state = <span class="kw">await</span> <span class="fn">AsyncValue.guard</span>(() => <span class="fn">build</span>());
+  }
+}</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">route</span> Routing with GoRouter</h2>
+      <p>Flutter's Navigator 2.0 is powerful but verbose. GoRouter gives you declarative, URL-based routing that works identically on mobile and web.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">dart</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="kw">final</span> router = GoRouter(
+  initialLocation: <span class="str">'/'</span>,
+  redirect: (ctx, state) {
+    <span class="kw">final</span> authed = ctx.<span class="fn">read</span>(authProvider).isAuthenticated;
+    <span class="kw">if</span> (!authed && !state.location.<span class="fn">startsWith</span>(<span class="str">'/auth'</span>))
+      <span class="kw">return</span> <span class="str">'/auth/login'</span>;
+    <span class="kw">return null</span>;
+  },
+  routes: [
+    GoRoute(path: <span class="str">'/'</span>,        builder: (_, __) => <span class="kw">const</span> <span class="fn">HomeScreen</span>()),
+    GoRoute(path: <span class="str">'/profile'</span>, builder: (_, __) => <span class="kw">const</span> <span class="fn">ProfileScreen</span>()),
+    GoRoute(path: <span class="str">'/auth/login'</span>, builder: (_, __) => <span class="kw">const</span> <span class="fn">LoginScreen</span>()),
+  ],
+);</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#06b6d4">deployed_code</span> Immutable Data with Freezed</h2>
+      <p>Mutable domain entities are a source of subtle bugs. Freezed generates immutable value objects with <code>copyWith</code>, pattern matching, and JSON serialization:</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">dart</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre>@<span class="fn">freezed</span>
+<span class="kw">class</span> <span class="fn">User</span> <span class="kw">with</span> _$User {
+  <span class="kw">const factory</span> <span class="fn">User</span>({
+    required String id,
+    required String name,
+    required String email,
+    @<span class="fn">Default</span>(<span class="kw">false</span>) <span class="kw">bool</span> isPremium,
+  }) = _User;
+
+  <span class="kw">factory</span> User.<span class="fn">fromJson</span>(Map&lt;String, <span class="kw">dynamic</span>&gt; json)
+      => _$UserFromJson(json);
+}</pre>
+      </div>
+
+      <blockquote><strong>"A widget that owns state is a widget that you can't reuse without duplicating bugs."</strong><br>Lift state up, keep widgets dumb, and your widget tree becomes a pure rendering function.</blockquote>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#60a5fa">3</div><div class="stat-card-label">Architecture layers</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#a78bfa">0</div><div class="stat-card-label">Logic in widgets</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#34d399">100%</div><div class="stat-card-label">Domain testability</div></div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">tips_and_updates</span> Production Checklist</h2>
+      <ul>
+        <li>Enable <code>--obfuscate --split-debug-info</code> on release builds — reduces binary size and protects logic</li>
+        <li>Use <code>flutter_native_splash</code> + <code>flutter_launcher_icons</code> for consistent branding</li>
+        <li>Profile with Flutter DevTools before shipping — jank above 16ms is visible to users</li>
+        <li>Set up Firebase Crashlytics from day one — you won't know about crashes unless you're listening</li>
+        <li>Use <code>const</code> constructors everywhere possible — it's free performance</li>
+      </ul>
+
+      <div class="callout callout-success">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div><strong style="color:#86efac;display:block;margin-bottom:4px">The payoff</strong>
+        Apps built with clean architecture survive team growth, feature creep, and major refactors. The upfront investment in structure pays compounding returns.</div>
+      </div>
+
+    </div>
+
+    <div class="article-footer">
+      <a href="../static_blog.html" class="article-footer-back"><span class="material-symbols-outlined">arrow_back</span> Back to Blog</a>
+      <div class="article-footer-author">
+        <img src="../my_image.png" alt="Saptarshi Sadhu" />
+        <div>
+          <div class="article-footer-author-name">Saptarshi Sadhu</div>
+          <div class="article-footer-author-role">CS Undergrad · Android Dev</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const d=document.documentElement, pct=(window.scrollY/(d.scrollHeight-d.clientHeight))*100;
+      document.getElementById('progress-bar').style.width=pct+'%';
+      document.getElementById('scroll-top').classList.toggle('show',window.scrollY>400);
+    });
+    document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',()=>{b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',1500);}));
+  </script>
+</body>
+</html>

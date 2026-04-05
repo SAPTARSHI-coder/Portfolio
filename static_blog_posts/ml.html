@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Air Quality Prediction Using Temporal ML Models — Saptarshi Sadhu</title>
+  <meta name="description" content="How Saptarshi Sadhu built a machine learning pipeline to predict VOCs, O₃, and NOx concentrations in urban environments using PyTorch TFT." />
+  <meta name="author" content="Saptarshi Sadhu" />
+  <link rel="canonical" href="https://saptarshisadhu.co.in/static_blog_posts/ml.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Urban Air Quality Prediction Using Temporal ML Models" />
+  <meta property="og:description" content="Building a machine learning pipeline to predict air pollutants in urban environments." />
+  <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+  <meta property="article:published_time" content="2026-03-01" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static_article.css" />
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <a href="../static_blog.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span> Blog</a>
+  <a href="../static.html" class="back-btn" style="left:max(130px,9.5rem)"><span class="material-symbols-outlined">home</span> Home</a>
+
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span>
+  </button>
+
+  <main class="article-wrap">
+    <!-- Tags -->
+    <div class="article-tags">
+      <span class="tag" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)">Machine Learning</span>
+      <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05)">Research</span>
+      <span class="tag" style="color:#06b6d4;border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)">PyTorch</span>
+      <span class="tag" style="color:#94a3b8;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04)">Environmental AI</span>
+    </div>
+
+    <!-- Title -->
+    <h1 class="article-title">Urban Air Quality Prediction Using Temporal ML Models</h1>
+
+    <!-- Lead -->
+    <p class="article-lead">From raw sensor data to real-time forecasts — where atmospheric physics meets machine learning.</p>
+
+    <!-- Meta -->
+    <div class="article-meta">
+      <span><span class="material-symbols-outlined">calendar_today</span> March 2026</span>
+      <span><span class="material-symbols-outlined">schedule</span> 12 min read</span>
+      <span><span class="material-symbols-outlined">person</span> Saptarshi Sadhu</span>
+    </div>
+
+    <!-- Body -->
+    <div class="prose">
+
+      <p>Air quality in urban environments has become a critical public health concern. Traditional monitoring systems rely on expensive, sparsely distributed sensor networks — leaving massive blind spots across city grids. This project addresses that gap by building a <strong>temporal machine learning pipeline</strong> that predicts concentrations of volatile organic compounds (VOCs), ozone (O₃), and nitrogen oxides (NOx) using low-cost IoT sensor arrays and historical atmospheric data.</p>
+
+      <div class="callout callout-info">
+        <span class="material-symbols-outlined">info</span>
+        <div><strong style="color:#67e8f9;display:block;margin-bottom:4px">What this article covers</strong>
+        Problem framing, dataset construction, model architecture (LSTM + Transformer hybrid), feature engineering, and deployment considerations.</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">explore</span> The Problem</h2>
+      <p>Existing air quality indices (AQI) are computed from a handful of reference-grade stations per city. In a metropolis like Kolkata, a single station may represent conditions for over 500,000 people — despite air quality varying block-by-block based on traffic, industry, and micro-meteorology.</p>
+      <p>The research question became: <em>can we build a model that accurately forecasts pollutant levels 1–6 hours ahead, using sensor data from low-cost nodes augmented with weather and traffic features?</em></p>
+      <blockquote><strong>"The real challenge isn't the ML model — it's building a dataset that's actually usable."</strong><br>Raw sensor readings drift over time, are sensitive to humidity, and have systematic biases that pure ML cannot handle without domain-aware preprocessing.</blockquote>
+
+      <h2><span class="material-symbols-outlined" style="color:#60a5fa">dataset</span> Dataset Construction</h2>
+      <h3>Data Sources</h3>
+      <ul>
+        <li><strong>Electrochemical sensor nodes</strong> — 8 low-cost nodes (MQ-series + CO/NO₂ electrochemical) deployed across 4 urban zones</li>
+        <li><strong>State reference monitors</strong> — CPCB-certified stations for ground-truth calibration</li>
+        <li><strong>ERA5 reanalysis data</strong> — hourly wind speed, direction, humidity, temperature, boundary layer height</li>
+        <li><strong>OpenStreetMap traffic proxies</strong> — road density and vehicle count estimates per grid cell</li>
+      </ul>
+
+      <h3>Preprocessing Pipeline</h3>
+      <p>Raw readings underwent a 4-stage cleaning process: outlier removal via IQR clamping, humidity correction using a polynomial regression calibration curve, temporal alignment to UTC+5:30, and Kalman filter smoothing to reduce measurement noise without introducing lag artifacts.</p>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#06b6d4">18M+</div><div class="stat-card-label">Sensor readings</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#a855f7">6 mo</div><div class="stat-card-label">Collection period</div></div>
+        <div class="stat-card" style="text-align:center"><div class="stat-card-num" style="color:#34d399">34</div><div class="stat-card-label">Input features</div></div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#a855f7">hub</span> Model Architecture</h2>
+      <p>After benchmarking ARIMA, XGBoost, LSTM, and Transformer approaches, the best results came from a <strong>Temporal Fusion Transformer (TFT)</strong> — a model that combines recurrent layers with multi-head attention, specifically designed for multi-horizon time-series forecasting with heterogeneous inputs.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="lang-tag">python</span><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText)">Copy</button></div>
+        <pre><span class="cm"># TFT configuration (PyTorch Forecasting)</span>
+<span class="kw">from</span> pytorch_forecasting <span class="kw">import</span> TemporalFusionTransformer, TimeSeriesDataSet
+
+tft = TemporalFusionTransformer.from_dataset(
+    training,
+    learning_rate=<span class="nu">3e-4</span>,
+    hidden_size=<span class="nu">64</span>,
+    attention_head_size=<span class="nu">4</span>,
+    dropout=<span class="nu">0.15</span>,
+    hidden_continuous_size=<span class="nu">32</span>,
+    loss=QuantileLoss(),
+    log_interval=<span class="nu">10</span>,
+)</pre>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#34d399">monitoring</span> Results</h2>
+      <p>The TFT model achieved a <strong>MAE of 4.2 µg/m³</strong> on VOC prediction (6-hour horizon) — a 31% improvement over the LSTM baseline. Crucially, it also provides interpretable attention weights that reveal which features (time-of-day, wind direction, boundary layer height) the model uses at each step.</p>
+
+      <div class="callout callout-success">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div><strong style="color:#86efac;display:block;margin-bottom:4px">Key takeaway</strong>
+        Domain-aware feature engineering — specifically the 4-stage sensor calibration pipeline — contributed more to final model accuracy than the choice of architecture.</div>
+      </div>
+
+      <h2><span class="material-symbols-outlined" style="color:#fb923c">deployed_code</span> What's Next</h2>
+      <p>The next phase involves deploying a lightweight version of the model to an edge device (Raspberry Pi 4) co-located with sensor nodes, enabling real-time inference without cloud round-trips. The calibration pipeline will be retrained quarterly to compensate for long-term sensor drift.</p>
+
+    </div><!-- end .prose -->
+
+    <!-- Article footer -->
+    <div class="article-footer">
+      <a href="../static_blog.html" class="article-footer-back">
+        <span class="material-symbols-outlined">arrow_back</span> Back to Blog
+      </a>
+      <div class="article-footer-author">
+        <img src="../my_image.png" alt="Saptarshi Sadhu" />
+        <div>
+          <div class="article-footer-author-name">Saptarshi Sadhu</div>
+          <div class="article-footer-author-role">CS Undergrad · ML Research</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+      const st = document.getElementById('scroll-top');
+      st.classList.toggle('show', window.scrollY > 400);
+    });
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 1500); });
+    });
+  </script>
+</body>
+</html>
