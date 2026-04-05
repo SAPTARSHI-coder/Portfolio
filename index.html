@@ -17,66 +17,75 @@
             overflow: hidden;
         }
 
-        .switch-wrapper {
-            margin: 30px;
+        .switch-wrapper-fixed {
+            position: fixed;
+            top: 30px;
+            right: 30px;
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: #aaaaaa;
             cursor: pointer;
+            z-index: 9999;
+        }
+
+        .switch-wrapper-fixed .switch {
+            position: relative;
+            width: 84px;
+            height: 34px;
+            border-radius: 34px;
+            background: #000000;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
         }
 
-        .switch-wrapper:hover {
-            color: #ffffff;
+        .switch-wrapper-fixed:hover .switch {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
         }
 
-        .switch-text {
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .switch {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background-color: #444444;
-            border-radius: 30px;
-            transition: background-color 0.3s ease;
-        }
-
-        .switch::before {
+        /* Knob in OFF position */
+        .switch-wrapper-fixed .switch::before {
             content: "";
             position: absolute;
             height: 22px;
             width: 22px;
-            left: 4px; /* OFF position */
-            bottom: 4px;
+            left: 4px; 
+            top: 4px;
             background-color: #ffffff;
             border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             transition: transform 0.3s ease;
         }
 
-        .switch-wrapper:hover .switch {
-            background-color: #666666;
+        /* Text in empty space */
+        .switch-wrapper-fixed .switch::after {
+            content: "STATIC";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(255,255,255,0.9);
         }
 
         @media (max-width: 480px) {
-            .switch-wrapper {
-                margin: 15px;
+            .switch-wrapper-fixed {
+                top: 15px;
+                right: 15px;
                 transform: scale(0.85); /* Shorter/smaller for mobile */
-                transform-origin: top right;
+                transform-origin: right top;
             }
         }
     </style>
 </head>
 <body>
 
-    <a href="3d.html" class="switch-wrapper">
-        <span class="switch-text">Static Mode</span>
+    <a href="3d.html" class="switch-wrapper-fixed">
         <div class="switch"></div>
     </a>
 

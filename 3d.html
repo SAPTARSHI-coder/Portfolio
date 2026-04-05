@@ -157,59 +157,148 @@ To add interactivity like scroll listeners or clicks, see script.js
     <!-- Link to your newly separated external stylesheet -->
     <link rel="stylesheet" href="index.css" />
     <style>
+      /* ── Mode Switch (fixed top-right, consistent on both pages) ── */
       .switch-wrapper-fixed {
           position: fixed;
-          top: 30px;
-          right: 30px;
+          top: 20px;
+          right: 20px;
           display: flex;
           align-items: center;
-          gap: 12px;
           text-decoration: none;
-          color: #ffffff;
           cursor: pointer;
-          transition: all 0.3s ease;
-          z-index: 9999;
-      }
-
-      .switch-wrapper-fixed .switch-text {
-          font-size: 16px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+          z-index: 10000;
       }
 
       .switch-wrapper-fixed .switch {
           position: relative;
-          width: 60px;
-          height: 30px;
-          background-color: #06b6d4;
-          border-radius: 30px;
-          transition: background-color 0.3s ease;
+          width: 80px;
+          height: 32px;
+          border-radius: 32px;
+          background: linear-gradient(135deg, #ff007a, #7a00ff, #00d4ff, #00ff7a);
+          background-size: 300% 300%;
+          animation: rgbGradient 4s ease infinite, floatAnim 3s ease-in-out infinite;
+          box-shadow: 0 4px 18px rgba(122,0,255,0.5);
+      }
+
+      .switch-wrapper-fixed:hover .switch {
+          filter: brightness(1.15);
+      }
+
+      @keyframes rgbGradient {
+          0%   { background-position: 0% 50%; }
+          50%  { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+      }
+
+      @keyframes floatAnim {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-4px); }
       }
 
       .switch-wrapper-fixed .switch::before {
           content: "";
           position: absolute;
-          height: 22px;
-          width: 22px;
-          right: 4px; /* ON position */
-          bottom: 4px;
-          background-color: #ffffff;
+          height: 24px;
+          width: 24px;
+          right: 4px;
+          top: 4px;
+          background: #ffffff;
           border-radius: 50%;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.35);
           transition: transform 0.3s ease;
       }
 
-      .switch-wrapper-fixed:hover .switch {
-          background-color: #0891b2;
+      .switch-wrapper-fixed .switch::after {
+          content: "3D";
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #ffffff;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.2px;
+          text-shadow: 0 0 8px rgba(255,255,255,0.95);
       }
 
-      @media (max-width: 480px) {
+      @media (max-width: 768px) {
           .switch-wrapper-fixed {
-              top: 15px;
-              right: 15px;
-              transform: scale(0.85); /* Shorter/smaller for mobile */
+              top: 14px;
+              right: 14px;
+              transform: scale(0.82);
               transform-origin: top right;
           }
+      }
+
+      /* ── Hamburger Menu ── */
+      #hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+          width: 36px;
+          height: 36px;
+          cursor: pointer;
+          z-index: 9999;
+          padding: 4px;
+          border-radius: 8px;
+          transition: background 0.2s;
+      }
+      #hamburger:hover { background: rgba(255,255,255,0.08); }
+      #hamburger span {
+          display: block;
+          height: 2px;
+          width: 100%;
+          background: #e2e8f0;
+          border-radius: 2px;
+          transition: all 0.3s ease;
+          transform-origin: center;
+      }
+      #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      #hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      /* Mobile dropdown nav */
+      #mobile-nav {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: rgba(2, 4, 10, 0.97);
+          backdrop-filter: blur(20px);
+          border-top: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 1rem 1.5rem 1.5rem;
+          flex-direction: column;
+          gap: 0;
+          z-index: 9998;
+          animation: slideDown 0.25s ease;
+      }
+      #mobile-nav.open { display: flex; }
+
+      @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+      }
+
+      #mobile-nav a {
+          padding: 0.7rem 0;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          color: #94a3b8;
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: color 0.2s;
+      }
+      #mobile-nav a:last-child { border-bottom: none; }
+      #mobile-nav a:hover { color: #06b6d4; }
+
+      @media (max-width: 1023px) {
+          #hamburger { display: flex; }
+          #desktop-nav { display: none !important; }
       }
     </style>
   </head>
@@ -283,26 +372,21 @@ when you drag your mouse over them.
       class="fixed top-0 z-50 w-full backdrop-blur-md bg-[#02040a]/70 border-b border-white/5"
     >
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 min-h-[4rem] flex flex-col lg:flex-row items-center justify-between py-2 lg:py-0"
+        class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative"
       >
         <!-- Logo / Name -->
-        <div class="flex items-center gap-3 mb-2 lg:mb-0">
-          <!-- Mini circular profile photo as the logo icon -->
+        <div class="flex items-center gap-3">
           <img
             src="my_image.png"
             alt="Saptarshi"
             class="w-8 h-8 rounded-full object-cover object-top border border-orange-500/60 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
           />
-          <span
-            class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase"
-            >Saptarshi Sadhu</span
-          >
+          <span class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase">Saptarshi Sadhu</span>
         </div>
 
-        <!-- Navigation Links -->
-        <nav class="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 sm:gap-x-4 lg:gap-6">
+        <!-- Desktop Navigation -->
+        <nav id="desktop-nav" class="flex items-center gap-4 lg:gap-6">
           <a class="nav-link" href="#">Home</a>
-          <!-- Links use the custom 'nav-link' class defined in index.css for the RGB hover effect -->
           <a class="nav-link" href="#about">About</a>
           <a class="nav-link" href="#skills">Skills</a>
           <a class="nav-link" href="#projects">Projects</a>
@@ -311,12 +395,49 @@ when you drag your mouse over them.
           <a class="nav-link" href="#achievements">Achievements</a>
           <a class="nav-link" href="blog.html">Blog</a>
           <a class="nav-link" href="gallery.html">Gallery</a>
-          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="#contact"
-            >Contact</a
-          >
+          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="#contact">Contact</a>
         </nav>
+
+        <!-- Hamburger Button (mobile/tablet only) -->
+        <button id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+
+      <!-- Mobile Nav Dropdown -->
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#experience">Experience</a>
+        <a class="nav-link" href="#education">Education</a>
+        <a class="nav-link" href="#achievements">Achievements</a>
+        <a class="nav-link" href="blog.html">Blog</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link text-cyan-400" href="#contact">Contact</a>
+      </nav>
     </header>
+
+    <script>
+      (function() {
+        const btn = document.getElementById('hamburger');
+        const menu = document.getElementById('mobile-nav');
+        btn.addEventListener('click', function() {
+          const isOpen = menu.classList.toggle('open');
+          btn.classList.toggle('open', isOpen);
+          btn.setAttribute('aria-expanded', isOpen);
+        });
+        // Close on link click
+        menu.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            menu.classList.remove('open');
+            btn.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      })();
+    </script>
 
     <!-- 
     ----------------------------------------------------------------------------
@@ -1905,7 +2026,6 @@ when you drag your mouse over them.
     <script src="script.js"></script>
 
     <a href="index.html" class="switch-wrapper-fixed" title="Switch to Static Mode">
-        <span class="switch-text">3D Mode</span>
         <div class="switch"></div>
     </a>
   </body>
