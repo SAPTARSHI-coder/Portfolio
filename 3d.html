@@ -1596,8 +1596,11 @@ when you drag your mouse over them.
 
             <!-- Card 1: Secondary -->
             <div class="edu-card animate-fade-in-up" auto-delay="0.1s">
-              <img src="assets/wbbse.png" alt="WBBSE Logo">
-              <h3 class="edu-title">Secondary Education</h3>
+              <div class="flex justify-between items-start w-full relative z-10">
+                <img src="assets/wbbse.png" alt="WBBSE Logo" class="bg-white rounded-full p-0.5 w-[48px] h-[48px] object-contain">
+                <span class="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-bold bg-purple-500/10 border border-purple-500/20 text-purple-400">Top Performer</span>
+              </div>
+              <h3 class="edu-title mt-2">Secondary Education</h3>
               <p class="edu-subtext">B. T. Road Gov. Spon. H. S. School</p>
               
               <div class="edu-divider"></div>
@@ -1607,121 +1610,193 @@ when you drag your mouse over them.
                 <span class="edu-value">WBBSE</span>
               </div>
               <div class="edu-row mb-2">
-                <span class="edu-label">Passing Year</span>
+                <span class="edu-label">Year</span>
                 <span class="edu-value">2019</span>
               </div>
               <div class="edu-row mb-2">
                 <span class="edu-label">Curriculum</span>
                 <span class="edu-value">General</span>
               </div>
+
               <!-- Donut Score Visualizer -->
-              <div class="mt-8 flex flex-col items-center justify-center">
-                <div class="relative w-24 h-24 flex items-center justify-center">
-                  <!-- Background ring -->
+              <div class="mt-4 flex flex-col items-center justify-center">
+                <div class="relative w-20 h-20 flex items-center justify-center">
                   <svg class="w-full h-full transform -rotate-90 drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]" viewBox="0 0 36 36">
                     <path class="text-slate-700/50" stroke-width="2.5" stroke="currentColor" fill="none"
-                          stroke-dasharray="2 2"
-                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <!-- Foreground ring -->
+                          stroke-dasharray="2 2" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                     <path class="donut-ring text-cyan-400" stroke-width="2.5" stroke="currentColor" fill="none"
-                          stroke-linecap="round" stroke-dasharray="0, 100"
-                          style="--target: 93.71;"
+                          stroke-linecap="round" stroke-dasharray="0, 100" style="--target: 93.71;"
                           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                   </svg>
                   <div class="absolute inset-0 flex items-center justify-center flex-col">
-                    <span class="text-xl font-bold text-white tracking-wide">93.7<span class="text-xs text-cyan-400">%</span></span>
+                    <span class="text-lg font-bold text-white tracking-wide">93.7<span class="text-[10px] text-cyan-400">%</span></span>
                   </div>
                 </div>
-                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-3 font-semibold">Overall Score</span>
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2 font-semibold">Overall Score</span>
+              </div>
+
+              <div class="edu-divider mt-4"></div>
+              <div class="section-mini-title mb-2">Key Highlights</div>
+              <ul class="flex flex-col gap-1.5 mb-2 relative z-10">
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Ranked among the <strong class="text-white">top 3</strong> in school</li>
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Consistently high scores</li>
+              </ul>
+              
+              <div class="section-mini-title mt-4 mb-2">Core Subjects</div>
+              <div class="sem-row !flex-col !items-stretch mb-2">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="text-xs text-slate-400 font-medium">Physical Science</span>
+                  <span class="text-xs font-bold font-mono text-cyan-400">99/100</span>
+                </div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 99%; --delay: 0.5s; --fill-color: linear-gradient(90deg, #00e0ff, #0a84ff);"></div>
+                </div>
+              </div>
+              <div class="sem-row !flex-col !items-stretch">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="text-xs text-slate-400 font-medium">Mathematics</span>
+                  <span class="text-xs font-bold font-mono text-green-400">92/100</span>
+                </div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 92%; --delay: 0.7s; --fill-color: linear-gradient(90deg, #4ade80, #22c55e);"></div>
+                </div>
               </div>
             </div>
 
             <!-- Card 2: Higher Secondary -->
             <div class="edu-card animate-fade-in-up" auto-delay="0.2s">
-              <img src="assets/wbchse.png" alt="WBCHSE Logo" style="background-color: white; border-radius: 50%; padding: 4px;">
-              <h3 class="edu-title">Higher Secondary</h3>
+              <div class="flex justify-between items-start w-full relative z-10">
+                <img src="assets/wbchse.png" alt="WBCHSE Logo" class="bg-white rounded-full p-1 w-[48px] h-[48px] object-contain">
+                <span class="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-bold bg-green-500/10 border border-green-500/20 text-green-400">Science &amp; Math</span>
+              </div>
+              <h3 class="edu-title mt-2">Higher Secondary</h3>
               <p class="edu-subtext">B. T. Road Gov. Spon. H. S. School</p>
               
               <div class="edu-divider"></div>
-              
+
               <div class="edu-row mb-2">
                 <span class="edu-label">Board</span>
                 <span class="edu-value">WBCHSE</span>
               </div>
               <div class="edu-row mb-2">
-                <span class="edu-label">Passing Year</span>
+                <span class="edu-label">Year</span>
                 <span class="edu-value">2021</span>
               </div>
               <div class="edu-row mb-2">
                 <span class="edu-label">Stream</span>
-                <span class="edu-value">Pure Science (PCMB)</span>
+                <span class="edu-value">Pure Science</span>
               </div>
+
               <!-- Gauge Score Visualizer -->
-              <div class="mt-8 flex flex-col items-center justify-center">
-                <div class="relative w-32 h-16 flex items-end justify-center overflow-hidden">
+              <div class="mt-4 flex flex-col items-center justify-center">
+                <div class="relative w-28 h-14 flex items-end justify-center overflow-hidden">
                   <svg class="w-full h-full transform drop-shadow-[0_0_8px_rgba(34,197,94,0.3)]" viewBox="0 0 36 18">
-                    <!-- Background half-ring -->
                     <path class="text-slate-700/50" stroke-width="2.5" stroke="currentColor" fill="none"
-                          stroke-dasharray="2 2"
-                          d="M 2.0845 18 a 15.9155 15.9155 0 0 1 31.831 0" />
-                    <!-- Foreground half-ring. 89.6% of 50 = 44.8 -->
+                          stroke-dasharray="2 2" d="M 2.0845 18 a 15.9155 15.9155 0 0 1 31.831 0" />
+                    <!-- 89.6% of 50 = 44.8 -->
                     <path class="gauge-ring text-green-400" stroke-width="2.5" stroke="currentColor" fill="none"
-                          stroke-linecap="round" stroke-dasharray="0, 100"
-                          style="--target: 44.8;"
+                          stroke-linecap="round" stroke-dasharray="0, 100" style="--target: 44.8;"
                           d="M 2.0845 18 a 15.9155 15.9155 0 0 1 31.831 0" />
                   </svg>
-                  <div class="absolute bottom-0 flex flex-col items-center translate-y-2">
-                    <span class="text-xl font-bold text-white tracking-wide">89.6<span class="text-xs text-green-400">%</span></span>
+                  <div class="absolute bottom-0 flex flex-col items-center translate-y-1.5">
+                    <span class="text-lg font-bold text-white tracking-wide">89.6<span class="text-[10px] text-green-400">%</span></span>
                   </div>
                 </div>
-                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-4 font-semibold">Overall Score</span>
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-3 font-semibold">Overall Score</span>
+              </div>
+
+              <div class="edu-divider mt-4"></div>
+              <div class="section-mini-title mb-2">Key Highlights</div>
+              <ul class="flex flex-col gap-1.5 mb-2 relative z-10">
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Specialized in <strong class="text-white">Physics, Chemistry, Math, Biology</strong></li>
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Strong foundation for engineering</li>
+              </ul>
+              
+              <div class="section-mini-title mt-4 mb-2">Core Subjects</div>
+              <div class="sem-row !flex-col !items-stretch mb-2">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="text-xs text-slate-400 font-medium">Chemistry</span>
+                  <span class="text-xs font-bold font-mono text-green-400">91/100</span>
+                </div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 91%; --delay: 0.6s; --fill-color: linear-gradient(90deg, #4ade80, #22c55e);"></div>
+                </div>
+              </div>
+              <div class="sem-row !flex-col !items-stretch">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="text-xs text-slate-400 font-medium">Physics</span>
+                  <span class="text-xs font-bold font-mono text-purple-400">91/100</span>
+                </div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 91%; --delay: 0.8s; --fill-color: linear-gradient(90deg, #c084fc, #9333ea);"></div>
+                </div>
               </div>
             </div>
 
             <!-- Card 3: B.Tech -->
             <div class="edu-card featured animate-fade-in-up" auto-delay="0.3s">
-              <img src="assets/Adamas_University_Logo.png" alt="Adamas University Logo">
-              <h3 class="edu-title">B.Tech in Computer Science</h3>
+              <div class="flex justify-between items-start w-full relative z-10">
+                <img src="assets/Adamas_University_Logo.png" alt="Adamas University Logo" class="w-[48px] h-[48px] object-contain">
+                <span class="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-bold bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">University Ranker</span>
+              </div>
+              <h3 class="edu-title mt-2">B.Tech in Computer Science</h3>
               <p class="edu-subtext">Adamas University</p>
 
               <div class="edu-divider"></div>
 
-              <div class="edu-row mb-2">
+              <div class="edu-row mb-1">
                 <span class="edu-label">Status</span>
-                <span class="edu-value">Ongoing</span>
+                <span class="edu-value text-cyan-400">Ongoing (Expected 2028)</span>
+              </div>
+              <div class="edu-row mb-1">
+                <span class="edu-label">Major</span>
+                <span class="edu-value">Software Eng.</span>
+              </div>
+              <div class="edu-row mb-2">
+                <span class="edu-label">Minor</span>
+                <span class="edu-value">Machine Learning</span>
               </div>
 
               <!-- Overall CGPA -->
-              <div class="cgpa-overall">9.41 <span>CGPA</span></div>
+              <div class="text-center mt-3 mb-1">
+                <div class="text-3xl font-mono tracking-tight font-black text-cyan-400 drop-shadow-[0_2px_15px_rgba(6,182,212,0.2)]">9.41 <span class="text-sm text-slate-400 font-sans tracking-normal drop-shadow-none">CGPA</span></div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mt-1 block">Overall Score</span>
+              </div>
+
+              <div class="edu-divider mt-4"></div>
+              <div class="section-mini-title mb-2">Key Highlights</div>
+              <ul class="flex flex-col gap-1.5 mb-2 relative z-10">
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Consistently maintaining <strong class="text-white">9.0+ CGPA</strong></li>
+                <li class="text-xs text-slate-300 leading-relaxed pl-3 relative before:content-['▹'] before:absolute before:left-0 before:text-cyan-400 before:font-bold">Active in R&D and Hackathons</li>
+              </ul>
 
               <!-- Semester breakdown -->
-              <div class="section-mini-title">Performance Trend</div>
-
-              <div class="sem-row !flex-col !items-stretch">
-                <div class="flex justify-between items-center w-full">
-                  <span class="sem-label">Sem 1</span>
-                  <span class="sem-score">9.3</span>
+              <div class="section-mini-title mt-4 mb-2">Performance Trend</div>
+              <div class="sem-row !flex-col !items-stretch mb-2">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="sem-label !mb-0">Sem 1</span>
+                  <span class="sem-score text-cyan-400">9.30</span>
                 </div>
-                <div class="edu-progress-bar !mt-2">
-                  <div class="edu-progress-fill" style="--target-width: 93%; --delay: 0.8s; --fill-color: linear-gradient(90deg, #00e0ff, #00ffa3);"></div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 93%; --delay: 0.8s; --fill-color: linear-gradient(90deg, #00e0ff, #0a84ff);"></div>
                 </div>
               </div>
-              <div class="sem-row !flex-col !items-stretch">
-                <div class="flex justify-between items-center w-full">
-                  <span class="sem-label">Sem 2</span>
-                  <span class="sem-score" style="color: #4ade80;">9.5</span>
+              <div class="sem-row !flex-col !items-stretch mb-2">
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="sem-label !mb-0">Sem 2</span>
+                  <span class="sem-score" style="color: #4ade80;">9.50</span>
                 </div>
-                <div class="edu-progress-bar !mt-2">
+                <div class="edu-progress-bar">
                   <div class="edu-progress-fill" style="--target-width: 95%; --delay: 1.0s; --fill-color: linear-gradient(90deg, #4ade80, #22c55e);"></div>
                 </div>
               </div>
               <div class="sem-row latest !flex-col !items-stretch">
-                <div class="flex justify-between items-center w-full">
-                  <span class="sem-label">Sem 3 <span class="sem-current-tag">Latest</span></span>
-                  <span class="sem-score">9.43</span>
+                <div class="flex justify-between items-center w-full mb-1">
+                  <span class="sem-label !mb-0">Sem 3 <span class="sem-current-tag">Latest</span></span>
+                  <span class="sem-score text-purple-400">9.43</span>
                 </div>
-                <div class="edu-progress-bar !mt-2">
-                  <div class="edu-progress-fill" style="--target-width: 94.3%; --delay: 1.2s; --fill-color: linear-gradient(90deg, #00e0ff, #0a84ff);"></div>
+                <div class="edu-progress-bar">
+                  <div class="edu-progress-fill" style="--target-width: 94.3%; --delay: 1.2s; --fill-color: linear-gradient(90deg, #c084fc, #9333ea);"></div>
                 </div>
               </div>
 

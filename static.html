@@ -1098,34 +1098,46 @@
       ───────────────────────────────────────── */
       .edu-section { padding: 6rem 0; border-top: 1px solid var(--border); }
       .edu-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+      .edu-card-top-row { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
+      .edu-card-glow { position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%); border-radius: 50%; z-index: 0; pointer-events: none; }
+      .edu-card-glow--green { background: radial-gradient(circle, rgba(74,222,128,0.12) 0%, transparent 70%); }
+      .edu-card-glow--purple { background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%); }
       .edu-card {
         background: var(--bg-card); border: 1px solid var(--border);
         border-radius: 16px; padding: 1.75rem;
         display: flex; flex-direction: column; gap: .65rem;
-        transition: border-color .2s;
+        transition: border-color .2s, transform .2s, box-shadow .2s;
+        position: relative; overflow: hidden;
       }
-      .edu-card--featured { border-color: rgba(6,182,212,.2); }
-      .edu-card:hover { border-color: var(--border-h); }
+      .edu-card--featured { border-color: rgba(6,182,212,.3); box-shadow: 0 4px 20px rgba(6,182,212,0.05); }
+      .edu-card:hover { border-color: var(--border-h); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+      .edu-card--featured:hover { border-color: rgba(6,182,212,.5); box-shadow: 0 8px 24px rgba(6,182,212,0.15); }
       .edu-logo { width: 48px; height: 48px; object-fit: contain; border-radius: 8px; margin-bottom: .25rem; }
-      .edu-card-title { font-size: .95rem; font-weight: 800; color: var(--white); }
-      .edu-card-school { font-size: .75rem; color: var(--muted); font-family: var(--mono); }
-      .edu-divider { height: 1px; background: var(--border); margin: .5rem 0; }
-      .edu-row { display: flex; justify-content: space-between; font-size: .78rem; }
-      .edu-label { color: var(--muted); }
-      .edu-value { color: #94a3b8; font-weight: 500; }
-      .edu-score-block { text-align: center; padding-top: .75rem; }
-      .edu-score-num { font-size: 2rem; font-weight: 900; font-family: var(--mono); line-height: 1; }
-      .edu-score-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: .35rem; font-family: var(--mono); }
-      .edu-cgpa { font-size: 2rem; font-weight: 900; color: var(--accent); font-family: var(--mono); margin: .5rem 0; }
-      .edu-cgpa span { font-size: .9rem; color: var(--muted); }
-      .edu-sem-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-family: var(--mono); margin-bottom: .75rem; }
-      .edu-sem-row { margin-bottom: .75rem; }
-      .edu-sem-top { display: flex; justify-content: space-between; margin-bottom: .35rem; }
-      .edu-sem-name { font-size: .78rem; color: #94a3b8; display: flex; align-items: center; gap: .4rem; }
-      .edu-sem-score { font-size: .78rem; font-weight: 700; color: var(--accent); font-family: var(--mono); }
-      .edu-sem-tag { font-size: .55rem; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); color: var(--accent); padding: 1px 6px; border-radius: 999px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      .edu-card-title { font-size: .95rem; font-weight: 800; color: var(--white); position: relative; z-index: 1; }
+      .edu-card-school { font-size: .75rem; color: var(--muted); font-family: var(--mono); position: relative; z-index: 1; margin-top: -0.2rem; }
+      .edu-divider { height: 1px; background: var(--border); margin: .4rem 0; }
+      .edu-row { display: flex; justify-content: space-between; font-size: .78rem; position: relative; z-index: 1; }
+      .edu-label { color: var(--muted); font-weight: 500; }
+      .edu-value { color: #94a3b8; font-weight: 600; }
+      .edu-score-block { text-align: center; padding: 1rem 0 0.5rem 0; position: relative; z-index: 1; }
+      .edu-score-num { font-size: 2.2rem; font-weight: 900; font-family: var(--mono); line-height: 1; text-shadow: 0 2px 10px rgba(255,255,255,0.05); }
+      .edu-score-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: .4rem; font-family: var(--mono); font-weight: 600; }
+      .edu-cgpa { font-size: 2.2rem; font-weight: 900; color: var(--accent); font-family: var(--mono); margin: 0; line-height: 1; text-shadow: 0 2px 15px rgba(6,182,212,0.2); }
+      .edu-cgpa span { font-size: .9rem; color: var(--muted); font-weight: 600; text-shadow: none; }
+      .edu-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.25rem; position: relative; z-index: 1; }
+      .edu-list li { font-size: 0.78rem; color: #cbd5e1; line-height: 1.45; padding-left: 1rem; position: relative; }
+      .edu-list li::before { content: "▹"; position: absolute; left: 0; color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-top: -1px; }
+      .edu-list li strong { color: var(--white); font-weight: 700; }
+      .edu-sem-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-family: var(--mono); margin: .4rem 0 .2rem 0; font-weight: 700; position: relative; z-index: 1; }
+      .edu-sem-row { margin-bottom: .6rem; position: relative; z-index: 1; }
+      .edu-sem-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: .35rem; }
+      .edu-sem-name { font-size: .75rem; color: #94a3b8; display: flex; align-items: center; gap: .4rem; font-weight: 500; }
+      .edu-sem-score { font-size: .75rem; font-weight: 700; color: var(--accent); font-family: var(--mono); }
+      .edu-sem-tag { font-size: .55rem; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.25); color: var(--accent); padding: 1px 6px; border-radius: 999px; font-family: var(--mono); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+      .edu-sem-tag--green { background: rgba(74,222,128,.1); border-color: rgba(74,222,128,.25); color: #4ade80; }
+      .edu-sem-tag--purple { background: rgba(168,85,247,.1); border-color: rgba(168,85,247,.25); color: #c084fc; }
       .edu-bar-track { height: 4px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden; }
-      .edu-bar-fill { height: 100%; border-radius: 999px; }
+      .edu-bar-fill { height: 100%; border-radius: 999px; box-shadow: 0 0 8px currentColor; }
 
       /* ─────────────────────────────────────────
          OPPORTUNITIES
@@ -1941,54 +1953,116 @@
           <div class="edu-grid">
             <!-- Secondary -->
             <div class="edu-card">
-              <img src="assets/wbbse.png" alt="WBBSE" class="edu-logo" />
+              <div class="edu-card-glow"></div>
+              <div class="edu-card-top-row">
+                <img src="assets/wbbse.png" alt="WBBSE" class="edu-logo" style="background:#fff;border-radius:50%;padding:2px;" />
+                <span class="edu-sem-tag edu-sem-tag--purple">Top Performer</span>
+              </div>
               <h3 class="edu-card-title">Secondary Education</h3>
               <p class="edu-card-school">B. T. Road Gov. Spon. H. S. School</p>
               <div class="edu-divider"></div>
               <div class="edu-row"><span class="edu-label">Board</span><span class="edu-value">WBBSE</span></div>
               <div class="edu-row"><span class="edu-label">Year</span><span class="edu-value">2019</span></div>
               <div class="edu-row"><span class="edu-label">Curriculum</span><span class="edu-value">General</span></div>
+              
               <div class="edu-score-block">
                 <div class="edu-score-num" style="color:#06b6d4">93.71<span style="font-size:1rem">%</span></div>
                 <div class="edu-score-label">Overall Score</div>
+              </div>
+
+              <div class="edu-divider"></div>
+              <div class="edu-sem-label">Key Highlights</div>
+              <ul class="edu-list">
+                <li>Ranked among the <strong>top 3</strong> in school</li>
+                <li>Consistently high scores </li>
+              </ul>
+              
+              <div class="edu-sem-label mt-2">Core Subjects</div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Physical Science</span><span class="edu-sem-score" style="color:#06b6d4">99/100</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:99%;background:linear-gradient(90deg,#00e0ff,#0a84ff)"></div></div>
+              </div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Mathematics</span><span class="edu-sem-score" style="color:#4ade80">92/100</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:92%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
               </div>
             </div>
 
             <!-- Higher Secondary -->
             <div class="edu-card">
-              <img src="assets/wbchse.png" alt="WBCHSE" class="edu-logo" style="background:#fff;border-radius:50%;padding:4px;" />
+              <div class="edu-card-glow edu-card-glow--green"></div>
+              <div class="edu-card-top-row">
+                <img src="assets/wbchse.png" alt="WBCHSE" class="edu-logo" style="background:#fff;border-radius:50%;padding:4px;" />
+                <span class="edu-sem-tag edu-sem-tag--green">Science &amp; Math</span>
+              </div>
               <h3 class="edu-card-title">Higher Secondary</h3>
               <p class="edu-card-school">B. T. Road Gov. Spon. H. S. School</p>
               <div class="edu-divider"></div>
               <div class="edu-row"><span class="edu-label">Board</span><span class="edu-value">WBCHSE</span></div>
               <div class="edu-row"><span class="edu-label">Year</span><span class="edu-value">2021</span></div>
-              <div class="edu-row"><span class="edu-label">Stream</span><span class="edu-value">Pure Science (PCMB)</span></div>
+              <div class="edu-row"><span class="edu-label">Stream</span><span class="edu-value">Pure Science</span></div>
+              
               <div class="edu-score-block">
                 <div class="edu-score-num" style="color:#4ade80">89.60<span style="font-size:1rem">%</span></div>
                 <div class="edu-score-label">Overall Score</div>
+              </div>
+
+              <div class="edu-divider"></div>
+              <div class="edu-sem-label">Key Highlights</div>
+              <ul class="edu-list">
+                <li>Specialized in <strong>Physics, Chemistry, Math, Biology</strong></li>
+                <li>Strong foundation for engineering</li>
+              </ul>
+              
+              <div class="edu-sem-label mt-2">Core Subjects</div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Chemistry</span><span class="edu-sem-score" style="color:#34d399">91/100</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:91%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
+              </div>
+              <div class="edu-sem-row">
+                <div class="edu-sem-top"><span class="edu-sem-name">Physics</span><span class="edu-sem-score" style="color:#c084fc">91/100</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:91%;background:linear-gradient(90deg,#c084fc,#9333ea)"></div></div>
               </div>
             </div>
 
             <!-- B.Tech — featured -->
             <div class="edu-card edu-card--featured">
-              <img src="assets/Adamas_University_Logo.png" alt="Adamas University" class="edu-logo" />
+              <div class="edu-card-glow"></div>
+              <div class="edu-card-top-row">
+                <img src="assets/Adamas_University_Logo.png" alt="Adamas University" class="edu-logo" />
+                <span class="edu-sem-tag">University Ranker</span>
+              </div>
               <h3 class="edu-card-title">B.Tech in Computer Science</h3>
               <p class="edu-card-school">Adamas University</p>
               <div class="edu-divider"></div>
-              <div class="edu-row"><span class="edu-label">Status</span><span class="edu-value" style="color:#06b6d4">Ongoing</span></div>
-              <div class="edu-cgpa">9.41 <span>CGPA</span></div>
-              <div class="edu-sem-label">Performance Trend</div>
+              <div class="edu-row"><span class="edu-label">Status</span><span class="edu-value" style="color:#06b6d4">Ongoing (Expected 2028)</span></div>
+              <div class="edu-row"><span class="edu-label">Major</span><span class="edu-value">Software Eng.</span></div>
+              <div class="edu-row"><span class="edu-label">Minor</span><span class="edu-value">Machine Learning</span></div>
+              
+              <div class="edu-score-block">
+                <div class="edu-cgpa" style="margin:0;">9.41 <span>CGPA</span></div>
+                <div class="edu-score-label">Overall Score</div>
+              </div>
+              
+              <div class="edu-divider"></div>
+              <div class="edu-sem-label">Key Highlights</div>
+              <ul class="edu-list">
+                <li>Consistently maintaining <strong>9.0+ CGPA</strong></li>
+                <li>Active in R&D and Hackathons</li>
+              </ul>
+
+              <div class="edu-sem-label mt-2">Performance Trend</div>
               <div class="edu-sem-row">
-                <div class="edu-sem-top"><span class="edu-sem-name">Sem 1</span><span class="edu-sem-score">9.3</span></div>
-                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:93%;background:linear-gradient(90deg,#00e0ff,#00ffa3)"></div></div>
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 1</span><span class="edu-sem-score" style="color:#06b6d4">9.30</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:93%;background:linear-gradient(90deg,#00e0ff,#0a84ff)"></div></div>
               </div>
               <div class="edu-sem-row">
-                <div class="edu-sem-top"><span class="edu-sem-name">Sem 2</span><span class="edu-sem-score" style="color:#4ade80">9.5</span></div>
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 2</span><span class="edu-sem-score" style="color:#4ade80">9.50</span></div>
                 <div class="edu-bar-track"><div class="edu-bar-fill" style="width:95%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
               </div>
               <div class="edu-sem-row">
-                <div class="edu-sem-top"><span class="edu-sem-name">Sem 3 <span class="edu-sem-tag">Latest</span></span><span class="edu-sem-score">9.43</span></div>
-                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:94.3%;background:linear-gradient(90deg,#00e0ff,#0a84ff)"></div></div>
+                <div class="edu-sem-top"><span class="edu-sem-name">Sem 3 <span class="edu-sem-tag" style="font-size:0.5rem; padding:1px 4px; border:none;">Latest</span></span><span class="edu-sem-score" style="color:#c084fc">9.43</span></div>
+                <div class="edu-bar-track"><div class="edu-bar-fill" style="width:94.3%;background:linear-gradient(90deg,#c084fc,#9333ea)"></div></div>
               </div>
             </div>
           </div>
