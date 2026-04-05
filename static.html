@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saptarshi Sadhu — Full Stack Developer & ML Researcher</title>
+    <meta name="description" content="Portfolio of Saptarshi Sadhu — Full Stack Developer & ML Researcher building scalable systems, intelligent applications, and robust software architectures." />
+    <meta name="author" content="Saptarshi Sadhu" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://saptarshisadhu.co.in/static.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Saptarshi Sadhu — Full Stack Developer & ML Researcher" />
+    <meta property="og:description" content="Building scalable systems where software, data, and intelligence converge." />
+    <meta property="og:image" content="https://saptarshisadhu.co.in/my_image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..600,0..1&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="static.css" />
+
+    <style>
+      /* ─────────────────────────────────────────
+         STATIC PORTFOLIO — HERO SECTION STYLES
+         Clean · Editorial · No animations
+      ───────────────────────────────────────── */
+
+      /* ── Base ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:           #0c0c0f;
+        --bg-card:      #121217;
+        --bg-card-2:    #16161d;
+        --border:       rgba(255,255,255,0.07);
+        --border-hover: rgba(255,255,255,0.14);
+        --text:         #e2e8f0;
+        --muted:        #64748b;
+        --accent:       #06b6d4;
+        --accent-warm:  #f97316;
+        --white:        #ffffff;
+        --font:         'Inter', sans-serif;
+        --mono:         'JetBrains Mono', monospace;
+        --radius:       16px;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* ── Subtle grain texture on background ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        opacity: 0.45;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Quiet ambient gradient — top left and bottom right blobs ── */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 600px 400px at 0% 0%, rgba(6,182,212,0.04) 0%, transparent 70%),
+          radial-gradient(ellipse 500px 500px at 100% 100%, rgba(249,115,22,0.04) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ─────────────────────────────────────────
+         NAVIGATION
+      ───────────────────────────────────────── */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(12, 12, 15, 0.85);
+        backdrop-filter: blur(16px) saturate(1.4);
+        -webkit-backdrop-filter: blur(16px) saturate(1.4);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        position: relative;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        flex-shrink: 0;
+      }
+
+      .nav-logo-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: top;
+        border: 1.5px solid rgba(249,115,22,0.5);
+      }
+
+      .nav-logo-name {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--white);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--white); }
+      .nav-links a.active { color: var(--accent); }
+
+      /* Mode switch — top right, position: fixed */
+      .mode-switch {
+        position: fixed;
+        top: 16px;
+        right: 20px;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .mode-pill {
+        position: relative;
+        width: 80px;
+        height: 32px;
+        border-radius: 32px;
+        background: #000;
+        border: 1.5px solid rgba(255,255,255,0.3);
+        box-shadow: 0 0 12px rgba(255,255,255,0.35);
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .mode-switch:hover .mode-pill {
+        border-color: rgba(255,255,255,0.7);
+        box-shadow: 0 0 20px rgba(255,255,255,0.7);
+      }
+      .mode-pill::before {
+        content: "";
+        position: absolute;
+        width: 22px; height: 22px;
+        left: 4px; top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+      }
+      .mode-pill::after {
+        content: "STATIC";
+        position: absolute;
+        right: 8px; top: 50%;
+        transform: translateY(-50%);
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        color: #fff;
+        text-shadow: 0 0 6px rgba(255,255,255,0.8);
+      }
+
+      /* Hamburger — hidden on desktop */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 36px; height: 36px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 8px;
+        transition: background 0.2s;
+      }
+      .hamburger:hover { background: rgba(255,255,255,0.06); }
+      .hamburger span {
+        display: block;
+        height: 2px; width: 100%;
+        background: #e2e8f0;
+        border-radius: 2px;
+        transition: all 0.25s ease;
+        transform-origin: center;
+      }
+      .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      .mobile-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: rgba(12,12,15,0.98);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.5rem 1.5rem;
+        flex-direction: column;
+        gap: 0;
+      }
+      .mobile-nav.open { display: flex; }
+      .mobile-nav a {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .mobile-nav a:last-child { border-bottom: none; }
+      .mobile-nav a:hover { color: var(--white); }
+
+      @media (max-width: 1023px) {
+        .nav-links { display: none; }
+        .hamburger { display: flex; }
+        .mode-switch { top: 12px; right: 14px; transform: scale(0.82); transform-origin: top right; }
+      }
+
+      /* ─────────────────────────────────────────
+         HERO SECTION
+      ───────────────────────────────────────── */
+      .hero {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 6rem 1.5rem 4rem;
+      }
+
+      .hero-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+
+      /* ── Left: Photo Block ── */
+      .hero-photo-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero-photo-frame {
+        position: relative;
+        width: 320px;
+        height: 320px;
+        flex-shrink: 0;
+      }
+
+      /* Asymmetric border frame — design statement */
+      .hero-photo-frame::before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border-radius: 38% 62% 56% 44% / 44% 38% 62% 56%;
+        background: linear-gradient(135deg, var(--accent-warm), transparent 50%, var(--accent));
+        z-index: 0;
+        opacity: 0.7;
+      }
+
+      /* Inner white border to separate gradient from photo */
+      .hero-photo-frame::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        border-radius: 36% 60% 54% 42% / 42% 36% 60% 54%;
+        background: var(--bg);
+        z-index: 1;
+      }
+
+      .hero-photo {
+        position: absolute;
+        inset: 6px;
+        z-index: 2;
+        object-fit: cover;
+        object-position: top center;
+        border-radius: 34% 58% 52% 40% / 40% 34% 58% 52%;
+        width: calc(100% - 12px);
+        height: calc(100% - 12px);
+        filter: grayscale(10%) contrast(1.05);
+      }
+
+      /* Quiet tag pinned bottom-right of photo */
+      .hero-photo-tag {
+        position: absolute;
+        bottom: -12px;
+        right: -12px;
+        z-index: 10;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      }
+      .hero-photo-tag-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+        flex-shrink: 0;
+      }
+      .hero-photo-tag-text {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+      .hero-photo-tag-text strong {
+        color: var(--white);
+        font-weight: 700;
+      }
+
+      /* Side stat card pinned top-left of photo */
+      .hero-photo-stat {
+        position: absolute;
+        top: -16px;
+        left: -20px;
+        z-index: 10;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        min-width: 120px;
+        text-align: center;
+      }
+      .hero-photo-stat-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--white);
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+      .hero-photo-stat-num span {
+        color: var(--accent);
+      }
+      .hero-photo-stat-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 4px;
+        font-family: var(--mono);
+      }
+
+      /* ── Right: Text Block ── */
+      .hero-text-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.25rem;
+      }
+      .hero-eyebrow-line {
+        width: 28px;
+        height: 1.5px;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+      .hero-eyebrow-text {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .hero-name {
+        font-size: clamp(2.6rem, 5vw, 4.25rem);
+        font-weight: 900;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+        color: var(--white);
+        margin-bottom: 0.35rem;
+      }
+
+      .hero-role {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--muted);
+        margin-bottom: 1.75rem;
+        letter-spacing: 0.01em;
+      }
+
+      /* Thin horizontal rule between title and body — editorial touch */
+      .hero-rule {
+        width: 48px;
+        height: 1px;
+        background: var(--border);
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-bio {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: #8899aa;
+        max-width: 520px;
+        margin-bottom: 2.25rem;
+      }
+      .hero-bio strong {
+        color: #b4c4d4;
+        font-weight: 600;
+      }
+
+      /* ── Skill Pills (static replacement for typing text) ── */
+      .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+      .hero-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        transition: border-color 0.2s, color 0.2s;
+        cursor: default;
+      }
+      .hero-pill:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+      }
+      .hero-pill-dot {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ── CTA Buttons ── */
+      .hero-ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        margin-bottom: 2.5rem;
+        align-items: center;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.75rem 1.75rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #000;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: 1.5px solid transparent;
+        transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 20px rgba(6,182,212,0.25);
+      }
+      .btn-primary:hover {
+        background: #67e8f9;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(6,182,212,0.35);
+      }
+      .btn-primary .material-symbols-outlined {
+        font-size: 16px;
+      }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.75rem 1.75rem;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: 1.5px solid var(--border);
+        transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--border-hover);
+        background: rgba(255,255,255,0.04);
+        transform: translateY(-2px);
+      }
+      .btn-ghost .material-symbols-outlined {
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      /* ── Social / Meta Strip ── */
+      .hero-meta {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .hero-meta-label {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+
+      .hero-social-links {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .hero-social-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        transition: color 0.2s;
+      }
+      .hero-social-link:hover { color: var(--white); }
+      .hero-social-link .material-symbols-outlined {
+        font-size: 14px;
+      }
+
+      /* ── Scroll indicator (bottom of hero) ── */
+      .hero-scroll-hint {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+      }
+      .hero-scroll-hint-text {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+      .hero-scroll-hint-line {
+        width: 1px;
+        height: 48px;
+        background: linear-gradient(to bottom, var(--muted), transparent);
+      }
+
+      /* ─────────────────────────────────────────
+         RESPONSIVE
+      ───────────────────────────────────────── */
+      @media (max-width: 1023px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+          gap: 3.5rem;
+          text-align: center;
+        }
+        .hero-photo-col { order: -1; }
+        .hero-eyebrow { justify-content: center; }
+        .hero-role { margin: 0 auto 1.75rem; }
+        .hero-bio { margin: 0 auto 2.25rem; text-align: left; }
+        .hero-pills { justify-content: center; }
+        .hero-ctas { justify-content: center; }
+        .hero-meta { justify-content: center; }
+        .hero-photo-frame { width: 260px; height: 260px; }
+      }
+
+      @media (max-width: 600px) {
+        .hero { padding: 5rem 1rem 3rem; }
+        .hero-photo-frame { width: 220px; height: 220px; }
+        .hero-photo-stat { left: -8px; top: -8px; padding: 9px 12px; }
+        .hero-photo-tag { right: -6px; bottom: -6px; padding: 8px 11px; }
+        .hero-name { font-size: 2.2rem; }
+        .hero-ctas { flex-direction: column; align-items: stretch; }
+        .btn-primary, .btn-ghost { justify-content: center; }
+        .hero-scroll-hint { display: none; }
+      }
+
+      /* ─────────────────────────────────────────
+         SHARED SECTION LAYOUT
+      ───────────────────────────────────────── */
+      .section-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      .about-section,
+      .skills-section {
+        position: relative;
+        z-index: 1;
+        padding: 7rem 0;
+        border-top: 1px solid var(--border);
+      }
+      .section-header {
+        margin-bottom: 3.5rem;
+      }
+      .section-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+      .section-line {
+        width: 28px;
+        height: 1.5px;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+      .section-label-text {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--white);
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+        margin-bottom: 0.75rem;
+      }
+      .section-subtitle {
+        font-size: 1rem;
+        color: var(--muted);
+        max-width: 540px;
+        line-height: 1.7;
+      }
+
+      /* ─────────────────────────────────────────
+         ABOUT SECTION
+      ───────────────────────────────────────── */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 2rem;
+        align-items: start;
+      }
+      .about-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .about-cards-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .about-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        transition: border-color 0.2s;
+      }
+      .about-card:hover {
+        border-color: var(--border-hover);
+      }
+      .about-card--accent {
+        background: rgba(52,211,153,0.03);
+        border-color: rgba(52,211,153,0.12);
+      }
+      .about-card-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 0.85rem;
+      }
+      .about-card-text {
+        font-size: 0.9rem;
+        line-height: 1.8;
+        color: #7a90a8;
+      }
+      .about-card-text strong { color: #b4c4d4; font-weight: 600; }
+      .about-card-text em { color: var(--accent); font-style: italic; }
+
+      /* Vision quote */
+      .about-vision {
+        background: var(--bg-card-2);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        padding: 1.5rem 1.75rem;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .about-vision-quote {
+        font-family: Georgia, serif;
+        font-size: 3rem;
+        line-height: 1;
+        color: var(--accent);
+        opacity: 0.3;
+        flex-shrink: 0;
+        margin-top: -8px;
+      }
+      .about-vision-text {
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: #94a3b8;
+        font-style: italic;
+      }
+
+      /* Sidebar */
+      .about-sidebar {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        position: sticky;
+        top: 84px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      .sidebar-section { display: flex; flex-direction: column; gap: 0.75rem; }
+      .sidebar-label {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        border-left: 2px solid var(--accent);
+        padding-left: 8px;
+      }
+      .sidebar-rows { display: flex; flex-direction: column; gap: 0.5rem; padding-left: 4px; }
+      .sidebar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .sidebar-row-name {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+      .sidebar-row-value {
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .star-badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #facc15;
+        background: rgba(250,204,21,0.08);
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-family: var(--mono);
+      }
+      .sidebar-text {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-weight: 500;
+        padding-left: 4px;
+      }
+      .sidebar-mono {
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        color: rgba(6,182,212,0.7);
+        padding-left: 4px;
+        letter-spacing: 0.05em;
+      }
+      .sidebar-divider {
+        height: 1px;
+        background: var(--border);
+      }
+      .focus-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding-left: 4px;
+      }
+      .focus-pill {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #64748b;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 9px;
+        letter-spacing: 0.04em;
+      }
+
+      /* ─────────────────────────────────────────
+         SKILLS SECTION
+      ───────────────────────────────────────── */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+      }
+      .skill-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(var(--card-accent-rgb, 255,255,255), 0.08);
+        border: 1px solid color-mix(in srgb, var(--card-accent, #fff) 12%, transparent);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .skill-card:hover {
+        border-color: color-mix(in srgb, var(--card-accent, #fff) 24%, transparent);
+        transform: translateY(-2px);
+      }
+      .skill-card--wide { grid-column: 1 / -1; }
+      .skill-card-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .skill-icon { font-size: 16px; }
+      .skill-card-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+      .skill-card-sub {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: #334155;
+        margin-bottom: 1.1rem;
+        letter-spacing: 0.05em;
+      }
+      .skill-list { display: flex; flex-direction: column; gap: 0.55rem; }
+      .skill-list--horizontal {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .skill-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .skill-list--horizontal .skill-item {
+        justify-content: flex-start;
+        background: var(--bg-card-2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 6px 10px;
+        gap: 8px;
+      }
+      .skill-name {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+      .skill-badge {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 2px 7px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .skill-badge--advanced    { color: #34d399; background: rgba(52,211,153,0.08); }
+      .skill-badge--intermediate{ color: #60a5fa; background: rgba(96,165,250,0.08); }
+      .skill-badge--beginner    { color: #94a3b8; background: rgba(148,163,184,0.06); }
+
+      /* ─────────────────────────────────────────
+         RESPONSIVE — ABOUT + SKILLS
+      ───────────────────────────────────────── */
+      @media (max-width: 1023px) {
+        .about-grid { grid-template-columns: 1fr; }
+        .about-sidebar { position: static; }
+        .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 640px) {
+        .about-cards-row { grid-template-columns: 1fr; }
+        .skills-grid { grid-template-columns: 1fr; }
+        .skill-card--wide { grid-column: 1; }
+        .about-section, .skills-section { padding: 4rem 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ── NAVIGATION ── -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="static.html" class="nav-logo">
+          <img src="my_image.png" alt="Saptarshi" class="nav-logo-img" />
+          <span class="nav-logo-name">Saptarshi Sadhu</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#achievements">Achievements</a></li>
+          <li><a href="static_blog.html">Blog</a></li>
+          <li><a href="static_gallery.html">Gallery</a></li>
+          <li><a href="#contact" style="color:var(--accent)">Contact</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="mobile-nav" id="mobile-nav">
+        <a href="#" onclick="closeMenu()">Home</a>
+        <a href="#about" onclick="closeMenu()">About</a>
+        <a href="#skills" onclick="closeMenu()">Skills</a>
+        <a href="#projects" onclick="closeMenu()">Projects</a>
+        <a href="#experience" onclick="closeMenu()">Experience</a>
+        <a href="#education" onclick="closeMenu()">Education</a>
+        <a href="#achievements" onclick="closeMenu()">Achievements</a>
+        <a href="static_blog.html">Blog</a>
+        <a href="static_gallery.html">Gallery</a>
+        <a href="#contact" onclick="closeMenu()" style="color:var(--accent)">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Mode Switch -->
+    <a href="3d.html" class="mode-switch" title="Switch to 3D Mode">
+      <div class="mode-pill"></div>
+    </a>
+
+    <!-- ── HERO ── -->
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-inner">
+
+          <!-- ── LEFT: Photo Block ── -->
+          <div class="hero-photo-col">
+            <div class="hero-photo-frame">
+
+              <!-- Floating stat card — top left -->
+              <div class="hero-photo-stat">
+                <div class="hero-photo-stat-num">3<span>+</span></div>
+                <div class="hero-photo-stat-label">Years Building</div>
+              </div>
+
+              <img
+                src="my_image.png"
+                alt="Saptarshi Sadhu"
+                class="hero-photo"
+              />
+
+              <!-- Floating tag — bottom right -->
+              <div class="hero-photo-tag">
+                <div class="hero-photo-tag-dot"></div>
+                <div class="hero-photo-tag-text"><strong>Available</strong> for work</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── RIGHT: Text Block ── -->
+          <div class="hero-text-col">
+
+            <div class="hero-eyebrow">
+              <span class="hero-eyebrow-line"></span>
+              <span class="hero-eyebrow-text">Full Stack · ML Research · Systems</span>
+            </div>
+
+            <h1 class="hero-name">
+              I'm Saptarshi<br />Sadhu
+            </h1>
+
+            <p class="hero-role">Full Stack Developer &amp; ML Researcher</p>
+
+            <div class="hero-rule"></div>
+
+            <p class="hero-bio">
+              I focus on designing and engineering <strong>scalable full-stack systems</strong>,
+              intelligent applications, and robust software architectures where
+              <strong>performance, structure, and real-world usability</strong> matter.
+            </p>
+
+            <!-- Discipline pills (static replacement for typing animation) -->
+            <div class="hero-pills">
+              <span class="hero-pill"><span class="hero-pill-dot"></span>Python · PyTorch</span>
+              <span class="hero-pill"><span class="hero-pill-dot" style="background:#a855f7"></span>React · Next.js</span>
+              <span class="hero-pill"><span class="hero-pill-dot" style="background:#f97316"></span>Node · FastAPI</span>
+              <span class="hero-pill"><span class="hero-pill-dot" style="background:#22c55e"></span>DevOps · Cloud</span>
+            </div>
+
+            <!-- CTAs -->
+            <div class="hero-ctas">
+              <a
+                href="assets/Saptarshi_Sadhu_Resume.pdf"
+                class="btn-primary"
+                target="_blank"
+                rel="noopener"
+                download
+              >
+                <span class="material-symbols-outlined">download</span>
+                Resume
+              </a>
+              <a href="#projects" class="btn-ghost">
+                <span class="material-symbols-outlined">grid_view</span>
+                My Projects
+              </a>
+            </div>
+
+            <!-- Social strip -->
+            <div class="hero-meta">
+              <span class="hero-meta-label">Find me on</span>
+              <div class="hero-social-links">
+                <a href="https://github.com/SAPTARSHI-coder" target="_blank" rel="noopener" class="hero-social-link">
+                  <span class="material-symbols-outlined">code</span>GitHub
+                </a>
+                <a href="https://linkedin.com/in/saptarshisadhu" target="_blank" rel="noopener" class="hero-social-link">
+                  <span class="material-symbols-outlined">work</span>LinkedIn
+                </a>
+                <a href="mailto:saptarshisadhu@gmail.com" class="hero-social-link">
+                  <span class="material-symbols-outlined">mail</span>Email
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <span class="hero-scroll-hint-text">Scroll</span>
+          <div class="hero-scroll-hint-line"></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════
+           ABOUT SECTION
+      ══════════════════════════════════════════ -->
+      <section id="about" class="about-section">
+        <div class="section-container">
+
+          <!-- Section header -->
+          <div class="section-header">
+            <div class="section-eyebrow">
+              <span class="section-line"></span>
+              <span class="section-label-text">Who I Am</span>
+            </div>
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">Designing systems where software, data, and intelligence converge.</p>
+          </div>
+
+          <!-- About grid -->
+          <div class="about-grid">
+
+            <!-- LEFT: narrative cards -->
+            <div class="about-cards">
+
+              <!-- Foundation card — full width -->
+              <div class="about-card about-card--wide">
+                <div class="about-card-eyebrow" style="color:#06b6d4">
+                  <span class="material-symbols-outlined" style="font-size:15px">school</span>
+                  The Foundation
+                </div>
+                <p class="about-card-text">
+                  I am a Computer Science undergraduate focused on understanding and building complex digital systems.
+                  My academic journey has been driven by curiosity about how software, data, and infrastructure interact
+                  to create scalable and intelligent applications — reflected in CGPAs of
+                  <strong>9.3 &middot; 9.5 &middot; 9.43</strong> across semesters.
+                </p>
+              </div>
+
+              <!-- Two-column row -->
+              <div class="about-cards-row">
+
+                <div class="about-card">
+                  <div class="about-card-eyebrow" style="color:#22d3ee">
+                    <span class="material-symbols-outlined" style="font-size:15px">code_blocks</span>
+                    Algorithms
+                  </div>
+                  <p class="about-card-text">
+                    Strong focus on algorithmic thinking — earning
+                    <strong>4★ in C</strong>, <strong>3★ in C++</strong>, and
+                    <strong>3★ in Problem Solving</strong> on HackerRank.
+                  </p>
+                </div>
+
+                <div class="about-card">
+                  <div class="about-card-eyebrow" style="color:#c084fc">
+                    <span class="material-symbols-outlined" style="font-size:15px">architecture</span>
+                    System Architecture
+                  </div>
+                  <p class="about-card-text">
+                    I design systems end-to-end — from frontend interfaces and backend services to
+                    databases and infrastructure — ensuring each layer works cohesively within a larger architecture.
+                  </p>
+                </div>
+
+              </div>
+
+              <!-- Tech Ecosystems — full width -->
+              <div class="about-card about-card--wide">
+                <div class="about-card-eyebrow" style="color:#f472b6">
+                  <span class="material-symbols-outlined" style="font-size:15px">hub</span>
+                  Tech Ecosystems
+                </div>
+                <p class="about-card-text">
+                  I actively strengthen my foundation across modern technologies — JavaScript ecosystems, Python, React, Node.js,
+                  databases, cloud platforms, and AI frameworks. I focus on understanding how technologies
+                  <em>integrate</em> to form complete software ecosystems, not treating tools as isolated skills.
+                </p>
+              </div>
+
+              <!-- ML Research — full width -->
+              <div class="about-card about-card--wide about-card--accent">
+                <div class="about-card-eyebrow" style="color:#34d399">
+                  <span class="material-symbols-outlined" style="font-size:15px">science</span>
+                  Machine Learning Research
+                </div>
+                <p class="about-card-text">
+                  Actively involved in ML research on <strong>urban air quality prediction</strong>,
+                  exploring models that analyze pollutants (VOCs, O₃, NOx) using environmental and temporal data.
+                  Investigating how data-driven techniques can support better forecasting at city scale.
+                </p>
+              </div>
+
+              <!-- Vision quote -->
+              <div class="about-vision">
+                <span class="about-vision-quote">"</span>
+                <p class="about-vision-text">
+                  My long-term goal is to grow into an engineer capable of designing intelligent systems,
+                  building scalable software infrastructure, and contributing to technologies that operate at real-world scale.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- RIGHT: highlights sidebar -->
+            <aside class="about-sidebar">
+
+              <div class="sidebar-section">
+                <h4 class="sidebar-label">Education</h4>
+                <div class="sidebar-rows">
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">WBBSE</span>
+                    <span class="sidebar-row-value" style="color:#22d3ee">93.71%</span>
+                  </div>
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">WBCHSE</span>
+                    <span class="sidebar-row-value" style="color:#22d3ee">89.60%</span>
+                  </div>
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">CGPA</span>
+                    <span class="sidebar-row-value" style="color:#22d3ee">9.3 &middot; 9.5 &middot; 9.43</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-section">
+                <h4 class="sidebar-label">HackerRank</h4>
+                <div class="sidebar-rows">
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">C</span>
+                    <span class="star-badge">4★</span>
+                  </div>
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">C++</span>
+                    <span class="star-badge">3★</span>
+                  </div>
+                  <div class="sidebar-row">
+                    <span class="sidebar-row-name">Problem Solving</span>
+                    <span class="star-badge">3★</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-section">
+                <h4 class="sidebar-label">Research</h4>
+                <p class="sidebar-text">Urban Air Quality Prediction</p>
+                <p class="sidebar-mono">VOCs, O₃, NOx</p>
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="sidebar-section">
+                <h4 class="sidebar-label">Focus Areas</h4>
+                <div class="focus-pills">
+                  <span class="focus-pill">Full-Stack Systems</span>
+                  <span class="focus-pill">Android Dev</span>
+                  <span class="focus-pill">Game Dev</span>
+                  <span class="focus-pill">Machine Learning</span>
+                  <span class="focus-pill">Cloud &amp; DevOps</span>
+                </div>
+              </div>
+
+            </aside>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════
+           SKILLS SECTION
+      ══════════════════════════════════════════ -->
+      <section id="skills" class="skills-section">
+        <div class="section-container">
+
+          <div class="section-header">
+            <div class="section-eyebrow">
+              <span class="section-line"></span>
+              <span class="section-label-text">Technical Proficiency</span>
+            </div>
+            <h2 class="section-title">Skills &amp; Tech Stack</h2>
+          </div>
+
+          <div class="skills-grid">
+
+            <!-- Programming Languages -->
+            <div class="skill-card" style="--card-accent:#06b6d4">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#06b6d4">terminal</span>
+                <h4 class="skill-card-title" style="color:#06b6d4">Programming Languages</h4>
+              </div>
+              <p class="skill-card-sub">core · systems · mobile</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">Python</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">JavaScript</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">TypeScript</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Java</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">C</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">C++</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Dart</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Kotlin</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">C#</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Go</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+                <div class="skill-item"><span class="skill-name">Rust</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+            <!-- Web Technologies -->
+            <div class="skill-card" style="--card-accent:#60a5fa">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#60a5fa">language</span>
+                <h4 class="skill-card-title" style="color:#60a5fa">Web Technologies</h4>
+              </div>
+              <p class="skill-card-sub">frontend · frameworks · ui</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">React</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">HTML / CSS</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">Next.js</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">Tailwind CSS</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Vite</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Vue.js</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Bootstrap</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">jQuery</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Nuxt.js</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+            <!-- Databases -->
+            <div class="skill-card" style="--card-accent:#a78bfa">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#a78bfa">database</span>
+                <h4 class="skill-card-title" style="color:#a78bfa">Databases &amp; BaaS</h4>
+              </div>
+              <p class="skill-card-sub">storage · realtime · persistence</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">MySQL</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">Supabase</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">MongoDB</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">PostgreSQL</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Firebase</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+            <!-- Backend -->
+            <div class="skill-card" style="--card-accent:#06b6d4">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#06b6d4">dns</span>
+                <h4 class="skill-card-title" style="color:#06b6d4">Backend Frameworks</h4>
+              </div>
+              <p class="skill-card-sub">apis · servers · microservices</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">Express.js</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">Node.js</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Django</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Flask</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Spring Boot</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">.NET Framework</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+            <!-- Tools -->
+            <div class="skill-card" style="--card-accent:#60a5fa">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#60a5fa">handyman</span>
+                <h4 class="skill-card-title" style="color:#60a5fa">Tools &amp; Platforms</h4>
+              </div>
+              <p class="skill-card-sub">dev environment · productivity</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">Git &amp; GitHub</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">VS Code</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">Android Studio</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Linux</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">CLI Tools</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Docker</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+                <div class="skill-item"><span class="skill-name">Unity</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+            <!-- Cloud -->
+            <div class="skill-card" style="--card-accent:#a78bfa">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#a78bfa">cloud</span>
+                <h4 class="skill-card-title" style="color:#a78bfa">Cloud Infrastructure</h4>
+              </div>
+              <p class="skill-card-sub">deploy · scale · distribute</p>
+              <div class="skill-list">
+                <div class="skill-item"><span class="skill-name">Cloudflare</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">AWS</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Google Cloud</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Azure</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+                <div class="skill-item"><span class="skill-name">Kubernetes</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+
+          </div><!-- end .skills-grid -->
+
+          <!-- ML Research — full-width accent row -->
+          <div class="skills-ml-row">
+            <div class="skill-card skill-card--wide" style="--card-accent:#34d399">
+              <div class="skill-card-header">
+                <span class="material-symbols-outlined skill-icon" style="color:#34d399">science</span>
+                <h4 class="skill-card-title" style="color:#34d399">Machine Learning Research</h4>
+              </div>
+              <p class="skill-card-sub">Urban Air Quality Prediction · VOCs, O₃, NOx</p>
+              <div class="skill-list skill-list--horizontal">
+                <div class="skill-item"><span class="skill-name">Anaconda</span><span class="skill-badge skill-badge--advanced">Advanced</span></div>
+                <div class="skill-item"><span class="skill-name">PyTorch</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">scikit-learn</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">NumPy</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">Pandas</span><span class="skill-badge skill-badge--intermediate">Intermediate</span></div>
+                <div class="skill-item"><span class="skill-name">TensorFlow</span><span class="skill-badge skill-badge--beginner">Beginner</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Placeholder for remaining sections -->
+      <section id="projects" style="min-height:60vh;display:flex;align-items:center;justify-content:center;border-top:1px solid var(--border)">
+        <p style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;">Projects — coming next</p>
+      </section>
+
+    </main>
+
+    <script>
+      // Hamburger
+      const btn = document.getElementById('hamburger');
+      const menu = document.getElementById('mobile-nav');
+      function closeMenu() {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      btn.addEventListener('click', function() {
+        const isOpen = menu.classList.toggle('open');
+        btn.classList.toggle('open', isOpen);
+        btn.setAttribute('aria-expanded', isOpen);
+      });
+    </script>
+
+  </body>
+</html>

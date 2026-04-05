@@ -4,90 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saptarshi Sadhu</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-end;
-            font-family: sans-serif;
-            overflow: hidden;
-        }
-
-        .switch-wrapper-fixed {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            cursor: pointer;
-            z-index: 9999;
-        }
-
-        .switch-wrapper-fixed .switch {
-            position: relative;
-            width: 84px;
-            height: 34px;
-            border-radius: 34px;
-            background: #000000;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .switch-wrapper-fixed:hover .switch {
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
-        }
-
-        /* Knob in OFF position */
-        .switch-wrapper-fixed .switch::before {
-            content: "";
-            position: absolute;
-            height: 22px;
-            width: 22px;
-            left: 4px; 
-            top: 4px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-        }
-
-        /* Text in empty space */
-        .switch-wrapper-fixed .switch::after {
-            content: "STATIC";
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(255,255,255,0.9);
-        }
-
-        @media (max-width: 480px) {
-            .switch-wrapper-fixed {
-                top: 15px;
-                right: 15px;
-                transform: scale(0.85); /* Shorter/smaller for mobile */
-                transform-origin: right top;
-            }
-        }
-    </style>
+    <!-- Auto-redirect to static portfolio (default mode) -->
+    <meta http-equiv="refresh" content="0; url=static.html" />
+    <script>window.location.replace('static.html');</script>
 </head>
 <body>
-
-    <a href="3d.html" class="switch-wrapper-fixed">
-        <div class="switch"></div>
-    </a>
-
+    <p style="font-family:sans-serif;color:#fff;background:#000;margin:0;padding:20px;">
+      Redirecting to portfolio… <a href="static.html" style="color:#06b6d4">Click here</a> if not redirected.
+    </p>
 </body>
 </html>
