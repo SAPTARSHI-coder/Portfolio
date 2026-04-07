@@ -1068,6 +1068,52 @@
       }
 
       /* ─────────────────────────────────────────
+         EXPERIENCE
+      ───────────────────────────────────────── */
+      .exp-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+      .exp-category-title { font-size: 1.1rem; font-weight: 800; color: var(--white); margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+      .timeline { padding-left: 48px; position: relative; display: flex; flex-direction: column; gap: 2rem; margin-bottom: 4rem; }
+      .timeline::before {
+        content: ''; position: absolute; top: 0; bottom: 0; left: 16px; width: 2px;
+        background: linear-gradient(to bottom, var(--accent) 0%, rgba(255,255,255,0.1) 15%, rgba(255,255,255,0.1) 85%, transparent 100%);
+      }
+      .timeline-item { position: relative; }
+      .timeline-dot {
+        position: absolute; top: 28px; left: -37px;
+        width: 10px; height: 10px; border-radius: 50%;
+        background: var(--bg); border: 2px solid var(--accent);
+        box-shadow: 0 0 10px rgba(6,182,212,0.4);
+        transition: background 0.3s, box-shadow 0.3s; z-index: 2;
+      }
+      .timeline-item:hover .timeline-dot { background: var(--accent); box-shadow: 0 0 15px rgba(6,182,212,0.8); }
+      .exp-card {
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 16px; padding: 1.5rem 2rem;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .timeline-item:hover .exp-card { border-color: rgba(6,182,212,0.3); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+      .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+      .exp-role { font-size: 1.05rem; font-weight: 800; color: var(--white); line-height: 1.4; }
+      .exp-org { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); margin-top: 0.25rem; font-weight: 600; }
+      .exp-date {
+        font-family: var(--mono); font-size: 0.65rem; color: var(--muted); font-weight: 700;
+        letter-spacing: 0.05em; background: rgba(255,255,255,0.05); padding: 4px 10px;
+        border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; text-transform: uppercase;
+      }
+      .exp-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+      .exp-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+      .exp-list li { font-size: 0.82rem; color: #94a3b8; line-height: 1.6; padding-left: 1.2rem; position: relative; }
+      .exp-list li::before { content: "▹"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+      .exp-list li strong { color: var(--text); font-weight: 600; }
+      @media (max-width: 640px) {
+        .exp-header { flex-direction: column; gap: 0.5rem; }
+        .exp-card { padding: 1.25rem; }
+        .timeline { padding-left: 36px; }
+        .timeline::before { left: 12px; }
+        .timeline-dot { left: -29px; }
+      }
+
+      /* ─────────────────────────────────────────
          RESEARCH
       ───────────────────────────────────────── */
       .research-section { padding: 6rem 0; border-top: 1px solid var(--border); }
@@ -1900,6 +1946,238 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           EXPERIENCE SECTION
+      ════════════════════════════════════════ -->
+      <section id="experience" class="exp-section">
+        <div class="section-container">
+          <div class="section-header">
+            <div class="section-eyebrow">
+              <span class="section-line"></span>
+              <span class="section-label-text">Experience</span>
+            </div>
+            <h2 class="section-title">Experience &amp; Leadership</h2>
+            <p class="section-subtitle">Real-world engineering, leadership roles, and hackathon milestones.</p>
+          </div>
+
+          <!-- Professional & Leadership -->
+          <h3 class="exp-category-title">
+            <span class="material-symbols-outlined" style="color:var(--accent)">work</span>
+            Professional &amp; Leadership
+          </h3>
+          <div class="timeline">
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Web Developer Intern</h3>
+                    <div class="exp-org">InternPe</div>
+                  </div>
+                  <div class="exp-date">Internship</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Built responsive and interactive user interfaces for modern web applications.</li>
+                  <li>Executed systematic QA testing ensuring cross-browser compatibility and smooth performance.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Publicity Chair</h3>
+                    <div class="exp-org">ACM Student Chapter</div>
+                  </div>
+                  <div class="exp-date">Leadership</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Architected chapter-wide campaigns and managed social media presence to drive community growth.</li>
+                  <li>Organized tech events, increasing student engagement and chapter outreach.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Student Coordinator</h3>
+                    <div class="exp-org">IETE Student Chapter</div>
+                  </div>
+                  <div class="exp-date">Leadership</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Acted as the primary liaison between students and faculty.</li>
+                  <li>Maintained membership databases and coordinated chapter activities.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Class Representative (CR)</h3>
+                    <div class="exp-org">Adamas University</div>
+                  </div>
+                  <div class="exp-date">Leadership</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Resolved student concerns and actively assisted with university policy compliance.</li>
+                  <li>Managed academic communications between professors and students.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Campus Ambassador</h3>
+                    <div class="exp-org">LetsUpgrade</div>
+                  </div>
+                  <div class="exp-date">Leadership</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Organized workshops and conducted technical surveys to improve program design.</li>
+                  <li>Promoted coding culture and tech upskilling among peers.</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Competitions & Hackathons -->
+          <h3 class="exp-category-title">
+            <span class="material-symbols-outlined" style="color:var(--accent)">emoji_events</span>
+            Competitions &amp; Hackathons
+          </h3>
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Project Head (Interdisciplinary ML)</h3>
+                    <div class="exp-org">Urban Air Quality Research</div>
+                  </div>
+                  <div class="exp-date">Research</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Managed the entire ML modeling pipeline and structured research documentation for an air quality study.</li>
+                  <li>Analyzed pollutants (VOCs, O₃, NOx) utilizing temporal and environmental data.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Team Leader</h3>
+                    <div class="exp-org">Smart India Hackathon (SIH)</div>
+                  </div>
+                  <div class="exp-date">2024 &amp; 2025</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Led cross-functional teams across two editions, focusing on rigorous project timelines and system architecture.</li>
+                  <li>Spearheaded comprehensive solution design for national-level problem statements.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Project Head</h3>
+                    <div class="exp-org">AI Impact Summit Buildathon (HCL GUVI)</div>
+                  </div>
+                  <div class="exp-date">Hackathon</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Led the development of a real-time multilingual human-vs-AI text detection system.</li>
+                  <li>Engineered the core pipeline to handle varied language inputs with high accuracy.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Clash of Coders 2.0 Finalist</h3>
+                    <div class="exp-org">Competitive Programming</div>
+                  </div>
+                  <div class="exp-date">Finalist</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Reached the final rounds of a major competitive programming contest.</li>
+                  <li>Demonstrated advanced problem-solving skills under time-constrained conditions.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">Coding Premier League — 4th Place</h3>
+                    <div class="exp-org">Competitive Programming</div>
+                  </div>
+                  <div class="exp-date">4th Place</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Secured 4th place overall out of competitive participants.</li>
+                  <li>Recognized for optimized algorithmic implementations and debugging speed.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="exp-card">
+                <div class="exp-header">
+                  <div>
+                    <h3 class="exp-role">HackerRank Certifications</h3>
+                    <div class="exp-org">Java &amp; Problem Solving</div>
+                  </div>
+                  <div class="exp-date">3-Star Rating</div>
+                </div>
+                <div class="exp-divider"></div>
+                <ul class="exp-list">
+                  <li>Achieved a <strong>3-star rating</strong> in Java and Problem Solving.</li>
+                  <li>Demonstrates consistent practice and mastery over data structures &amp; algorithms.</li>
+                </ul>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
