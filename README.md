@@ -165,6 +165,15 @@ Navigate to `http://localhost:8080` in your web browser.
 
 ---
 
+## ⚖️ License
+
+**Copyright © 2026 Saptarshi Sadhu. All Rights Reserved.**
+
+This repository and all of its content (including source code, 3D models, graphics, and design assets) are the exclusive property of Saptarshi Sadhu. 
+No part of this project may be copied, cloned, reproduced, modified, distributed, or transmitted in any form without prior written permission.
+
+---
+
 ## 📬 Contact & Connect
 
 I am actively open to software engineering internships, systems/ML research collaborations, and open-source opportunities.
