@@ -310,30 +310,38 @@ MAIN BODY
 The 'selection:bg-primary/30' code dictates what color text highlights turn into
 when you drag your mouse over them.
 -->
-  <body class="bg-[#060810] text-slate-300 antialiased selection:bg-cyan-500/30 selection:text-cyan-300 relative overscroll-none">
+  <body class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none">
 
-    <!-- ============================================================
-         PREMIUM DARK STUDIO BACKGROUND — Three layered system
-         (No video — pure CSS for buttery performance)
-    ============================================================ -->
+    <!-- Background Video -->
+    <video
+      class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]"
+      autoplay
+      loop
+      muted
+      playsinline
+    >
+      <source src="Background.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
 
-    <!-- Layer 1: Deep space base -->
-    <div class="fixed inset-0 pointer-events-none" style="z-index:-20;background:#060810"></div>
-
-    <!-- Layer 2: Precision engineering grid -->
-    <div class="fixed inset-0 pointer-events-none" style="z-index:-19;background-image:linear-gradient(rgba(6,182,212,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.04) 1px,transparent 1px);background-size:48px 48px;"></div>
-
-    <!-- Layer 3: Cinematic ambient glow orbs -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:-18">
-      <div class="absolute" style="top:-15%;left:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(6,182,212,0.18) 0%,transparent 70%);filter:blur(60px);animation:orb1 12s ease-in-out infinite alternate"></div>
-      <div class="absolute" style="top:30%;right:-10%;width:800px;height:800px;background:radial-gradient(circle,rgba(99,102,241,0.15) 0%,transparent 70%);filter:blur(80px);animation:orb2 15s ease-in-out infinite alternate"></div>
-      <div class="absolute" style="bottom:-10%;left:20%;width:600px;height:600px;background:radial-gradient(circle,rgba(16,185,129,0.10) 0%,transparent 70%);filter:blur(70px);animation:orb3 18s ease-in-out infinite alternate"></div>
+    <!-- Nebula Background Layer -->
+    <div class="nebula-container opacity-50 mix-blend-screen">
+      <div class="stars"></div>
+      <div class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"></div>
     </div>
-    <style>
-      @keyframes orb1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.15)}}
-      @keyframes orb2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-50px,60px) scale(1.1)}}
-      @keyframes orb3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-50px) scale(1.2)}}
-    </style>
+
+    <!-- BIG DIGITAL GLOBE BACKGROUND -->
+    <div class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40">
+      <img
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        fetchpriority="low"
+        class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
+        style="mask-image:radial-gradient(circle,black 50%,transparent 100%);-webkit-mask-image:radial-gradient(circle,black 50%,transparent 100%);object-position:center;"
+      />
+    </div>
 
       <!-- 
         ----------------------------------------------------------------------------
