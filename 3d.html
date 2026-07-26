@@ -1558,5 +1558,28 @@ when you drag your mouse over them.
     <a href="static.html" class="switch-wrapper-fixed" title="Switch to Static Mode">
         <div class="switch"></div>
     </a>
+    <!-- Scroll-Driven 3D Workstation Orbit Camera Script -->
+    <script>
+      (function() {
+        window.addEventListener('DOMContentLoaded', function() {
+          const modelViewer = document.getElementById('workstation-model');
+          if (!modelViewer) return;
+
+          function update3DOrbitOnScroll() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+            const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
+            
+            // Smoothly orbit 360 degrees as user scrolls down the page
+            const azimuth = 45 + scrollFraction * 360;
+            const elevation = 75;
+            modelViewer.cameraOrbit = `${azimuth.toFixed(1)}deg ${elevation}deg 2.5m`;
+          }
+
+          window.addEventListener('scroll', update3DOrbitOnScroll, { passive: true });
+          update3DOrbitOnScroll();
+        });
+      })();
+    </script>
   </body>
 </html>
