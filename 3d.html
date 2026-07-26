@@ -310,52 +310,30 @@ MAIN BODY
 The 'selection:bg-primary/30' code dictates what color text highlights turn into
 when you drag your mouse over them.
 -->
-  <body
-    class="bg-[#070a11] text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none"
-  >
-    <!-- Background Video: Currently set to 20% brightness using the Tailwind 'brightness-[0.2]' class -->
-    <!-- 
-    ----------------------------------------------------------------------------
-    REVERT OPTION: ORIGINAL SPACE VIDEO & GLOBE BACKGROUND
-    (Uncomment the block below if you ever wish to revert to the old space video)
-    ----------------------------------------------------------------------------
-    <!--
-    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]" autoplay loop muted playsinline>
-      <source src="Background.mp4" type="video/mp4" />
-    </video>
-    <div class="nebula-container opacity-50 mix-blend-screen">
-      <div class="stars"></div>
-      <div class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"></div>
-    </div>
-    <div class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40">
-      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]" />
-    </div>
-    -->
+  <body class="bg-[#060810] text-slate-300 antialiased selection:bg-cyan-500/30 selection:text-cyan-300 relative overscroll-none">
 
-    <!-- 
-    ----------------------------------------------------------------------------
-    NEW SLEEK DARK STUDIO GLASSMORPHIC GRID + DYNAMIC AMBIENT MESH ORBS
-    ----------------------------------------------------------------------------
-    -->
-    <!-- Base Dark Obsidian Canvas -->
-    <div class="fixed inset-0 z-[-20] bg-[#070a11] pointer-events-none"></div>
+    <!-- ============================================================
+         PREMIUM DARK STUDIO BACKGROUND — Three layered system
+         (No video — pure CSS for buttery performance)
+    ============================================================ -->
 
-    <!-- Architectural Fine Grid Pattern Overlay -->
-    <div 
-      class="fixed inset-0 z-[-19] pointer-events-none opacity-[0.18]" 
-      style="background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px;"
-    ></div>
+    <!-- Layer 1: Deep space base -->
+    <div class="fixed inset-0 pointer-events-none" style="z-index:-20;background:#060810"></div>
 
-    <!-- Dynamic Ambient Glow Orbs -->
-    <div class="fixed inset-0 z-[-18] pointer-events-none overflow-hidden">
-      <!-- Top Left Cyan Ambient Glow Orb -->
-      <div class="absolute -top-32 -left-32 w-[650px] h-[650px] bg-cyan-500/15 rounded-full blur-[140px]"></div>
-      <!-- Middle Right Indigo Ambient Glow Orb -->
-      <div class="absolute top-[30%] -right-32 w-[750px] h-[750px] bg-indigo-600/15 rounded-full blur-[160px]"></div>
-      <!-- Bottom Left Emerald Ambient Glow Orb -->
-      <div class="absolute -bottom-32 left-[15%] w-[650px] h-[650px] bg-emerald-500/12 rounded-full blur-[150px]"></div>
+    <!-- Layer 2: Precision engineering grid -->
+    <div class="fixed inset-0 pointer-events-none" style="z-index:-19;background-image:linear-gradient(rgba(6,182,212,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.04) 1px,transparent 1px);background-size:48px 48px;"></div>
+
+    <!-- Layer 3: Cinematic ambient glow orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:-18">
+      <div class="absolute" style="top:-15%;left:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(6,182,212,0.18) 0%,transparent 70%);filter:blur(60px);animation:orb1 12s ease-in-out infinite alternate"></div>
+      <div class="absolute" style="top:30%;right:-10%;width:800px;height:800px;background:radial-gradient(circle,rgba(99,102,241,0.15) 0%,transparent 70%);filter:blur(80px);animation:orb2 15s ease-in-out infinite alternate"></div>
+      <div class="absolute" style="bottom:-10%;left:20%;width:600px;height:600px;background:radial-gradient(circle,rgba(16,185,129,0.10) 0%,transparent 70%);filter:blur(70px);animation:orb3 18s ease-in-out infinite alternate"></div>
     </div>
-      </section>
+    <style>
+      @keyframes orb1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.15)}}
+      @keyframes orb2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-50px,60px) scale(1.1)}}
+      @keyframes orb3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-50px) scale(1.2)}}
+    </style>
 
       <!-- 
         ----------------------------------------------------------------------------
@@ -402,47 +380,48 @@ when you drag your mouse over them.
         ENGINEERING HIGHLIGHTS
         ----------------------------------------------------------------------------
         -->
-      <section class="max-w-7xl mx-auto px-6 py-6 relative z-10 fade-up" style="animation-delay: 0.2s">
-        <div class="bg-gray-900/60 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-6 md:p-8 shrink-0 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-600/5 pointer-events-none"></div>
-          
-          <div class="flex items-center gap-3 mb-6 relative z-10">
-            <span class="material-symbols-outlined text-cyan-400">memory</span>
-            <h3 class="text-white text-sm tracking-[0.2em] uppercase font-bold">Engineering & Research Highlights</h3>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-cyan-400/70 text-2xl">leaderboard</span>
-              <div>
-                <p class="text-white font-semibold text-sm mb-1">#3 Private Committer in India</p>
-                <p class="text-gray-400 text-xs leading-relaxed">Ranked #3 Private & #2 Active Committer in India on Committers.top.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-cyan-400/70 text-2xl">hub</span>
-              <div>
-                <p class="text-white font-semibold text-sm mb-1">Open Source Maintainer</p>
-                <p class="text-gray-400 text-xs leading-relaxed">EaseMotion CSS Lead Maintainer — <strong>21,587 merged PRs & 642 contributors</strong> in GSSoC '26.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-cyan-400/70 text-2xl">analytics</span>
-              <div>
-                <p class="text-white font-semibold text-sm mb-1">Air Quality ML Research</p>
-                <p class="text-gray-400 text-xs leading-relaxed">PyTorch LSTMs on 13 CAAQMS stations (~19.1M points), achieving <strong>R² > 0.87</strong>.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-cyan-400/70 text-2xl">article</span>
-              <div>
-                <p class="text-white font-semibold text-sm mb-1">4 Research Manuscripts</p>
-                <p class="text-gray-400 text-xs leading-relaxed">Author/Co-author on 4 journal manuscripts in prep (Air Quality, Spatial AI, Micro ECM).</p>
-              </div>
-            </div>
-          </div>
+      <!-- ══════════════════════════════════════════════
+           LIVE STATS TICKER BAR (Marquee-style)
+      ══════════════════════════════════════════════ -->
+      <div class="relative z-10 w-full overflow-hidden border-y border-cyan-500/10 bg-[#070a14]/80 backdrop-blur-sm py-2.5 mt-2" style="-webkit-mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent)">
+        <div class="flex gap-12 animate-[marquee_30s_linear_infinite] whitespace-nowrap" style="width:max-content">
+          <span class="text-xs font-mono text-cyan-400/80">⭐ <strong class="text-white">240</strong> Stars</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🍴 <strong class="text-white">992</strong> Forks</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">✅ <strong class="text-white">25,424</strong> Merged PRs</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🔀 <strong class="text-white">62,001</strong> Commits</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">👥 <strong class="text-white">704</strong> Contributors</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">📁 <strong class="text-white">65,503</strong> Files</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-purple-400/80">⚡ EaseMotion CSS Framework — GSSoC '26 Lead Maintainer</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🏆 <strong class="text-white">#3</strong> Private Committer in India</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🔬 <strong class="text-white">4</strong> Research Manuscripts in Prep</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <!-- Duplicate for seamless loop -->
+          <span class="text-xs font-mono text-cyan-400/80">⭐ <strong class="text-white">240</strong> Stars</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🍴 <strong class="text-white">992</strong> Forks</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">✅ <strong class="text-white">25,424</strong> Merged PRs</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🔀 <strong class="text-white">62,001</strong> Commits</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">👥 <strong class="text-white">704</strong> Contributors</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">📁 <strong class="text-white">65,503</strong> Files</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-purple-400/80">⚡ EaseMotion CSS Framework — GSSoC '26 Lead Maintainer</span>
+          <span class="text-xs font-mono text-slate-500">·</span>
+          <span class="text-xs font-mono text-cyan-400/80">🏆 <strong class="text-white">#3</strong> Private Committer in India</span>
         </div>
-      </section>
+      </div>
+      <style>@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}</style>
 
       <!-- 
         ----------------------------------------------------------------------------
@@ -517,7 +496,7 @@ when you drag your mouse over them.
                 </h4>
               </div>
               <h3 class="text-lg text-slate-300 font-normal leading-relaxed">
-                Lead Maintainer & Systems Architect of EaseMotion CSS Framework under GSSoC '26. Scaled codebase to <strong class="text-white"><strong>21,587 merged PRs & 642 contributors</strong></strong>. Ranked <strong class="text-white">#3 Private Committer in India</strong> on Committers.top.
+                Lead Maintainer & Systems Architect of EaseMotion CSS Framework under GSSoC '26. Scaled codebase to <strong class="text-white"><strong>25,424 merged PRs & 704 contributors</strong></strong>. Ranked <strong class="text-white">#3 Private Committer in India</strong> on Committers.top.
               </h3>
             </div>
 
@@ -851,12 +830,12 @@ when you drag your mouse over them.
             </div>
             <h4 class="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">EaseMotion CSS Framework</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-              Lead Maintainer & Systems Architect under GSSoC '26. Scaled codebase to <strong>21,587 merged PRs</strong>, <strong>54,166 commits</strong>, and <strong>642 contributors</strong> in 50 days (avg <strong>496 PRs/day</strong>). Engineered Honeypot Sandbox Anti-Spam routing and optimized GitHub Actions CI/CD validation runtime to <strong>&lt; 25 seconds</strong>. Ranked <strong>#3 Private Committer in India</strong> on Committers.top.
+              Lead Maintainer & Systems Architect under GSSoC '26. Scaled codebase to <strong>25,424 merged PRs</strong>, <strong>62,001 commits</strong>, and <strong>704 contributors</strong> in 50 days (avg <strong>407 PRs/day merged (avg)</strong>). Engineered Honeypot Sandbox Anti-Spam routing and optimized GitHub Actions CI/CD validation runtime to <strong>&lt; 25 seconds</strong>. Ranked <strong>#3 Private Committer in India</strong> on Committers.top.
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-purple-300/80 font-mono">
-              <span class="px-2 py-1 bg-white/5 rounded">21.5k+ PRs</span>
-              <span class="px-2 py-1 bg-white/5 rounded">54.1k+ Commits</span>
-              <span class="px-2 py-1 bg-white/5 rounded">642 Contributors</span>
+              <span class="px-2 py-1 bg-white/5 rounded">25.4k+ PRs</span>
+              <span class="px-2 py-1 bg-white/5 rounded">62k+ Commits</span>
+              <span class="px-2 py-1 bg-white/5 rounded">704 Contributors</span>
               <span class="px-2 py-1 bg-white/5 rounded">Honeypot Sandbox</span>
               <span class="px-2 py-1 bg-white/5 rounded">CI/CD &lt;25s</span>
             </div>
