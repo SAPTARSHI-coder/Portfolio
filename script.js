@@ -230,13 +230,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (typingSpan) {
         const phrases = [
-            "Building scalable web systems",
-            "Researching machine learning models",
-            "Crafting full-stack applications",
-            "Solving complex algorithmic problems",
-            "Designing efficient data structures",
-            "Developing intelligent software solutions",
-            "Engineering robust backend architectures"
+            "AI & ML Researcher @ Urban Air Quality",
+            "Lead Open Source Maintainer (EaseMotion CSS)",
+            "Ranked #3 Top Private Committer in India",
+            "Healthcare AI, Asthma & Neurotech Research",
+            "Engineering Scalable Full-Stack Systems",
+            "PyTorch LSTMs & Spatiotemporal Modeling",
+            "Building High-Performance Software Architectures"
         ];
         
         let phraseIndex = 0;
