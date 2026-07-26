@@ -1047,43 +1047,85 @@ when you drag your mouse over them.
         The 'glass-card' class makes them look frosted and slightly transparent.
         -->
       <section class="max-w-6xl mx-auto px-6 py-32" id="projects">
-        <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-12">
+        <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-4">
           Featured Engineering & Research Projects
         </h2>
+        <h3 class="text-4xl md:text-5xl font-orbitron font-black text-white mb-12 tracking-widest uppercase">
+          Projects & Frameworks
+        </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Project 1: CivicIssue Dashboard -->
-          <div class="group glass-card p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Project 1: EaseMotion CSS Framework -->
+          <div class="group glass-card p-6 rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-purple-500/10 text-purple-400 rounded-full border border-purple-500/20">Open Source Framework</span>
+              <a href="https://github.com/SAPTARSHI-coder/EaseMotion-css" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
+                <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
+              </a>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">EaseMotion CSS Framework</h4>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Scalable CSS animation framework maintained under GSSoC '26. Engineered Honeypot Sandbox Anti-Spam routing, GitHub Actions CI/CD caching (<25s validation), and scaled to 21,587 merged PRs, 54,166 commits, and 642 contributors. Ranked #3 Private Committer in India.
+            </p>
+            <div class="flex flex-wrap gap-2 text-xs text-purple-300/80 font-mono">
+              <span class="px-2 py-1 bg-white/5 rounded">CSS3</span>
+              <span class="px-2 py-1 bg-white/5 rounded">GitHub Actions</span>
+              <span class="px-2 py-1 bg-white/5 rounded">Anti-Spam CI/CD</span>
+              <span class="px-2 py-1 bg-white/5 rounded">GSSoC '26</span>
+            </div>
+          </div>
+
+          <!-- Project 2: AI Multilingual Text Detection System -->
+          <div class="group glass-card p-6 rounded-2xl border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-pink-500/10 text-pink-400 rounded-full border border-pink-500/20">AI & NLP Detection</span>
+              <a href="https://github.com/SAPTARSHI-coder" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
+                <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
+              </a>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors">Multilingual AI vs Human Text Detector</h4>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Developed a real-time AI vs human text detection system supporting 5 languages during the AI Impact Summit Buildathon (HCL GUVI). Engineered NLP classification logic and maintained 6+ days continuous uptime via ngrok tunneling.
+            </p>
+            <div class="flex flex-wrap gap-2 text-xs text-pink-300/80 font-mono">
+              <span class="px-2 py-1 bg-white/5 rounded">Python</span>
+              <span class="px-2 py-1 bg-white/5 rounded">NLP</span>
+              <span class="px-2 py-1 bg-white/5 rounded">AI Classifier</span>
+              <span class="px-2 py-1 bg-white/5 rounded">ngrok</span>
+            </div>
+          </div>
+
+          <!-- Project 3: CivicIssue Dashboard -->
+          <div class="group glass-card p-6 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20">Full-Stack MVC</span>
               <a href="https://github.com/SAPTARSHI-coder/civicissue-dashboard" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
                 <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">CivicIssue Dashboard</h3>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">CivicIssue Dashboard</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-              Developed a full-stack MVC application integrating bcrypt password hashing, session management, input validation, and protected routing for city-level civic complaint reporting and resolution tracking.
+              Developed a full-stack MVC application integrating bcrypt password hashing, session management, input validation, and protected routing for city-level civic complaint reporting.
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-cyan-300/80 font-mono">
               <span class="px-2 py-1 bg-white/5 rounded">Node.js</span>
               <span class="px-2 py-1 bg-white/5 rounded">Express.js</span>
               <span class="px-2 py-1 bg-white/5 rounded">MongoDB</span>
-              <span class="px-2 py-1 bg-white/5 rounded">MVC</span>
               <span class="px-2 py-1 bg-white/5 rounded">Bcrypt</span>
             </div>
           </div>
 
-          <!-- Project 2: Multi-Source Weather Forecast App -->
-          <div class="group glass-card p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300">
+          <!-- Project 4: Multi-Source Weather Forecast App -->
+          <div class="group glass-card p-6 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20">REST API & Async JS</span>
               <a href="https://github.com/SAPTARSHI-coder/Weather-App" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
                 <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Multi-Source Weather Forecast App</h3>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Multi-Source Weather Forecast App</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-              Built an asynchronous weather forecasting tool featuring a backend proxy server to prevent API rate-limiting, custom caching layers, and automated fallback endpoints for uninterrupted reliability.
+              Built an asynchronous weather forecasting tool featuring a backend proxy server to prevent API rate-limiting, custom caching layers, and automated fallback endpoints.
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-cyan-300/80 font-mono">
               <span class="px-2 py-1 bg-white/5 rounded">JavaScript</span>
@@ -1093,17 +1135,17 @@ when you drag your mouse over them.
             </div>
           </div>
 
-          <!-- Project 3: Techtonics -->
-          <div class="group glass-card p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300">
+          <!-- Project 5: Techtonics -->
+          <div class="group glass-card p-6 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20">AI API Integration</span>
               <a href="https://github.com/SAPTARSHI-coder/Techtonics" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
                 <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Techtonics — AI Assisted Coding Platform</h3>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Techtonics — AI Assisted Coding Platform</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-              Developed an interactive learning platform connecting real-time AI tutor APIs to guide beginners with step-by-step logic breakdown, syntax diagnostics, and adaptive problem-solving prompts.
+              Developed an interactive learning platform connecting real-time AI tutor APIs to guide beginners with step-by-step logic breakdown and syntax diagnostics.
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-cyan-300/80 font-mono">
               <span class="px-2 py-1 bg-white/5 rounded">AI API</span>
@@ -1113,15 +1155,15 @@ when you drag your mouse over them.
             </div>
           </div>
 
-          <!-- Project 4: Personal Portfolio Website -->
-          <div class="group glass-card p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300">
+          <!-- Project 6: Personal Portfolio Website -->
+          <div class="group glass-card p-6 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20">Dual-Engine WebGL</span>
               <a href="https://github.com/SAPTARSHI-coder/Portfolio" target="_blank" rel="noopener" class="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
                 <span>GitHub</span> <span class="material-symbols-outlined text-sm">open_in_new</span>
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Personal Portfolio Website</h3>
+            <h4 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Personal Portfolio Website</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
               Designed and engineered a dual-mode portfolio (3D WebGL Immersive & High-Performance Editorial Static) featuring vanilla orbital physics, glassmorphism, and 100/100 Lighthouse performance.
             </p>
