@@ -311,264 +311,50 @@ The 'selection:bg-primary/30' code dictates what color text highlights turn into
 when you drag your mouse over them.
 -->
   <body
-    class="text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none"
+    class="bg-[#070a11] text-slate-300 antialiased selection:bg-primary/30 selection:text-primary relative overscroll-none"
   >
     <!-- Background Video: Currently set to 20% brightness using the Tailwind 'brightness-[0.2]' class -->
-    <video
-      class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]"
-      autoplay
-      loop
-      muted
-      playsinline
-    >
-      <source src="Background.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-
     <!-- 
-    Nebula Background Layer: 
-    This creates the starry sky effect and the colored glow blobs underneath the text. 
-    It is made semi-transparent so the background video still shows through.
-    -->
+    ----------------------------------------------------------------------------
+    REVERT OPTION: ORIGINAL SPACE VIDEO & GLOBE BACKGROUND
+    (Uncomment the block below if you ever wish to revert to the old space video)
+    ----------------------------------------------------------------------------
+    <!--
+    <video class="fixed inset-0 w-full h-full object-cover object-top -z-20 brightness-[0.25]" autoplay loop muted playsinline>
+      <source src="Background.mp4" type="video/mp4" />
+    </video>
     <div class="nebula-container opacity-50 mix-blend-screen">
       <div class="stars"></div>
-      <div
-        class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"
-      ></div>
+      <div class="blur-orb bg-indigo-900/20 w-[800px] h-[800px] bottom-0 -right-48"></div>
     </div>
-
-    <!-- BIG DIGITAL GLOBE BACKGROUND -->
-    <!-- Positioned absolutely behind everything, sharp and visible -->
-    <div
-      class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40"
-    >
-      <!-- Using a placeholder for a sharp digital globe with glowing data points -->
-      <img
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        fetchpriority="low"
-        class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]"
-        style="
-          mask-image: radial-gradient(circle, black 50%, transparent 100%);
-          -webkit-mask-image: radial-gradient(
-            circle,
-            black 50%,
-            transparent 100%
-          );
-          object-position: center;
-        "
-      />
+    <div class="fixed inset-0 z-[-15] flex justify-center items-center pointer-events-none opacity-40">
+      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" class="w-[800px] h-[800px] object-cover rounded-full mix-blend-screen animate-[spin_120s_linear_infinite]" />
     </div>
+    -->
 
     <!-- 
     ----------------------------------------------------------------------------
-    NAVIGATION HEADER
-    ----------------------------------------------------------------------------
-    The 'backdrop-blur-md' creates the frosted glass effect at the top of the page.
-    -->
-    <header
-      class="fixed top-0 z-50 w-full backdrop-blur-md bg-[#02040a]/70 border-b border-white/5"
-    >
-      <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative"
-      >
-        <!-- Logo / Name -->
-        <div class="flex items-center gap-3">
-          <img
-            src="my_image.png"
-            alt="Saptarshi"
-            class="w-8 h-8 rounded-full object-cover object-top border border-orange-500/60 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
-          />
-          <span class="text-white font-bold tracking-widest text-xs lg:text-sm uppercase">Saptarshi Sadhu</span>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <nav id="desktop-nav" class="flex items-center gap-4 lg:gap-6">
-          <a class="nav-link" href="#">Home</a>
-          <a class="nav-link" href="#about">About</a>
-          <a class="nav-link" href="#skills">Skills</a>
-          <a class="nav-link" href="#projects">Projects</a>
-          <a class="nav-link" href="#experience">Experience</a>
-          <a class="nav-link" href="#education">Education</a>
-          <a class="nav-link" href="#achievements">Achievements</a>
-          <a class="nav-link" href="blog.html">Blog</a>
-          <a class="nav-link" href="gallery.html">Gallery</a>
-          <a class="nav-link text-cyan-400 hover:text-cyan-300" href="#contact">Contact</a>
-        </nav>
-
-        <!-- Hamburger Button (mobile/tablet only) -->
-        <button id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-
-      <!-- Mobile Nav Dropdown -->
-      <nav id="mobile-nav" aria-label="Mobile navigation">
-        <a class="nav-link" href="#">Home</a>
-        <a class="nav-link" href="#about">About</a>
-        <a class="nav-link" href="#skills">Skills</a>
-        <a class="nav-link" href="#projects">Projects</a>
-        <a class="nav-link" href="#experience">Experience</a>
-        <a class="nav-link" href="#education">Education</a>
-        <a class="nav-link" href="#achievements">Achievements</a>
-        <a class="nav-link" href="blog.html">Blog</a>
-        <a class="nav-link" href="gallery.html">Gallery</a>
-        <a class="nav-link text-cyan-400" href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <script>
-      (function() {
-        const btn = document.getElementById('hamburger');
-        const menu = document.getElementById('mobile-nav');
-        btn.addEventListener('click', function() {
-          const isOpen = menu.classList.toggle('open');
-          btn.classList.toggle('open', isOpen);
-          btn.setAttribute('aria-expanded', isOpen);
-        });
-        // Close on link click
-        menu.querySelectorAll('a').forEach(function(link) {
-          link.addEventListener('click', function() {
-            menu.classList.remove('open');
-            btn.classList.remove('open');
-            btn.setAttribute('aria-expanded', 'false');
-          });
-        });
-      })();
-    </script>
-
-    <!-- 
-    ----------------------------------------------------------------------------
-    MAIN CONTENT AREA
+    NEW SLEEK DARK STUDIO GLASSMORPHIC GRID + DYNAMIC AMBIENT MESH ORBS
     ----------------------------------------------------------------------------
     -->
-    <main class="w-full relative z-10">
-      <!-- HERO SECTION (Intro + Photo) -->
-      <section
-        class="max-w-6xl mx-auto px-6 min-h-[100vh] flex flex-col justify-center pt-24 pb-12"
-      >
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-          <!-- Left Side: Profile Photo + Circular Orbit -->
-          <div
-            class="flex justify-center lg:justify-start items-center relative py-8"
-          >
-            <div
-              class="relative flex justify-center items-center w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] transform scale-75 sm:scale-100"
-              id="orbit-stage"
-            >
-              <!-- ====== MINI GALAXY ORBITAL SYSTEM ====== -->
+    <!-- Base Dark Obsidian Canvas -->
+    <div class="fixed inset-0 z-[-20] bg-[#070a11] pointer-events-none"></div>
 
-              <!-- Outer orbit guide track (faint dashed ring) -->
-              <div
-                class="galaxy-ring"
-                style="
-                  width: 480px;
-                  height: 480px;
-                  border: 1px dashed rgba(139, 92, 246, 0.18);
-                  animation: galaxy-cw 120s linear infinite;
-                "
-              ></div>
+    <!-- Architectural Fine Grid Pattern Overlay -->
+    <div 
+      class="fixed inset-0 z-[-19] pointer-events-none opacity-[0.18]" 
+      style="background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px;"
+    ></div>
 
-              <!-- Core energy halo / gravitational well shimmer -->
-              <div
-                class="galaxy-ring"
-                style="
-                  width: 440px;
-                  height: 440px;
-                  border: 1px solid rgba(56, 189, 248, 0.12);
-                  box-shadow:
-                    0 0 40px rgba(6, 182, 212, 0.12) inset,
-                    0 0 60px rgba(6, 182, 212, 0.06);
-                  animation: galaxy-shimmer 5s ease-in-out infinite;
-                  transform: translate(-50%, -50%);
-                "
-              ></div>
-
-              <!-- JavaScript will inject the moving icons, dust, and trails here -->
-              <div
-                id="orbit-icons-container"
-                class="absolute inset-0 z-0 pointer-events-none"
-              ></div>
-
-              <!-- ORANGE RING + PHOTO -->
-              <div
-                class="absolute rounded-full border-[6px] border-orange-500/80 animate-pulse-glow"
-                style="
-                  width: 250px;
-                  height: 250px;
-                  z-index: 10;
-                  pointer-events: none;
-                  box-shadow: 0 0 40px rgba(249, 115, 22, 0.3);
-                "
-              ></div>
-
-              <img
-                src="my_image.png"
-                alt="Saptarshi Sadhu Photo"
-                class="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] scale-125 -translate-y-4"
-                style="
-                  width: 250px;
-                  height: auto;
-                  position: relative;
-                  z-index: 12;
-                "
-              />
-            </div>
-          </div>
-
-          <!-- Right Side: Text and Buttons -->
-          <div class="max-w-2xl lg:ml-auto">
-            <h1
-              class="text-5xl md:text-7xl font-extrabold leading-tight text-white mb-4 tracking-tight"
-            >
-              I'm Saptarshi Sadhu
-            </h1>
-            
-            <h2
-              class="text-2xl md:text-3xl italic leading-tight text-white mb-4 tracking-tight  "
-            >Full Stack Developer & ML Researcher
-            </h2>
-
-            <p class="text-sm font-bold tracking-[0.2em] uppercase mb-8 h-5">
-              <span id="typing-text" class="animate-text-rgb"></span
-              ><span class="animate-blink">|</span>
-            </p>
-
-            <p class="text-lg text-slate-300 font-normal leading-relaxed mb-10 max-w-xl">
-              Computer Science undergraduate specializing in Artificial Intelligence & Machine Learning at <strong>Adamas University</strong>, with research interests spanning Healthcare AI, Edge AI, brain research & neurotech, intelligent systems, and environmental data science. Experienced in engineering ML pipelines for real-world datasets, building scalable software systems, and leading open-source projects with 600+ contributors.
-            </p>
-
-            <!-- Call to Action Buttons -->
-            <div class="flex flex-wrap items-center gap-4 mb-12">
-              <a
-                class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-cyan-600/20 glass-card border-none"
-                href="assets/Saptarshi_Sadhu_Resume.pdf" 
-                target="_blank" 
-                rel="noopener"
-                download
-              >
-                Download Resume
-              </a>
-              <a
-                class="px-8 py-3 border border-white/20 hover:border-white/40 hover:-translate-y-1 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white font-semibold rounded-full transition-all duration-300 glass-card"
-                href="#projects"
-              >
-                My Projects
-              </a>
-            </div>
-
-            <!-- Small informational footer underneath the buttons -->
-            <div
-              class="flex items-center gap-6 text-xs text-slate-900 font-medium border-l border-white/10 pl-4"
-            >
-              <span>Projects • Research • Experiments</span>
-
-              <span>Full-Stack • Machine Learning • Systems</span>
-            </div>
-          </div>
-        </div>
+    <!-- Dynamic Ambient Glow Orbs -->
+    <div class="fixed inset-0 z-[-18] pointer-events-none overflow-hidden">
+      <!-- Top Left Cyan Ambient Glow Orb -->
+      <div class="absolute -top-32 -left-32 w-[650px] h-[650px] bg-cyan-500/15 rounded-full blur-[140px]"></div>
+      <!-- Middle Right Indigo Ambient Glow Orb -->
+      <div class="absolute top-[30%] -right-32 w-[750px] h-[750px] bg-indigo-600/15 rounded-full blur-[160px]"></div>
+      <!-- Bottom Left Emerald Ambient Glow Orb -->
+      <div class="absolute -bottom-32 left-[15%] w-[650px] h-[650px] bg-emerald-500/12 rounded-full blur-[150px]"></div>
+    </div>
       </section>
 
       <!-- 
@@ -1065,13 +851,14 @@ when you drag your mouse over them.
             </div>
             <h4 class="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">EaseMotion CSS Framework</h4>
             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-              Scalable CSS animation framework maintained under GSSoC '26. Engineered Honeypot Sandbox Anti-Spam routing, GitHub Actions CI/CD caching (<25s validation), and scaled to 21,587 merged PRs, 54,166 commits, and 642 contributors. Ranked #3 Private Committer in India.
+              Lead Maintainer & Systems Architect under GSSoC '26. Scaled codebase to <strong>21,587 merged PRs</strong>, <strong>54,166 commits</strong>, and <strong>642 contributors</strong> in 50 days (avg <strong>496 PRs/day</strong>). Engineered Honeypot Sandbox Anti-Spam routing and optimized GitHub Actions CI/CD validation runtime to <strong>&lt; 25 seconds</strong>. Ranked <strong>#3 Private Committer in India</strong> on Committers.top.
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-purple-300/80 font-mono">
-              <span class="px-2 py-1 bg-white/5 rounded">CSS3</span>
-              <span class="px-2 py-1 bg-white/5 rounded">GitHub Actions</span>
-              <span class="px-2 py-1 bg-white/5 rounded">Anti-Spam CI/CD</span>
-              <span class="px-2 py-1 bg-white/5 rounded">GSSoC '26</span>
+              <span class="px-2 py-1 bg-white/5 rounded">21.5k+ PRs</span>
+              <span class="px-2 py-1 bg-white/5 rounded">54.1k+ Commits</span>
+              <span class="px-2 py-1 bg-white/5 rounded">642 Contributors</span>
+              <span class="px-2 py-1 bg-white/5 rounded">Honeypot Sandbox</span>
+              <span class="px-2 py-1 bg-white/5 rounded">CI/CD &lt;25s</span>
             </div>
           </div>
 
